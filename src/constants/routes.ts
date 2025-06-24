@@ -65,6 +65,7 @@ export const API_ROUTES = {
   submitExerciseAnswer: (id: string) => API_URL + `/exercises/${id}/answer`,
 
   // Sign endpoints
-  getAllSigns: "/signs",
+  getAllSigns: API_URL + "/signs",
+  getSignByWord: (word: string) => API_URL + `/signs/search/${word}`,
   searchSignByName: (name: string) => API_URL + `/signs/search/${name}`,
 };
