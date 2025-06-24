@@ -42,12 +42,12 @@ const LessonCompleted: React.FC<LessonCompletedProps> = ({
           Lesson Completed!
         </h1>
 
-        <p className="text-lg mb-6">
+        <p className="text-lg mb-6 text-[#384e5a]">
           Congratulations! You've completed the lesson "{lessonTitle}".
         </p>
 
         <div className="bg-gray-100 rounded-lg p-4 mb-8">
-          <h3 className="text-xl font-bold mb-2">Your Score</h3>
+          <h3 className="text-xl font-bold mb-2 text-[#384e5a]">Your Score</h3>
           <div className="text-4xl font-bold text-[var(--color-blue)]">
             {percentageScore}%
           </div>

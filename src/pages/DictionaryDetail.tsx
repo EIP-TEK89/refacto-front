@@ -118,13 +118,17 @@ const DictionaryDetail: React.FC = () => {
 
             {sign.definition && (
               <div className="mb-4">
-                <h2 className="text-xl font-semibold mb-2">Definition</h2>
+                <h2 className="text-xl font-semibold mb-2 text-[#384e5a]">
+                  Definition
+                </h2>
                 <p className="text-gray-700">{sign.definition}</p>
               </div>
             )}
 
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-2">Information</h2>
+              <h2 className="text-xl font-semibold mb-2 text-[#384e5a]">
+                Information
+              </h2>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <p className="text-sm text-gray-700">
                   <strong>ID:</strong> {sign.id}
