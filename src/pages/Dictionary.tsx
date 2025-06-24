@@ -119,10 +119,14 @@ const Dictionary: React.FC = () => {
       )}
 
       {/* Display signs based on selection or search */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {searchQuery
-          ? filteredSigns.map((sign) => <SignCard key={sign.id} sign={sign} />)
-          : letterSigns.map((sign) => <SignCard key={sign.id} sign={sign} />)}
+      <div className="w-full mx-auto" style={{ maxWidth: "1200px" }}>
+        <div className="flex flex-wrap justify-center gap-6">
+          {searchQuery
+            ? filteredSigns.map((sign) => (
+                <SignCard key={sign.id} sign={sign} />
+              ))
+            : letterSigns.map((sign) => <SignCard key={sign.id} sign={sign} />)}
+        </div>
       </div>
 
       {/* Empty state */}
@@ -156,9 +160,10 @@ const SignCard: React.FC<{ sign: Sign }> = ({ sign }) => {
   return (
     <Link
       to={`/dictionary/${sign.id}`}
-      className="block border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white"
+      style={{ width: "200px" }}
+      className="flex-shrink-0 border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white"
     >
-      <div className="h-40 flex justify-center items-center mb-3 w-full">
+      <div className="h-40 flex justify-center items-center mb-3">
         <img
           src={
             isValidImageUrl(sign.mediaUrl)
@@ -166,7 +171,8 @@ const SignCard: React.FC<{ sign: Sign }> = ({ sign }) => {
               : getFallbackImageUrl(sign.word)
           }
           alt={sign.word}
-          className="max-h-full max-w-full object-contain mx-auto"
+          className="max-h-full max-w-full object-contain"
+          loading="lazy"
         />
       </div>
       <h3 className="text-xl font-bold text-center text-gray-800">

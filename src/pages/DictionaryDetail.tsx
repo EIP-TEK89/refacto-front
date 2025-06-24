@@ -101,15 +101,18 @@ const DictionaryDetail: React.FC = () => {
       <div className="bg-white p-6 rounded-xl shadow-md">
         <div className="flex flex-col md:flex-row items-center">
           <div className="w-full md:w-1/2 p-4 flex justify-center items-center">
-            <img
-              src={
-                isValidImageUrl(sign.mediaUrl)
-                  ? sign.mediaUrl
-                  : getFallbackImageUrl(sign.word)
-              }
-              alt={sign.word}
-              className="max-h-72 max-w-full object-contain mx-auto"
-            />
+            <div className="w-full flex justify-center items-center min-h-[250px]">
+              <img
+                src={
+                  isValidImageUrl(sign.mediaUrl)
+                    ? sign.mediaUrl
+                    : getFallbackImageUrl(sign.word)
+                }
+                alt={sign.word}
+                className="max-h-72 max-w-full object-contain mx-auto"
+                loading="lazy"
+              />
+            </div>
           </div>
 
           <div className="w-full md:w-1/2 p-4">
@@ -143,29 +146,33 @@ const DictionaryDetail: React.FC = () => {
       {relatedSigns.length > 0 && (
         <div className="mt-8">
           <h2 className="text-2xl font-bold mb-4">Similar Signs</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {relatedSigns.map((relatedSign) => (
-              <Link
-                key={relatedSign.id}
-                to={`/dictionary/${relatedSign.id}`}
-                className="border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white"
-              >
-                <div className="h-32 flex justify-center items-center mb-2 w-full">
-                  <img
-                    src={
-                      isValidImageUrl(relatedSign.mediaUrl)
-                        ? relatedSign.mediaUrl
-                        : getFallbackImageUrl(relatedSign.word)
-                    }
-                    alt={relatedSign.word}
-                    className="max-h-full max-w-full object-contain mx-auto"
-                  />
-                </div>
-                <h3 className="text-center font-semibold text-gray-800">
-                  {relatedSign.word}
-                </h3>
-              </Link>
-            ))}
+          <div className="w-full mx-auto" style={{ maxWidth: "1200px" }}>
+            <div className="flex flex-wrap justify-center gap-6">
+              {relatedSigns.map((relatedSign) => (
+                <Link
+                  key={relatedSign.id}
+                  to={`/dictionary/${relatedSign.id}`}
+                  style={{ width: "200px" }}
+                  className="flex-shrink-0 border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white"
+                >
+                  <div className="h-32 flex justify-center items-center mb-2">
+                    <img
+                      src={
+                        isValidImageUrl(relatedSign.mediaUrl)
+                          ? relatedSign.mediaUrl
+                          : getFallbackImageUrl(relatedSign.word)
+                      }
+                      alt={relatedSign.word}
+                      className="max-h-full max-w-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 className="text-center font-semibold text-gray-800">
+                    {relatedSign.word}
+                  </h3>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       )}
