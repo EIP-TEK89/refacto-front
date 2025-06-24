@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSignCache } from "../features/lessons/hooks/useSignCache";
 import { isValidImageUrl, getFallbackImageUrl } from "../utils/imageUtils";
 import type { Sign } from "../types/lesson";
+import { Link } from "react-router-dom";
 
 const Dictionary: React.FC = () => {
   const { allSigns, isLoading, refreshCache } = useSignCache();
@@ -150,7 +151,10 @@ const SignCard: React.FC<{ sign: Sign }> = ({ sign }) => {
   return (
     <div className="w-[200px] flex-shrink-0">
       <div className="block w-full h-full border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white">
-        <div className="h-40 flex justify-center items-center mb-3">
+        <Link
+          to={`/dictionary/${sign.id}`}
+          className="h-40 flex justify-center items-center mb-3"
+        >
           <img
             src={
               isValidImageUrl(sign.mediaUrl)
@@ -161,7 +165,7 @@ const SignCard: React.FC<{ sign: Sign }> = ({ sign }) => {
             className="max-h-full max-w-full object-contain"
             loading="lazy"
           />
-        </div>
+        </Link>
         <h3 className="text-xl font-bold text-center text-gray-800">
           {sign.word}
         </h3>

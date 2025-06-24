@@ -9,63 +9,53 @@ const DictionaryDetail: React.FC = () => {
   const { getSignById, isLoading, getRandomSigns, allSigns } = useSignCache();
   const [sign, setSign] = useState<Sign | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [relatedSigns, setRelatedSigns] = useState<Sign[]>([]);
 
+  // Load the sign only when signId or getSignById changes
   useEffect(() => {
-    console.log("Loading sign data for ID:", signId);
+    let cancelled = false;
     const loadSign = async () => {
       if (!signId) {
         setError("Missing sign ID");
         return;
       }
-
       try {
-        // Reset states when loading a new sign
         setError(null);
         setSign(null);
-        setRelatedSigns([]);
-
-        // Load the sign data
         const signData = await getSignById(signId);
-
         if (!signData) {
           setError("Sign not found");
           return;
         }
-
-        setSign(signData);
-
-        // Load related signs based on the first letter
-        if (signData.word && signData.word.length > 0) {
-          const firstLetter = signData.word[0].toUpperCase();
-
-          // Filter signs that start with the same letter and exclude the current sign
-          const similarSigns = allSigns
-            .filter(
-              (s) =>
-                s.word &&
-                s.word.length > 0 &&
-                s.word[0].toUpperCase() === firstLetter &&
-                s.id !== signId
-            )
-            .slice(0, 4); // Limit to 4 similar signs
-
-          if (similarSigns.length > 0) {
-            setRelatedSigns(similarSigns);
-          } else {
-            // If no similar signs found by letter, get random signs
-            const randomSigns = getRandomSigns(4, signId);
-            setRelatedSigns(randomSigns);
-          }
-        }
+        if (!cancelled) setSign(signData);
       } catch (err) {
-        console.error("Failed to load sign:", err);
-        setError("Unable to load sign details");
+        if (!cancelled) setError("Unable to load sign details");
       }
     };
-
     loadSign();
-  }, [signId, getSignById, allSigns, getRandomSigns]);
+    return () => {
+      cancelled = true;
+    };
+  }, [signId, getSignById]);
+
+  // Dynamic calculation of related signs
+  let relatedSigns: Sign[] = [];
+  if (sign && sign.word && sign.word.length > 0) {
+    const firstLetter = sign.word[0].toUpperCase();
+    const similarSigns = allSigns
+      .filter(
+        (s) =>
+          s.word &&
+          s.word.length > 0 &&
+          s.word[0].toUpperCase() === firstLetter &&
+          s.id !== sign.id
+      )
+      .slice(0, 4);
+    if (similarSigns.length > 0) {
+      relatedSigns = similarSigns;
+    } else {
+      relatedSigns = getRandomSigns(4, sign?.id);
+    }
+  }
 
   if (isLoading) {
     return (
