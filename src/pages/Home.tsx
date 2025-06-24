@@ -1,20 +1,14 @@
 const Home = () => {
   return (
     <div className="container-card">
-      <h1
-        className="text-2xl font-bold mb-4 text-[var(--color-blue)]"
-        style={{ marginBottom: "1rem" }}
-      >
+      <h1 className="text-2xl font-bold mb-4 text-[var(--color-blue)]">
         Welcome to TrioSigno
       </h1>
-      <p className="mb-6" style={{ marginBottom: "1.5rem" }}>
+      <p className="mb-6">
         Start learning sign language today with our interactive lessons!
       </p>
 
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"
-        style={{ marginTop: "2rem" }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {/* Feature Cards */}
         <div className="feature-card">
           <h2>Learn at Your Own Pace</h2>
@@ -32,20 +26,11 @@ const Home = () => {
         </div>
       </div>
 
-      <div
-        className="mt-10 mb-6"
-        style={{ marginTop: "2.5rem", marginBottom: "1.5rem" }}
-      >
-        <h3
-          className="text-xl font-bold mb-4 text-[var(--color-text-blue)]"
-          style={{ marginBottom: "1rem" }}
-        >
+      <div className="mt-10 mb-6">
+        <h3 className="text-xl font-bold mb-4 text-[var(--color-text-blue)]">
           Get Started Today
         </h3>
-        <button
-          className="button-primary max-w-md mx-auto"
-          style={{ margin: "auto 0" }}
-        >
+        <button className="button-primary max-w-md mx-auto">
           Start Learning
         </button>
       </div>
