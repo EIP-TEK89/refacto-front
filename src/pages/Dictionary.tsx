@@ -18,8 +18,6 @@ const Dictionary: React.FC = () => {
   // Refresh the cache on mount only
   useEffect(() => {
     if (allSigns.length === 0 && !isLoading) {
-      console.log("CONNARD");
-
       refreshCache();
     }
   }, []);
