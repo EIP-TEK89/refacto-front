@@ -1,5 +1,9 @@
 import React, { useMemo } from "react";
 import type { Sign } from "../../../types/lesson";
+import {
+  isValidImageUrl,
+  getFallbackImageUrl,
+} from "../../../utils/imageUtils";
 
 interface WordToImageExerciseProps {
   prompt: string;
@@ -55,11 +59,22 @@ const WordToImageExercise: React.FC<WordToImageExerciseProps> = ({
         </div>
       ) : sign ? (
         <div className="flex flex-col items-center p-4 border-2 border-gray-200 rounded-xl">
-          <img
-            src={sign.mediaUrl}
-            alt={sign.word}
-            className="w-64 h-64 object-contain mb-4"
-          />
+          {/* Verify image URL is valid */}
+          {isValidImageUrl(sign.mediaUrl) ? (
+            <img
+              src={sign.mediaUrl}
+              alt={sign.word}
+              className="w-64 h-64 object-contain mb-4"
+            />
+          ) : (
+            <div className="w-64 h-64 flex items-center justify-center bg-gray-100 mb-4">
+              <img
+                src={getFallbackImageUrl(sign.word)}
+                alt={sign.word}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          )}
 
           {/* Grid 2x2 for options */}
           <div className="grid grid-cols-2 gap-3 w-full mt-4">

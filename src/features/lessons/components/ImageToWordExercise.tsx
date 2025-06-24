@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import type { Sign } from "../../../types/lesson";
+import {
+  isValidImageUrl,
+  getFallbackImageUrl,
+} from "../../../utils/imageUtils";
 
 interface ImageToWordExerciseProps {
   prompt: string;
@@ -34,9 +38,27 @@ const ImageToWordExercise: React.FC<ImageToWordExerciseProps> = ({
   // Load alphabet signs from the API or cache
   const getSignByWordFallback = async (word: string): Promise<Sign | null> => {
     try {
-      return await import("../../../services/signService").then((module) =>
-        module.getSignByWord(word)
+      // Try up to 3 times to get a valid image URL
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        const sign = await import("../../../services/signService").then(
+          (module) => module.getSignByWord(word)
+        );
+
+        // Validate the URL
+        if (sign && isValidImageUrl(sign.mediaUrl)) {
+          return sign;
+        }
+
+        console.warn(
+          `Attempt ${attempt}: Invalid URL for word ${word}: ${sign?.mediaUrl}`
+        );
+      }
+
+      // If we reach here, all attempts failed
+      console.error(
+        `Failed to get valid image URL for word ${word} after 3 attempts`
       );
+      return null;
     } catch (err) {
       console.error(`Failed to get sign for word ${word}:`, err);
       return null;
@@ -132,7 +154,7 @@ const ImageToWordExercise: React.FC<ImageToWordExerciseProps> = ({
               id: `placeholder-${placeholderIndex}`,
               word: placeholderLetter,
               definition: `Sign for letter ${placeholderLetter}`,
-              mediaUrl: `https://placehold.co/200x200?text=${placeholderLetter}`,
+              mediaUrl: getFallbackImageUrl(placeholderLetter),
               createdAt: "",
               updatedAt: "",
             });
@@ -160,7 +182,7 @@ const ImageToWordExercise: React.FC<ImageToWordExerciseProps> = ({
             id: `placeholder-${index}`,
             word: letter,
             definition: `Sign for letter ${letter}`,
-            mediaUrl: `https://placehold.co/200x200?text=${letter}`,
+            mediaUrl: getFallbackImageUrl(letter),
             createdAt: "",
             updatedAt: "",
           })),
@@ -244,7 +266,11 @@ const ImageToWordExercise: React.FC<ImageToWordExerciseProps> = ({
                 `}
               >
                 <img
-                  src={option.mediaUrl}
+                  src={
+                    isValidImageUrl(option.mediaUrl)
+                      ? option.mediaUrl
+                      : getFallbackImageUrl(option.word)
+                  }
                   alt={option.word}
                   className="w-full h-40 object-contain"
                 />

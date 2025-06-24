@@ -14,6 +14,7 @@ import type {
   Sign,
 } from "../../../types/lesson";
 import { useSignCache } from "./useSignCache";
+import { isValidImageUrl } from "../../../utils/imageUtils";
 
 export const useLessonDetail = (lessonId: string | undefined) => {
   const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -100,11 +101,40 @@ export const useLessonDetail = (lessonId: string | undefined) => {
         let signData;
         if (!signCache.isLoading) {
           signData = await signCache.getSignById(currentExercise.signId);
+
+          // Check if sign has valid URL
+          if (signData && !isValidImageUrl(signData.mediaUrl)) {
+            console.warn(
+              `Sign loaded from cache has invalid URL: ${signData.mediaUrl}`
+            );
+            signData = null; // Force reload from API
+          }
         }
 
         // If not found in cache, get from API
         if (!signData) {
           signData = await getSignById(currentExercise.signId);
+
+          // Validate image URL from API
+          if (signData && !isValidImageUrl(signData.mediaUrl)) {
+            console.warn(
+              `Sign loaded from API has invalid URL: ${signData.mediaUrl}`
+            );
+
+            // Try a second request
+            console.log("Making second request to get valid image URL");
+            signData = await getSignById(currentExercise.signId);
+
+            // Check again
+            if (signData && !isValidImageUrl(signData.mediaUrl)) {
+              console.warn(
+                `Second request still has invalid URL, making third request`
+              );
+
+              // Try a third request
+              signData = await getSignById(currentExercise.signId);
+            }
+          }
         }
 
         setSign(signData);

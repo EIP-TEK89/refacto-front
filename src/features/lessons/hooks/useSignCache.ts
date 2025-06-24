@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAllSigns, getSignByWord } from "../../../services/signService";
 import type { Sign } from "../../../types/lesson";
+import { isValidImageUrl } from "../../../utils/imageUtils";
 
 const SIGN_CACHE_KEY = "triosigno_sign_cache";
 const SIGN_CACHE_EXPIRY_KEY = "triosigno_sign_cache_expiry";
@@ -63,8 +64,30 @@ export const useSignCache = () => {
     try {
       setIsLoading(true);
 
-      // Fetch all signs from the API
-      const signs = await getAllSigns();
+      // Fetch all signs from the API - this first call might have invalid image links
+      let signs = await getAllSigns();
+
+      // Make a second request to get valid image links
+      console.log(
+        "Making second request to getAllSigns to get valid image URLs"
+      );
+      signs = await getAllSigns();
+
+      // Make a third request just to be sure
+      console.log(
+        "Making third request to getAllSigns to ensure valid image URLs"
+      );
+      signs = await getAllSigns();
+
+      // Filter out signs with invalid image URLs
+      const validSigns = signs.filter((sign) => isValidImageUrl(sign.mediaUrl));
+      if (validSigns.length < signs.length) {
+        console.warn(
+          `Filtered out ${
+            signs.length - validSigns.length
+          } signs with invalid image URLs`
+        );
+      }
 
       // Create the cache structure
       const newCache: SignCache = {
@@ -73,10 +96,13 @@ export const useSignCache = () => {
         lastUpdated: Date.now(),
       };
 
-      // Populate the cache
-      signs.forEach((sign) => {
+      // Populate the cache only with signs that have valid URLs
+      validSigns.forEach((sign) => {
         newCache.signs[sign.id] = sign;
         newCache.wordToId[sign.word.toLowerCase()] = sign.id;
+
+        // Mark this sign as having a validated image link
+        localStorage.setItem(`sign_image_validated_${sign.id}`, "true");
       });
 
       // Save to localStorage
@@ -106,14 +132,71 @@ export const useSignCache = () => {
 
     // Try to get from cache first
     if (cache.signs[id]) {
-      return cache.signs[id];
+      // Check if we already validated the image link
+      const cacheImageValidated = localStorage.getItem(
+        `sign_image_validated_${id}`
+      );
+      if (cacheImageValidated === "true") {
+        // Double check the URL is valid
+        if (isValidImageUrl(cache.signs[id].mediaUrl)) {
+          return cache.signs[id];
+        } else {
+          console.warn(
+            `Cached sign ${id} has invalid image URL: ${cache.signs[id].mediaUrl}`
+          );
+        }
+      }
     }
 
-    // Not in cache, try to fetch from API
+    // Not in cache or image link needs validation, fetch from API
     try {
-      const sign = await import("../../../services/signService").then(
-        (module) => module.getSignById(id)
+      // First request - might return invalid image link
+      let sign = await import("../../../services/signService").then((module) =>
+        module.getSignById(id)
       );
+
+      // Check if the first request already has a valid URL
+      if (isValidImageUrl(sign.mediaUrl)) {
+        console.log(
+          `First request for sign ID ${id} already has valid image URL: ${sign.mediaUrl}`
+        );
+      } else {
+        // Make a second request to get a valid image link
+        console.log(
+          `First request had invalid URL (${sign.mediaUrl}). Making second request for sign ID ${id}`
+        );
+        sign = await import("../../../services/signService").then((module) =>
+          module.getSignById(id)
+        );
+
+        // Check again
+        if (isValidImageUrl(sign.mediaUrl)) {
+          console.log(
+            `Second request for sign ID ${id} has valid image URL: ${sign.mediaUrl}`
+          );
+        } else {
+          // Make a third request if needed
+          console.log(
+            `Second request still had invalid URL. Making third request for sign ID ${id}`
+          );
+          sign = await import("../../../services/signService").then((module) =>
+            module.getSignById(id)
+          );
+
+          if (!isValidImageUrl(sign.mediaUrl)) {
+            console.error(
+              `Failed to get valid image URL for sign ID ${id} after 3 attempts. Current URL: ${sign.mediaUrl}`
+            );
+          }
+        }
+      }
+
+      // Mark this sign as having a validated image link only if the URL is valid
+      if (isValidImageUrl(sign.mediaUrl)) {
+        localStorage.setItem(`sign_image_validated_${id}`, "true");
+      } else {
+        localStorage.removeItem(`sign_image_validated_${id}`);
+      }
 
       // Add to cache
       const updatedCache = { ...cache };
@@ -140,14 +223,70 @@ export const useSignCache = () => {
     // Try to get from cache first
     if (cache.wordToId[normalizedWord]) {
       const id = cache.wordToId[normalizedWord];
-      return cache.signs[id];
+
+      // Check if we already validated the image link
+      const cacheImageValidated = localStorage.getItem(
+        `sign_image_validated_${id}`
+      );
+      if (cacheImageValidated === "true") {
+        // Double check the URL is valid
+        if (isValidImageUrl(cache.signs[id].mediaUrl)) {
+          return cache.signs[id];
+        } else {
+          console.warn(
+            `Cached sign for word "${normalizedWord}" has invalid image URL: ${cache.signs[id].mediaUrl}`
+          );
+        }
+      }
     }
 
-    // Not in cache, try to fetch from API
+    // Not in cache or image link needs validation, fetch from API
     try {
-      const sign = await getSignByWord(word);
-
+      // First request - might return invalid image link
+      let sign = await getSignByWord(word);
       if (!sign) return null;
+
+      // Check if first request has valid URL
+      if (isValidImageUrl(sign.mediaUrl)) {
+        console.log(
+          `First request for word "${word}" already has valid image URL: ${sign.mediaUrl}`
+        );
+      } else {
+        // Make a second request to get a valid image link
+        console.log(
+          `Making second request for word "${word}" to get valid image URL`
+        );
+        sign = await getSignByWord(word);
+
+        // Check again
+        if (isValidImageUrl(sign.mediaUrl)) {
+          console.log(
+            `Second request for word "${word}" has valid image URL: ${sign.mediaUrl}`
+          );
+        } else {
+          // Make a third request just to be sure
+          console.log(
+            `Making third request for word "${word}" to ensure valid image URL`
+          );
+          sign = await getSignByWord(word);
+
+          if (!isValidImageUrl(sign.mediaUrl)) {
+            console.error(
+              `Failed to get valid image URL for word "${word}" after 3 attempts. Current URL: ${sign.mediaUrl}`
+            );
+          }
+        }
+      }
+
+      // Mark this sign as having a validated image link only if URL is valid
+      if (isValidImageUrl(sign.mediaUrl)) {
+        localStorage.setItem(`sign_image_validated_${sign.id}`, "true");
+      } else {
+        localStorage.removeItem(`sign_image_validated_${sign.id}`);
+        console.warn(
+          `Cannot validate image URL for sign with word "${word}": ${sign.mediaUrl}`
+        );
+      }
 
       // Add to cache
       const updatedCache = { ...cache };
@@ -168,10 +307,25 @@ export const useSignCache = () => {
   const getRandomSigns = (count: number, excludeId?: string): Sign[] => {
     if (!cache) return [];
 
+    // Get all signs from cache
     const signs = Object.values(cache.signs);
+
+    // Filter signs that have invalid image URLs
+    const validSigns = signs.filter((sign) => isValidImageUrl(sign.mediaUrl));
+
+    // Filter out the excluded ID if provided
     const filteredSigns = excludeId
-      ? signs.filter((sign) => sign.id !== excludeId)
-      : signs;
+      ? validSigns.filter((sign) => sign.id !== excludeId)
+      : validSigns;
+
+    // Log if we had to filter out signs with invalid URLs
+    if (validSigns.length < signs.length) {
+      console.warn(
+        `Filtered out ${
+          signs.length - validSigns.length
+        } signs with invalid image URLs`
+      );
+    }
 
     // Shuffle and take the requested count
     return [...filteredSigns].sort(() => Math.random() - 0.5).slice(0, count);
