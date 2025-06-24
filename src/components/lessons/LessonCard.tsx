@@ -45,7 +45,7 @@ const LessonCard = ({ lesson, index, isLocked }: LessonCardProps) => {
         {index + 1}
       </div>
 
-      <div>
+      <div className="flex flex-col mt-5">
         <h3 className="text-lg font-bold mb-2">{lesson.title}</h3>
         <p className="text-sm line-clamp-2">{lesson.description}</p>
       </div>

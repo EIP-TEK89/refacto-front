@@ -52,7 +52,7 @@ const Profile = () => {
           </div>
 
           <div className="bg-[var(--color-background-main)] p-6 rounded-2xl border border-[var(--color-border)] mt-6">
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center">
               <Link to="/lessons" className="button-primary w-full">
                 Continue Learning
               </Link>

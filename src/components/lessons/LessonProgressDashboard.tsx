@@ -108,7 +108,7 @@ const LessonProgressDashboard = () => {
 
       {/* Recent activity */}
       {recentProgress.length > 0 ? (
-        <div className="mb-6">
+        <div>
           <h3 className="text-lg font-semibold mb-2">Recent Activity</h3>
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             {recentProgress.map((progress) => {
@@ -117,7 +117,7 @@ const LessonProgressDashboard = () => {
                 <div key={progress.id} className="p-4 border-b last:border-b-0">
                   <div className="flex justify-between items-center">
                     <div>
-                      <h4 className="font-medium">
+                      <h4 className="font-medium text-[var(--color-blue)]">
                         {lesson?.title || "Unknown Lesson"}
                       </h4>
                       <p className="text-sm text-gray-600">
