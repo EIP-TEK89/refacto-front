@@ -12,6 +12,7 @@ const DictionaryDetail: React.FC = () => {
   const [relatedSigns, setRelatedSigns] = useState<Sign[]>([]);
 
   useEffect(() => {
+    console.log("Loading sign data for ID:", signId);
     const loadSign = async () => {
       if (!signId) {
         setError("Missing sign ID");
@@ -19,6 +20,11 @@ const DictionaryDetail: React.FC = () => {
       }
 
       try {
+        // Reset states when loading a new sign
+        setError(null);
+        setSign(null);
+        setRelatedSigns([]);
+
         // Load the sign data
         const signData = await getSignById(signId);
 
@@ -90,7 +96,7 @@ const DictionaryDetail: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div key={signId} className="container mx-auto p-4">
       <Link
         to="/dictionary"
         className="text-[var(--color-blue)] font-medium mb-4 inline-block hover:underline"
@@ -149,28 +155,28 @@ const DictionaryDetail: React.FC = () => {
           <div className="w-full mx-auto" style={{ maxWidth: "1200px" }}>
             <div className="flex flex-wrap justify-center gap-6">
               {relatedSigns.map((relatedSign) => (
-                <Link
-                  key={relatedSign.id}
-                  to={`/dictionary/${relatedSign.id}`}
-                  style={{ width: "200px" }}
-                  className="flex-shrink-0 border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white"
-                >
-                  <div className="h-32 flex justify-center items-center mb-2">
-                    <img
-                      src={
-                        isValidImageUrl(relatedSign.mediaUrl)
-                          ? relatedSign.mediaUrl
-                          : getFallbackImageUrl(relatedSign.word)
-                      }
-                      alt={relatedSign.word}
-                      className="max-h-full max-w-full object-contain"
-                      loading="lazy"
-                    />
-                  </div>
-                  <h3 className="text-center font-semibold text-gray-800">
-                    {relatedSign.word}
-                  </h3>
-                </Link>
+                <div key={relatedSign.id} className="w-[200px] flex-shrink-0">
+                  <Link
+                    to={`/dictionary/${relatedSign.id}`}
+                    className="block w-full h-full border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white"
+                  >
+                    <div className="h-32 flex justify-center items-center mb-2">
+                      <img
+                        src={
+                          isValidImageUrl(relatedSign.mediaUrl)
+                            ? relatedSign.mediaUrl
+                            : getFallbackImageUrl(relatedSign.word)
+                        }
+                        alt={relatedSign.word}
+                        className="max-h-full max-w-full object-contain"
+                        loading="lazy"
+                      />
+                    </div>
+                    <h3 className="text-center font-semibold text-gray-800">
+                      {relatedSign.word}
+                    </h3>
+                  </Link>
+                </div>
               ))}
             </div>
           </div>

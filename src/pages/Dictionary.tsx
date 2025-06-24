@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useSignCache } from "../features/lessons/hooks/useSignCache";
 import { isValidImageUrl, getFallbackImageUrl } from "../utils/imageUtils";
 import type { Sign } from "../types/lesson";
@@ -7,44 +6,37 @@ import type { Sign } from "../types/lesson";
 const Dictionary: React.FC = () => {
   const { allSigns, isLoading, refreshCache } = useSignCache();
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
-  const [letterSigns, setLetterSigns] = useState<Sign[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredSigns, setFilteredSigns] = useState<Sign[]>([]);
+
+  useEffect(() => {
+    console.log("Dictionary mounted or updated!");
+  });
 
   // All alphabet letters
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-  // Initialize the dictionary
+  // Refresh the cache on mount only
   useEffect(() => {
-    // Refresh the cache when the component mounts
     if (allSigns.length === 0 && !isLoading) {
+      console.log("CONNARD");
+
       refreshCache();
     }
+  }, []);
 
-    // Filter signs based on search query
-    if (searchQuery) {
-      setFilteredSigns(
-        allSigns.filter((sign) =>
-          sign.word.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    } else {
-      setFilteredSigns([]);
-    }
-  }, [allSigns, isLoading, refreshCache, searchQuery]);
+  // Dynamically filter signs based on search query
+  const filteredSigns = searchQuery
+    ? allSigns.filter((sign) =>
+        sign.word.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
-  // Load signs for a specific letter
-  useEffect(() => {
-    if (selectedLetter) {
-      // Filter signs starting with the selected letter
-      const signsForLetter = allSigns.filter((sign) =>
+  // Dynamically filter signs based on selected letter
+  const letterSigns = selectedLetter
+    ? allSigns.filter((sign) =>
         sign.word.toUpperCase().startsWith(selectedLetter)
-      );
-      setLetterSigns(signsForLetter);
-    } else {
-      setLetterSigns([]);
-    }
-  }, [selectedLetter, allSigns]);
+      )
+    : [];
 
   // Handle letter click
   const handleLetterClick = (letter: string) => {
@@ -158,37 +150,35 @@ const Dictionary: React.FC = () => {
 // Sign card component
 const SignCard: React.FC<{ sign: Sign }> = ({ sign }) => {
   return (
-    <Link
-      to={`/dictionary/${sign.id}`}
-      style={{ width: "200px" }}
-      className="flex-shrink-0 border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white"
-    >
-      <div className="h-40 flex justify-center items-center mb-3">
-        <img
-          src={
-            isValidImageUrl(sign.mediaUrl)
-              ? sign.mediaUrl
-              : getFallbackImageUrl(sign.word)
-          }
-          alt={sign.word}
-          className="max-h-full max-w-full object-contain"
-          loading="lazy"
-        />
+    <div className="w-[200px] flex-shrink-0">
+      <div className="block w-full h-full border-2 border-gray-200 p-4 rounded-xl hover:border-[var(--color-blue)] hover:shadow-md transition-all bg-white">
+        <div className="h-40 flex justify-center items-center mb-3">
+          <img
+            src={
+              isValidImageUrl(sign.mediaUrl)
+                ? sign.mediaUrl
+                : getFallbackImageUrl(sign.word)
+            }
+            alt={sign.word}
+            className="max-h-full max-w-full object-contain"
+            loading="lazy"
+          />
+        </div>
+        <h3 className="text-xl font-bold text-center text-gray-800">
+          {sign.word}
+        </h3>
+        {sign.definition && (
+          <p className="text-sm text-gray-700 text-center mt-1 line-clamp-2">
+            {sign.definition}
+          </p>
+        )}
+        <div className="mt-3 text-center">
+          <span className="text-sm text-[var(--color-blue)] font-medium inline-block hover:underline">
+            View details →
+          </span>
+        </div>
       </div>
-      <h3 className="text-xl font-bold text-center text-gray-800">
-        {sign.word}
-      </h3>
-      {sign.definition && (
-        <p className="text-sm text-gray-700 text-center mt-1 line-clamp-2">
-          {sign.definition}
-        </p>
-      )}
-      <div className="mt-3 text-center">
-        <span className="text-sm text-[var(--color-blue)] font-medium inline-block hover:underline">
-          View details →
-        </span>
-      </div>
-    </Link>
+    </div>
   );
 };
 
