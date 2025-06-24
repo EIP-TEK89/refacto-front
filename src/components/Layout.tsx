@@ -8,6 +8,8 @@ import Navigation from "../components/Navbar";
 import Profile from "../pages/Profile";
 import LessonJourney from "../pages/LessonJourney";
 import LessonDetail from "../pages/LessonDetail";
+import Dictionary from "../pages/Dictionary";
+import DictionaryDetail from "../pages/DictionaryDetail";
 
 function AppLayout() {
   const location = useLocation();
@@ -32,6 +34,8 @@ function AppLayout() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/lessons" element={<LessonJourney />} />
           <Route path="/lessons/:lessonId" element={<LessonDetail />} />
+          <Route path="/dictionary" element={<Dictionary />} />
+          <Route path="/dictionary/:signId" element={<DictionaryDetail />} />
           <Route
             path="*"
             element={
