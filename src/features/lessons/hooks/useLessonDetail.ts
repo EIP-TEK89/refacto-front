@@ -72,11 +72,7 @@ export const useLessonDetail = (lessonId: string | undefined) => {
   useEffect(() => {
     const loadSignForExercise = async () => {
       const currentExercise = exercises[currentExerciseIndex];
-      if (
-        !currentExercise ||
-        currentExercise.type !== "WORD_TO_IMAGE" ||
-        !currentExercise.signId
-      ) {
+      if (!currentExercise || !currentExercise.signId) {
         setSign(null);
         return;
       }
@@ -106,15 +102,29 @@ export const useLessonDetail = (lessonId: string | undefined) => {
 
     try {
       const exerciseId = exercises[currentExerciseIndex].id;
-      const result = await submitExerciseAnswer(exerciseId, selectedAnswer);
+      const currentExercise = exercises[currentExerciseIndex];
+
+      // Determine if this is a multiple choice exercise based on the type
+      const isMultipleChoice = currentExercise.type !== "SIGN_RECOGNITION";
+
+      const result = await submitExerciseAnswer(
+        exerciseId,
+        selectedAnswer,
+        isMultipleChoice
+      );
 
       setIsAnswerCorrect(result.isCorrect);
       setFeedback(
-        result.explanation || (result.isCorrect ? "Correct!" : "Incorrect!")
+        result.explanation ||
+          result.feedback ||
+          (result.isCorrect ? "Correct!" : "Incorrect!")
       );
 
       if (result.isCorrect) {
-        setScore((prev) => prev + 1);
+        // If score is provided from the API, use that, otherwise default to 1
+        const exerciseScore =
+          result.score !== undefined ? result.score / 100 : 1;
+        setScore((prev) => prev + exerciseScore);
       }
     } catch (err) {
       console.error("Failed to submit answer:", err);

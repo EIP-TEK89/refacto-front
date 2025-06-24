@@ -62,7 +62,7 @@ export const API_ROUTES = {
   // Exercise endpoints
   getExercises: (lessonId: string) => API_URL + `/exercises/lesson/${lessonId}`,
   getExerciseById: (id: string) => API_URL + `/exercises/${id}`,
-  submitExerciseAnswer: (id: string) => API_URL + `/exercises/${id}/answer`,
+  submitExerciseAnswer: (id: string) => API_URL + `/exercises/${id}/check`,
 
   // Sign endpoints
   getAllSigns: API_URL + "/signs",

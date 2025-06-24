@@ -26,20 +26,11 @@ export interface LessonProgress {
 export interface Exercise {
   id: string;
   lessonId: string;
-  type:
-    | "MULTIPLE_CHOICE"
-    | "MATCHING"
-    | "VIDEO"
-    | "DRAG_DROP"
-    | "WORD_TO_IMAGE";
+  type: "WORD_TO_IMAGE" | "IMAGE_TO_WORD" | "SIGN_RECOGNITION";
   prompt: string;
   options?: string[];
-  correctAnswer?: string;
-  videoUrl?: string;
-  explanation?: string;
-  signId?: string;
-  createdAt: string;
-  updatedAt: string;
+  signId?: string | null;
+  sign?: Sign;
 }
 
 export interface Sign {

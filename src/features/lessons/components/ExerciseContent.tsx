@@ -1,9 +1,9 @@
 import React from "react";
 import { Button } from "../../../components/ui";
-import type { Exercise } from "../../../types/lesson";
-import MultipleChoiceExercise from "./MultipleChoiceExercise";
-import VideoExercise from "./VideoExercise";
+import type { Exercise, Sign } from "../../../types/lesson";
 import WordToImageExercise from "./WordToImageExercise";
+import ImageToWordExercise from "./ImageToWordExercise";
+import SignRecognitionExercise from "./SignRecognitionExercise";
 import FeedbackSection from "./FeedbackSection";
 
 interface ExerciseContentProps {
@@ -11,7 +11,7 @@ interface ExerciseContentProps {
   selectedAnswer: string | null;
   isAnswerCorrect: boolean | null;
   feedback: string;
-  sign: any;
+  sign: Sign | null;
   loadingSign: boolean;
   onAnswerSelection: (answer: string) => void;
   onAnswerSubmit: () => void;
@@ -36,24 +36,33 @@ const ExerciseContent: React.FC<ExerciseContentProps> = ({
   return (
     <>
       {/* Exercise content based on type */}
-      {exercise.type === "MULTIPLE_CHOICE" && (
-        <MultipleChoiceExercise
+      {exercise.type === "WORD_TO_IMAGE" && (
+        <WordToImageExercise
           prompt={exercise.prompt}
           options={exercise.options}
+          sign={sign}
+          loadingSign={loadingSign}
           selectedAnswer={selectedAnswer}
           isAnswerCorrect={isAnswerCorrect}
           onAnswerSelection={onAnswerSelection}
         />
       )}
 
-      {exercise.type === "VIDEO" && (
-        <VideoExercise prompt={exercise.prompt} videoUrl={exercise.videoUrl} />
-      )}
-
-      {exercise.type === "WORD_TO_IMAGE" && (
-        <WordToImageExercise
+      {exercise.type === "IMAGE_TO_WORD" && (
+        <ImageToWordExercise
           prompt={exercise.prompt}
           options={exercise.options}
+          sign={sign}
+          loadingSign={loadingSign}
+          selectedAnswer={selectedAnswer}
+          isAnswerCorrect={isAnswerCorrect}
+          onAnswerSelection={onAnswerSelection}
+        />
+      )}
+
+      {exercise.type === "SIGN_RECOGNITION" && (
+        <SignRecognitionExercise
+          prompt={exercise.prompt}
           sign={sign}
           loadingSign={loadingSign}
           selectedAnswer={selectedAnswer}

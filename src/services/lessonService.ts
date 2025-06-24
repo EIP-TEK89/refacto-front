@@ -65,11 +65,18 @@ export const getExerciseById = async (
  */
 export const submitExerciseAnswer = async (
   exerciseId: string,
-  answer: string
-): Promise<{ isCorrect: boolean; explanation?: string }> => {
+  answer: string,
+  isMultipleChoice: boolean = true
+): Promise<{
+  isCorrect: boolean;
+  explanation?: string;
+  score?: number;
+  feedback?: string;
+  correctAnswer?: string;
+}> => {
   const response = await apiClient.post(
     API_ROUTES.submitExerciseAnswer(exerciseId),
-    { answer }
+    { answer, multipleChoice: isMultipleChoice }
   );
   return response.data;
 };
