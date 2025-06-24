@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import type { Sign } from "../../../types/lesson";
 
 interface WordToImageExerciseProps {
@@ -11,6 +11,8 @@ interface WordToImageExerciseProps {
   onAnswerSelection: (answer: string) => void;
 }
 
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
 const WordToImageExercise: React.FC<WordToImageExerciseProps> = ({
   prompt,
   options,
@@ -20,6 +22,27 @@ const WordToImageExercise: React.FC<WordToImageExerciseProps> = ({
   isAnswerCorrect,
   onAnswerSelection,
 }) => {
+  // Generate 4 random options if not provided or if less than 4
+  const displayOptions = useMemo(() => {
+    if (sign && (!options || options.length < 4)) {
+      // Make sure the correct answer (sign.word) is included
+      const result = [sign.word];
+
+      // Add random letters from alphabet until we have 4 options
+      const shuffledAlphabet = [...alphabet].sort(() => Math.random() - 0.5);
+      for (const letter of shuffledAlphabet) {
+        if (letter !== sign.word && result.length < 4) {
+          result.push(letter);
+        }
+      }
+
+      // Shuffle the result
+      return result.sort(() => Math.random() - 0.5);
+    }
+
+    return options || [];
+  }, [options, sign]);
+
   return (
     <div className="mt-4">
       <h2 className="text-xl font-semibold mb-4 text-[var(--color-blue)]">
@@ -37,13 +60,15 @@ const WordToImageExercise: React.FC<WordToImageExerciseProps> = ({
             alt={sign.word}
             className="w-64 h-64 object-contain mb-4"
           />
-          <div className="mt-4 space-y-3 w-full">
-            {options?.map((option, index) => (
+
+          {/* Grid 2x2 for options */}
+          <div className="grid grid-cols-2 gap-3 w-full mt-4">
+            {displayOptions.map((option, index) => (
               <div
                 key={index}
                 onClick={() => onAnswerSelection(option)}
                 className={`
-                p-4 border-2 rounded-xl cursor-pointer transition-all text-center
+                p-4 border-2 rounded-xl cursor-pointer transition-all text-center text-[#58cc02] font-semibold
                 ${
                   selectedAnswer === option
                     ? "border-[var(--color-blue)] bg-blue-50"
