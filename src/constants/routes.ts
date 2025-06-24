@@ -4,6 +4,8 @@ export const ROUTES = {
   SIGNIN: "/signin",
   COURSES: "/courses",
   COURSES_LESSON: "/courses/:lessonId",
+  LESSONS: "/lessons",
+  LESSON_DETAIL: "/lessons/:lessonId",
   COURSES_JOURNEY: {
     HOME: "/coursesJourney/home",
     QUESTS: "/coursesJourney/quests",
@@ -52,16 +54,15 @@ export const API_ROUTES = {
   getDictionaryEntry: (id: string) => API_URL + `/dictionary/${id}`,
 
   // Lesson endpoints
-  getLessons: API_URL + "/lesson",
-  getLessonById: (id: string) => API_URL + `/lesson/${id}`,
+  getLessons: API_URL + "/lessons",
+  getLessonById: (id: string) => API_URL + `/lessons/${id}`,
   getLessonProgress: API_URL + "/lesson-progress",
   updateLessonProgress: (id: string) => API_URL + `/lesson-progress/${id}`,
 
   // Exercise endpoints
-  getExercises: (lessonId: string) =>
-    API_URL + `/exercise?lessonId=${lessonId}`,
-  getExerciseById: (id: string) => API_URL + `/exercise/${id}`,
-  submitExerciseAnswer: (id: string) => API_URL + `/exercise/${id}/answer`,
+  getExercises: (lessonId: string) => API_URL + `/exercises/lesson/${lessonId}`,
+  getExerciseById: (id: string) => API_URL + `/exercises/${id}`,
+  submitExerciseAnswer: (id: string) => API_URL + `/exercises/${id}/answer`,
 
   // Sign endpoints
   getAllSigns: "/signs",

@@ -1,4 +1,9 @@
+import { Link } from "react-router-dom";
+import { useAuthState } from "../store/auth/hooks";
+
 const Home = () => {
+  const { isAuthenticated } = useAuthState();
+
   return (
     <div className="container-card">
       <h1 className="text-2xl font-bold mb-4 text-[var(--color-blue)]">
@@ -26,14 +31,31 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="mt-10 mb-6">
+      <div className="mt-10 mb-6 text-center">
         <h3 className="text-xl font-bold mb-4 text-[var(--color-text-blue)]">
           Get Started Today
         </h3>
-        <button className="button-primary max-w-md mx-auto">
-          Start Learning
-        </button>
+        <Link
+          to={isAuthenticated ? "/lessons" : "/signup"}
+          className="button-primary inline-block px-8 py-3"
+        >
+          {isAuthenticated ? "Start Learning" : "Sign Up & Learn"}
+        </Link>
       </div>
+
+      {isAuthenticated && (
+        <div className="mt-4 bg-blue-50 p-6 rounded-xl text-center">
+          <h3 className="font-bold text-lg mb-2 text-[#58cc02]">
+            Continue Your Learning Journey
+          </h3>
+          <p className="mb-4 text-[#38852e]">
+            Pick up where you left off or start a new lesson
+          </p>
+          <Link to="/lessons" className="button-secondary inline-block">
+            View All Lessons
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

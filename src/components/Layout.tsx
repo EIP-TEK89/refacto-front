@@ -6,6 +6,8 @@ import LogIn from "../pages/LogIn";
 import SignUp from "../pages/SignUp";
 import Navigation from "../components/Navbar";
 import Profile from "../pages/Profile";
+import LessonJourney from "../pages/LessonJourney";
+import LessonDetail from "../pages/LessonDetail";
 
 function AppLayout() {
   const location = useLocation();
@@ -28,6 +30,8 @@ function AppLayout() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/lessons" element={<LessonJourney />} />
+          <Route path="/lessons/:lessonId" element={<LessonDetail />} />
           <Route
             path="*"
             element={

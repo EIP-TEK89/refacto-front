@@ -17,6 +17,14 @@ const Navigation = () => {
         >
           Home
         </Link>
+        <Link
+          to="/lessons"
+          className={`nav-link ${
+            location.pathname.startsWith("/lessons") ? "active" : ""
+          }`}
+        >
+          Lessons
+        </Link>
         {isAuthenticated && (
           <Link
             to="/profile"
