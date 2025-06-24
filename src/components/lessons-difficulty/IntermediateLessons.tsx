@@ -11,7 +11,7 @@ const IntermediateLessons: React.FC<IntermediateLessonsProps> = ({
   lessons,
   beginnerLessons,
 }) => {
-  // Si aucune leçon intermédiaire, on ne rend rien
+  // If there are no intermediate lessons, we don't render anything
   if (lessons.length === 0) {
     return null;
   }
@@ -23,8 +23,8 @@ const IntermediateLessons: React.FC<IntermediateLessonsProps> = ({
       </h2>
       <div className="flex flex-wrap gap-4 justify-center">
         {lessons.map((lesson, index) => {
-          // Pour la liste, la première leçon affichée (index = 0) est la première à faire
-          // Les leçons doivent être déverrouillées en séquence au fur et à mesure que les précédentes sont terminées
+          // For the list, the first displayed lesson (index = 0) is the first one to do
+          // Lessons should be unlocked in sequence as previous ones are completed
           const isFirstLesson = index === 0;
           const isPreviousLessonCompleted =
             index > 0 ? lessons[index - 1]?.status === "COMPLETED" : true;
@@ -38,8 +38,8 @@ const IntermediateLessons: React.FC<IntermediateLessonsProps> = ({
               lesson={lesson}
               index={beginnerLessons.length + index}
               isLocked={
-                !areAllBeginnerLessonsCompleted || // Toutes les leçons débutantes doivent être terminées
-                (!isFirstLesson && !isPreviousLessonCompleted) // Si ce n'est pas la première leçon, la précédente doit être terminée
+                !areAllBeginnerLessonsCompleted || // All beginner lessons must be completed
+                (!isFirstLesson && !isPreviousLessonCompleted) // If it's not the first lesson, the previous one must be completed
               }
             />
           );
