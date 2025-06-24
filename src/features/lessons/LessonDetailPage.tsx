@@ -27,6 +27,7 @@ const LessonDetail: React.FC = () => {
     goToNextExercise,
     resetLesson,
     currentExercise,
+    signCache,
   } = useLessonDetail(lessonId);
 
   const handleExitLesson = () => {
@@ -96,6 +97,7 @@ const LessonDetail: React.FC = () => {
             onNextExercise={goToNextExercise}
             onExitLesson={handleExitLesson}
             isLastExercise={currentExerciseIndex === exercises.length - 1}
+            signCache={signCache}
           />
         </div>
       </div>

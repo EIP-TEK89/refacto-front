@@ -18,6 +18,10 @@ interface ExerciseContentProps {
   onNextExercise: () => void;
   onExitLesson: () => void;
   isLastExercise: boolean;
+  signCache?: {
+    getSignByWord: (word: string) => Promise<Sign | null>;
+    getRandomSigns: (count: number, excludeId?: string) => Sign[];
+  };
 }
 
 const ExerciseContent: React.FC<ExerciseContentProps> = ({
@@ -32,6 +36,7 @@ const ExerciseContent: React.FC<ExerciseContentProps> = ({
   onNextExercise,
   onExitLesson,
   isLastExercise,
+  signCache,
 }) => {
   return (
     <>
@@ -57,6 +62,7 @@ const ExerciseContent: React.FC<ExerciseContentProps> = ({
           selectedAnswer={selectedAnswer}
           isAnswerCorrect={isAnswerCorrect}
           onAnswerSelection={onAnswerSelection}
+          signCache={signCache}
         />
       )}
 
@@ -81,7 +87,10 @@ const ExerciseContent: React.FC<ExerciseContentProps> = ({
         </Button>
 
         {isAnswerCorrect === null ? (
-          <Button onClick={onAnswerSubmit} disabled={!selectedAnswer}>
+          <Button
+            onClick={onAnswerSubmit}
+            disabled={exercise.type !== "SIGN_RECOGNITION" && !selectedAnswer}
+          >
             Check Answer
           </Button>
         ) : (

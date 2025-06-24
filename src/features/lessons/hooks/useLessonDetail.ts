@@ -13,6 +13,7 @@ import type {
   LessonProgress,
   Sign,
 } from "../../../types/lesson";
+import { useSignCache } from "./useSignCache";
 
 export const useLessonDetail = (lessonId: string | undefined) => {
   const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -28,6 +29,9 @@ export const useLessonDetail = (lessonId: string | undefined) => {
   const [lessonCompleted, setLessonCompleted] = useState(false);
   const [sign, setSign] = useState<Sign | null>(null);
   const [loadingSign, setLoadingSign] = useState(false);
+
+  // Use our sign cache
+  const signCache = useSignCache();
 
   // Fetch lesson data
   useEffect(() => {
@@ -57,6 +61,18 @@ export const useLessonDetail = (lessonId: string | undefined) => {
             setLessonCompleted(true);
           }
         }
+
+        // Make sure sign cache is initialized
+        if (signCache.isLoading) {
+          await new Promise((resolve) => {
+            const checkInterval = setInterval(() => {
+              if (!signCache.isLoading) {
+                clearInterval(checkInterval);
+                resolve(true);
+              }
+            }, 100);
+          });
+        }
       } catch (err) {
         console.error("Failed to fetch lesson:", err);
         setError("Failed to load the lesson. Please try again later.");
@@ -66,7 +82,7 @@ export const useLessonDetail = (lessonId: string | undefined) => {
     };
 
     fetchLessonData();
-  }, [lessonId]);
+  }, [lessonId, signCache.isLoading]);
 
   // Load sign when an exercise has a signId
   useEffect(() => {
@@ -79,8 +95,18 @@ export const useLessonDetail = (lessonId: string | undefined) => {
 
       try {
         setLoadingSign(true);
-        // Get the sign using its ID from the exercise
-        const signData = await getSignById(currentExercise.signId);
+
+        // Try to get the sign from cache first, then fallback to API
+        let signData;
+        if (!signCache.isLoading) {
+          signData = await signCache.getSignById(currentExercise.signId);
+        }
+
+        // If not found in cache, get from API
+        if (!signData) {
+          signData = await getSignById(currentExercise.signId);
+        }
+
         setSign(signData);
       } catch (err) {
         console.error("Failed to load sign:", err);
@@ -91,25 +117,33 @@ export const useLessonDetail = (lessonId: string | undefined) => {
     };
 
     loadSignForExercise();
-  }, [currentExerciseIndex, exercises]);
+  }, [currentExerciseIndex, exercises, signCache.isLoading]);
 
   const handleAnswerSelection = (answer: string) => {
     setSelectedAnswer(answer);
   };
 
   const handleAnswerSubmit = async () => {
-    if (!selectedAnswer || !exercises[currentExerciseIndex]) return;
+    if (!exercises[currentExerciseIndex]) return;
+
+    const currentExercise = exercises[currentExerciseIndex];
+    // If no answer is selected, and it's not a recognition exercise, do nothing
+    if (!selectedAnswer && currentExercise.type !== "SIGN_RECOGNITION") return;
 
     try {
-      const exerciseId = exercises[currentExerciseIndex].id;
-      const currentExercise = exercises[currentExerciseIndex];
+      const exerciseId = currentExercise.id;
 
       // Determine if this is a multiple choice exercise based on the type
       const isMultipleChoice = currentExercise.type !== "SIGN_RECOGNITION";
 
+      // For IMAGE_TO_WORD type exercises, we submit the selected ID
+      // For SIGN_RECOGNITION type exercises, we submit the entered text
+      // For other exercises, we submit the selected answer
+      let answer = selectedAnswer || "";
+
       const result = await submitExerciseAnswer(
         exerciseId,
-        selectedAnswer,
+        answer,
         isMultipleChoice
       );
 
@@ -190,5 +224,6 @@ export const useLessonDetail = (lessonId: string | undefined) => {
     goToNextExercise,
     resetLesson,
     currentExercise: exercises[currentExerciseIndex] || null,
+    signCache, // Expose sign cache to components
   };
 };

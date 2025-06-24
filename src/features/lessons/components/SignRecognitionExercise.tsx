@@ -61,7 +61,7 @@ const SignRecognitionExercise: React.FC<SignRecognitionExerciseProps> = ({
                 value={selectedAnswer !== null ? selectedAnswer : inputValue}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
-                disabled={selectedAnswer !== null}
+                disabled={isAnswerCorrect !== null}
                 placeholder="Type the sign meaning here..."
                 className={`
                   w-full p-3 border-2 rounded-lg 
@@ -75,7 +75,7 @@ const SignRecognitionExercise: React.FC<SignRecognitionExerciseProps> = ({
                   outline-none focus:border-blue-500
                 `}
               />
-              {!selectedAnswer && (
+              {isAnswerCorrect === null && (
                 <button
                   onClick={handleSubmit}
                   disabled={!inputValue.trim()}
