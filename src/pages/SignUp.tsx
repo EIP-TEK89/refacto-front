@@ -2,7 +2,12 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
-import GoogleIcon from "../components/GoogleIcon";
+import {
+  CloseButton,
+  PrimaryButton,
+  GoogleButton,
+  SecondaryButton,
+} from "../components/ui";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -64,16 +69,7 @@ const SignUp = () => {
   return (
     <div className="flex flex-col items-center justify-center bg-[var(--color-background-main)] min-h-screen py-8">
       <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
-        <button
-          className="cursor-pointer bg-transparent border-none p-0"
-          onClick={() => (window.location.href = "/")}
-        >
-          <img
-            src="/icons/close.svg"
-            alt="Close"
-            className="w-[18px] h-[18px]"
-          />
-        </button>
+        <CloseButton onClick={() => (window.location.href = "/")} />
       </div>
 
       <div className="w-full max-w-[400px] p-6 flex flex-col space-y-6 mt-12">
@@ -163,13 +159,15 @@ const SignUp = () => {
             </div>
           </div>
 
-          <button
+          <PrimaryButton
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 px-4 bg-[var(--color-blue)] text-black border-none rounded-[20px] font-bold cursor-pointer my-2 shadow-[0_3px_0_var(--color-blue-shadow)] transition-all duration-200 hover:translate-y-0.5 hover:shadow-[0_1px_0_var(--color-blue-shadow)] disabled:bg-[#384e5a] disabled:text-[#748a99] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+            isLoading={isLoading}
+            fullWidth
+            size="lg"
           >
             {isLoading ? "Creating Account..." : "Create Account"}
-          </button>
+          </PrimaryButton>
         </form>
 
         <div className="flex items-center text-center my-4">
@@ -181,17 +179,14 @@ const SignUp = () => {
         </div>
 
         <div className="flex gap-4 my-2">
-          <button
-            type="button"
+          <GoogleButton
             onClick={handleGoogleLogin}
             disabled={isLoading}
-            className="flex-1 py-2 px-6 border-2 border-[var(--color-border)] rounded-2xl text-[var(--color-blue)] text-base font-bold cursor-pointer flex items-center justify-center gap-2 shadow-[0_3px_0_var(--color-border)] bg-transparent transition-all duration-200 h-[50px] hover:translate-y-0.5 hover:shadow-[0_1px_0_var(--color-border)] disabled:opacity-50 disabled:cursor-not-allowed"
+            isLoading={isLoading && false}
+            fullWidth
           >
-            <div className="w-5 h-5">
-              <GoogleIcon className="w-full h-full fill-[var(--color-blue)]" />
-            </div>
             {isLoading ? "Connecting..." : "Google"}
-          </button>
+          </GoogleButton>
         </div>
 
         <div className="text-center text-[rgba(255,255,255,0.6)] text-sm mt-4">
@@ -200,9 +195,7 @@ const SignUp = () => {
 
         <div className="mb-4 mt-2 flex justify-center">
           <Link to="/login">
-            <button className="border-2 border-[var(--color-border)] mx-2 rounded-2xl py-2 px-6 text-[var(--color-blue)] w-[150px] h-[50px] font-bold text-base shadow-[0_3px_0_var(--color-border)] bg-transparent cursor-pointer transition-all duration-200 hover:translate-y-0.5 hover:shadow-[0_1px_0_var(--color-border)]">
-              Sign In
-            </button>
+            <SecondaryButton className="w-[150px]">Sign In</SecondaryButton>
           </Link>
         </div>
       </div>
