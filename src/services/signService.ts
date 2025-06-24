@@ -11,6 +11,15 @@ export const getAllSigns = async (): Promise<Sign[]> => {
 };
 
 /**
+ * Get a sign by its ID
+ * @param id The ID of the sign
+ */
+export const getSignById = async (id: string): Promise<Sign> => {
+  const response = await apiClient.get(API_ROUTES.getSignById(id));
+  return response.data;
+};
+
+/**
  * Get a sign by its word
  * @param word The word to search for
  */

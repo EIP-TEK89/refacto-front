@@ -6,7 +6,7 @@ import {
   updateLessonProgress,
   getLessonProgress,
 } from "../../../services/lessonService";
-import { getSignByWord } from "../../../services/signService";
+import { getSignById } from "../../../services/signService";
 import type {
   Lesson,
   Exercise,
@@ -84,7 +84,7 @@ export const useLessonDetail = (lessonId: string | undefined) => {
       try {
         setLoadingSign(true);
         // Get the sign using its ID from the exercise
-        const signData = await getSignByWord(currentExercise.signId);
+        const signData = await getSignById(currentExercise.signId);
         setSign(signData);
       } catch (err) {
         console.error("Failed to load sign:", err);
