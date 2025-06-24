@@ -6,8 +6,8 @@ import {
   BeginnerLessons,
   IntermediateLessons,
   AdvancedLessons,
-  type LessonWithProgress,
-} from "../components/lessons";
+} from "../components/lessons-difficulty";
+import type { LessonWithProgress } from "../components/lessons/LessonCard";
 
 const LessonJourney = () => {
   const { isAuthenticated } = useAuthState();

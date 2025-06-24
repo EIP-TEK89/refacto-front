@@ -25,8 +25,8 @@ const AdvancedLessons: React.FC<AdvancedLessonsProps> = ({
       </h2>
       <div className="flex flex-wrap gap-4 justify-center">
         {lessons.map((lesson, index) => {
-          // Pour la liste inversée, la première leçon (index 0) doit être verrouillée
-          // sauf si toutes les autres leçons sont terminées
+          // Pour la liste, la première leçon affichée (index = 0) est la première à faire
+          // Les leçons doivent être déverrouillées en séquence au fur et à mesure que les précédentes sont terminées
           const isFirstLesson = index === 0;
           const isPreviousLessonCompleted =
             index > 0 ? lessons[index - 1]?.status === "COMPLETED" : true;
@@ -36,27 +36,18 @@ const AdvancedLessons: React.FC<AdvancedLessonsProps> = ({
           const areAllIntermediateLessonsCompleted = intermediateLessons.every(
             (l) => l.status === "COMPLETED"
           );
-          const areAllOtherAdvancedLessonsCompleted = lessons
-            .slice(1)
-            .every((l) => l.status === "COMPLETED");
 
           return (
             <LessonCard
               key={lesson.id}
               lesson={lesson}
               index={
-                beginnerLessons.length +
-                intermediateLessons.length +
-                lessons.length -
-                index -
-                1
+                beginnerLessons.length + intermediateLessons.length + index
               }
               isLocked={
                 !areAllBeginnerLessonsCompleted ||
                 !areAllIntermediateLessonsCompleted ||
-                (isFirstLesson
-                  ? !areAllOtherAdvancedLessonsCompleted
-                  : !isPreviousLessonCompleted)
+                (!isFirstLesson && !isPreviousLessonCompleted) // Si ce n'est pas la première leçon, la précédente doit être terminée
               }
             />
           );

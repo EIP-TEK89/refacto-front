@@ -7,7 +7,7 @@ interface BeginnerLessonsProps {
 }
 
 const BeginnerLessons: React.FC<BeginnerLessonsProps> = ({ lessons }) => {
-  // Nous travaillons avec lessons qui est déjà filtré et inversé dans le composant parent
+  // We are working with lessons that are already filtered and reversed in the parent component
 
   return (
     <div className="mb-12">
@@ -16,23 +16,20 @@ const BeginnerLessons: React.FC<BeginnerLessonsProps> = ({ lessons }) => {
       </h2>
       <div className="flex flex-wrap gap-4 justify-center">
         {lessons.map((lesson, index) => {
-          // Pour la liste inversée, la première leçon (index 0) doit être verrouillée sauf si toutes les autres sont terminées
+          // For the reversed list, the first displayed lesson (index = 0) is the first one to do
+          // The lessons should be unlocked in sequence as the previous ones are completed
           const isFirstLesson = index === 0;
           const isPreviousLessonCompleted =
             index > 0 ? lessons[index - 1]?.status === "COMPLETED" : true;
-          const areAllOtherLessonsCompleted = lessons
-            .slice(1)
-            .every((l) => l.status === "COMPLETED");
 
           return (
             <LessonCard
               key={lesson.id}
               lesson={lesson}
-              index={lessons.length - index - 1}
+              index={index} // Displays the real number (1, 2, 3...)
               isLocked={
-                isFirstLesson
-                  ? !areAllOtherLessonsCompleted
-                  : !isPreviousLessonCompleted
+                !isFirstLesson && // If it's not the first displayed lesson (which is always unlocked)
+                !isPreviousLessonCompleted // It is locked if the previous lesson is not completed
               }
             />
           );
