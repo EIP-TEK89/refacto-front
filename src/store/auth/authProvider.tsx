@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { AuthContext, initialAuthState } from "./authContext";
 import type { AuthResponse, User } from "./types";
-import { post, get } from "../../services/apiClient";
+import { post, get, patch } from "../../services/apiClient";
 import { API_ROUTES } from "../../constants/routes";
 
 interface AuthProviderProps {
@@ -265,6 +265,58 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
   };
 
+  // Update user
+  const updateUser = async (
+    userId: string,
+    userData: Partial<User> & { password?: string; newPassword?: string }
+  ) => {
+    setState({ ...state, isLoading: true, error: null });
+
+    try {
+      const response = await patch(API_ROUTES.updateUser(userId), userData);
+
+      // If we have user data in the response, update the local storage and state
+      if (response.user) {
+        localStorage.setItem("user", JSON.stringify(response.user));
+
+        setState({
+          ...state,
+          isLoading: false,
+          user: response.user,
+        });
+      } else {
+        // Just update loading state if no user data returned
+        setState({
+          ...state,
+          isLoading: false,
+        });
+      }
+
+      return response;
+    } catch (error: any) {
+      // Handle errors
+      let errorMessage = "Failed to update user";
+
+      if (error.response) {
+        if (error.response.data && error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      } else if (error.request) {
+        errorMessage = "No response from server. Please try again later";
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      setState({
+        ...state,
+        isLoading: false,
+        error: errorMessage,
+      });
+
+      throw new Error(errorMessage);
+    }
+  };
+
   // Login with Google
   const loginWithGoogle = async () => {
     setState({ ...state, isLoading: true, error: null });
@@ -370,6 +422,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         getCurrentUser,
         clearError,
         loginWithGoogle,
+        updateUser,
       }}
     >
       {children}

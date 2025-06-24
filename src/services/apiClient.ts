@@ -218,6 +218,15 @@ export const post = async (url: string, data: any, config = {}) => {
   }
 };
 
+export const patch = async (url: string, data: any, config = {}) => {
+  try {
+    const response = await apiClient.patch(url, data, config);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const del = async (url: string, config = {}) => {
   try {
     const response = await apiClient.delete(url, config);

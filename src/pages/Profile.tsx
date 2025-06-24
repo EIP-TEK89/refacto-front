@@ -1,10 +1,13 @@
 import { useAuth } from "../store/auth";
 import { useNavigate } from "react-router-dom";
 import { useRequireAuth } from "../hooks/useRequireAuth";
+import { useState } from "react";
+import PasswordChangeModal from "../components/PasswordChangeModal";
 
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   // Use the hook to protect this page
   useRequireAuth("/login");
@@ -84,7 +87,10 @@ const Profile = () => {
 
               <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
                 <span>Password</span>
-                <button className="text-[var(--color-text-blue)] hover:text-[var(--color-text)]">
+                <button
+                  onClick={() => setIsPasswordModalOpen(true)}
+                  className="text-[var(--color-text-blue)] hover:text-[var(--color-text)]"
+                >
                   Change
                 </button>
               </div>
@@ -106,6 +112,13 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {isPasswordModalOpen && (
+        <PasswordChangeModal
+          isOpen={isPasswordModalOpen}
+          onClose={() => setIsPasswordModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
