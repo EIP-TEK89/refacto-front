@@ -6,12 +6,14 @@ interface AdvancedLessonsProps {
   lessons: LessonWithProgress[];
   beginnerLessons: LessonWithProgress[];
   intermediateLessons: LessonWithProgress[];
+  onStatusChange?: () => void;
 }
 
 const AdvancedLessons: React.FC<AdvancedLessonsProps> = ({
   lessons,
   beginnerLessons,
   intermediateLessons,
+  onStatusChange,
 }) => {
   // If no advanced lessons, render nothing
   if (lessons.length === 0) {
@@ -49,6 +51,7 @@ const AdvancedLessons: React.FC<AdvancedLessonsProps> = ({
                 !areAllIntermediateLessonsCompleted ||
                 (!isFirstLesson && !isPreviousLessonCompleted) // If it's not the first lesson, the previous one must be completed
               }
+              onStatusChange={onStatusChange}
             />
           );
         })}

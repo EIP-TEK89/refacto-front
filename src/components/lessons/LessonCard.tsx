@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui";
 import type { Lesson } from "../../types/lesson";
+import { resetLessonProgress } from "../../services/lessonService";
+import { useState } from "react";
 
 export interface LessonWithProgress extends Lesson {
   status: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
@@ -10,9 +12,17 @@ interface LessonCardProps {
   lesson: LessonWithProgress;
   index: number;
   isLocked: boolean;
+  onStatusChange?: () => void; // Callback when lesson status changes
 }
 
-const LessonCard = ({ lesson, index, isLocked }: LessonCardProps) => {
+const LessonCard = ({
+  lesson,
+  index,
+  isLocked,
+  onStatusChange,
+}: LessonCardProps) => {
+  const [isResetting, setIsResetting] = useState(false);
+
   const getStatusColor = () => {
     switch (lesson.status) {
       case "COMPLETED":
@@ -21,6 +31,26 @@ const LessonCard = ({ lesson, index, isLocked }: LessonCardProps) => {
         return "bg-yellow-500";
       default:
         return "bg-gray-300";
+    }
+  };
+
+  const handleReset = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (lesson.status === "NOT_STARTED") return;
+
+    try {
+      setIsResetting(true);
+      await resetLessonProgress(lesson.id);
+      // Notify parent component about the status change
+      if (onStatusChange) {
+        onStatusChange();
+      }
+    } catch (err) {
+      console.error("Failed to reset lesson progress:", err);
+    } finally {
+      setIsResetting(false);
     }
   };
 
@@ -82,19 +112,32 @@ const LessonCard = ({ lesson, index, isLocked }: LessonCardProps) => {
             <span className="text-sm text-gray-500">Locked</span>
           </div>
         ) : (
-          <Link to={`/lessons/${lesson.id}`}>
-            <Button
-              variant="primary"
-              size="sm"
-              className={lesson.status === "COMPLETED" ? "bg-green-500" : ""}
-            >
-              {lesson.status === "COMPLETED"
-                ? "Review"
-                : lesson.status === "IN_PROGRESS"
-                ? "Continue"
-                : "Start"}
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            {lesson.status !== "NOT_STARTED" && (
+              <Button
+                variant="link"
+                size="sm"
+                className="text-red-500 hover:bg-red-50 px-2"
+                onClick={handleReset}
+                disabled={isResetting}
+              >
+                {isResetting ? "..." : "Reset"}
+              </Button>
+            )}
+            <Link to={`/lessons/${lesson.id}`}>
+              <Button
+                variant="primary"
+                size="sm"
+                className={lesson.status === "COMPLETED" ? "bg-green-500" : ""}
+              >
+                {lesson.status === "COMPLETED"
+                  ? "Review"
+                  : lesson.status === "IN_PROGRESS"
+                  ? "Continue"
+                  : "Start"}
+              </Button>
+            </Link>
+          </div>
         )}
       </div>
     </div>

@@ -57,7 +57,12 @@ export const API_ROUTES = {
   getLessons: API_URL + "/lessons",
   getLessonById: (id: string) => API_URL + `/lessons/${id}`,
   getLessonProgress: API_URL + "/lesson-progress",
-  updateLessonProgress: (id: string) => API_URL + `/lesson-progress/${id}`,
+  startLessonProgress: API_URL + "/lesson-progress/start",
+  updateLessonProgress: (id: string) =>
+    API_URL + `/lesson-progress/${id}/update`,
+  completeLessonProgress: (id: string) =>
+    API_URL + `/lesson-progress/${id}/complete`,
+  resetLessonProgress: (id: string) => API_URL + `/lesson-progress/${id}/reset`,
 
   // Exercise endpoints
   getExercises: (lessonId: string) => API_URL + `/exercises/lesson/${lessonId}`,

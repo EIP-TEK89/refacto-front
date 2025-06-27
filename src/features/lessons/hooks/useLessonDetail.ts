@@ -3,8 +3,9 @@ import {
   getLessonById,
   getExercisesForLesson,
   submitExerciseAnswer,
-  updateLessonProgress,
   getLessonProgress,
+  completeLessonProgress,
+  startLesson,
 } from "../../../services/lessonService";
 import { getSignById } from "../../../services/signService";
 import type {
@@ -122,7 +123,6 @@ export const useLessonDetail = (lessonId: string | undefined) => {
             );
 
             // Try a second request
-            console.log("Making second request to get valid image URL");
             signData = await getSignById(currentExercise.signId);
 
             // Check again
@@ -148,6 +148,22 @@ export const useLessonDetail = (lessonId: string | undefined) => {
 
     loadSignForExercise();
   }, [currentExerciseIndex, exercises, signCache.isLoading]);
+
+  // Start the lesson if needed (and if not already loading or completed)
+  useEffect(() => {
+    const initializeLesson = async () => {
+      if (!lessonId || loading || lessonCompleted || progress) return;
+
+      try {
+        const newProgress = await startLesson(lessonId);
+        setProgress(newProgress);
+      } catch (err) {
+        console.error("Failed to initialize lesson progress:", err);
+      }
+    };
+
+    initializeLesson();
+  }, [lessonId, loading, lessonCompleted, progress]);
 
   const handleAnswerSelection = (answer: string) => {
     setSelectedAnswer(answer);
@@ -212,17 +228,39 @@ export const useLessonDetail = (lessonId: string | undefined) => {
         const percentageScore = Math.round((score / exercises.length) * 100);
 
         if (progress) {
-          // Update existing progress
-          await updateLessonProgress(progress.id, {
-            status: "COMPLETED",
-            score: percentageScore,
-            completedAt: new Date().toISOString(),
-          });
+          // Complete lesson using the dedicated endpoint
+          const updatedProgress = await completeLessonProgress(
+            progress.lessonId,
+            percentageScore
+          );
+
+          // Update progress state with the new data
+          setProgress(updatedProgress);
+        } else if (lessonId) {
+          // No progress found, try to start the lesson first
+          await startLesson(lessonId);
+
+          // Now complete the lesson
+          const completedProgress = await completeLessonProgress(
+            lessonId,
+            percentageScore
+          );
+          // Update progress state with the new data
+          setProgress(completedProgress);
+        } else {
+          console.error("No progress object found and no lessonId available");
         }
 
         setLessonCompleted(true);
       } catch (err) {
-        console.error("Failed to update lesson progress:", err);
+        console.error("Failed to complete lesson:", err);
+        // Log more details about the error
+        if (err instanceof Error) {
+          console.error("Error details:", err.message);
+          console.error("Error stack:", err.stack);
+        } else {
+          console.error("Unknown error type:", err);
+        }
       }
     }
   };

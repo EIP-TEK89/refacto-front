@@ -5,11 +5,13 @@ import type { LessonWithProgress } from "../lessons/LessonCard";
 interface IntermediateLessonsProps {
   lessons: LessonWithProgress[];
   beginnerLessons: LessonWithProgress[];
+  onStatusChange?: () => void;
 }
 
 const IntermediateLessons: React.FC<IntermediateLessonsProps> = ({
   lessons,
   beginnerLessons,
+  onStatusChange,
 }) => {
   // If there are no intermediate lessons, we don't render anything
   if (lessons.length === 0) {
@@ -41,6 +43,7 @@ const IntermediateLessons: React.FC<IntermediateLessonsProps> = ({
                 !areAllBeginnerLessonsCompleted || // All beginner lessons must be completed
                 (!isFirstLesson && !isPreviousLessonCompleted) // If it's not the first lesson, the previous one must be completed
               }
+              onStatusChange={onStatusChange}
             />
           );
         })}

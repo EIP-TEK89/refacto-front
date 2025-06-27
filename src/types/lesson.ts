@@ -16,7 +16,8 @@ export interface LessonProgress {
   id: string;
   userId: string;
   lessonId: string;
-  status: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
+  status?: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED"; // For frontend use
+  completed?: boolean; // For backend use
   score: number;
   completedAt: string | null;
   createdAt: string;

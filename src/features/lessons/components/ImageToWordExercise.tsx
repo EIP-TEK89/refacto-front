@@ -215,7 +215,6 @@ const ImageToWordExercise: React.FC<ImageToWordExerciseProps> = ({
 
       // If we found the option, pass its word as the answer instead of its ID
       if (selectedOption) {
-        console.log(`Selected option: ${selectedOption.word} (ID: ${id})`);
         onAnswerSelection(selectedOption.word);
         return;
       }

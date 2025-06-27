@@ -4,9 +4,13 @@ import type { LessonWithProgress } from "../lessons/LessonCard";
 
 interface BeginnerLessonsProps {
   lessons: LessonWithProgress[];
+  onStatusChange?: () => void;
 }
 
-const BeginnerLessons: React.FC<BeginnerLessonsProps> = ({ lessons }) => {
+const BeginnerLessons: React.FC<BeginnerLessonsProps> = ({
+  lessons,
+  onStatusChange,
+}) => {
   // We are working with lessons that are already filtered and reversed in the parent component
 
   return (
@@ -31,6 +35,7 @@ const BeginnerLessons: React.FC<BeginnerLessonsProps> = ({ lessons }) => {
                 !isFirstLesson && // If it's not the first displayed lesson (which is always unlocked)
                 !isPreviousLessonCompleted // It is locked if the previous lesson is not completed
               }
+              onStatusChange={onStatusChange}
             />
           );
         })}
