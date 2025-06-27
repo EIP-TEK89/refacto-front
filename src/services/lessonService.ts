@@ -37,8 +37,6 @@ export const getLessonProgress = async (): Promise<LessonProgress[]> => {
 
     // Transform completed boolean to status enum
     const transformedData = response.data.map((item: any, index: number) => {
-      console.log(`Item ${index}:`, JSON.stringify(item, null, 2));
-
       // Check if the item has a nested progress property
       const progressData = item.progress || item;
 
@@ -57,10 +55,6 @@ export const getLessonProgress = async (): Promise<LessonProgress[]> => {
         status = "NOT_STARTED";
       }
 
-      console.log(
-        `Lesson ${lessonId}: completed=${completed}, currentStep=${currentStep}, status=${status}`
-      );
-
       // Create a valid LessonProgress object
       return {
         id: progressData.id || `temp-${index}`,
@@ -75,7 +69,6 @@ export const getLessonProgress = async (): Promise<LessonProgress[]> => {
       };
     });
 
-    console.log("Transformed lesson progress:", transformedData);
     return transformedData;
   } catch (error: any) {
     console.error("Error in getLessonProgress:", error);
@@ -102,8 +95,6 @@ export const updateLessonProgress = async (
     // Transform data for backend - convert status to completed if needed
     const backendData: any = { ...data };
 
-    console.log("Original data received:", data);
-
     // Remove frontend status field if it exists
     if (backendData.status) {
       // Convert status to completed if needed
@@ -114,16 +105,9 @@ export const updateLessonProgress = async (
     }
 
     const endpoint = API_ROUTES.updateLessonProgress(lessonId);
-    console.log("Sending to backend:", backendData);
-    console.log("Using endpoint:", endpoint);
-    console.log("Lesson ID:", lessonId);
 
     // Make API request
     const response = await apiClient.put(endpoint, backendData);
-
-    console.log("API request completed");
-    console.log("Response status:", response.status);
-    console.log("Response data:", response.data);
 
     // Transform response for frontend
     const frontendData = {
@@ -134,8 +118,6 @@ export const updateLessonProgress = async (
         ? "IN_PROGRESS"
         : "NOT_STARTED",
     };
-
-    console.log("Transformed data for frontend:", frontendData);
 
     return frontendData;
   } catch (error: any) {
@@ -160,15 +142,7 @@ export const completeLessonProgress = async (
   score?: number
 ): Promise<LessonProgress> => {
   try {
-    console.log(
-      "Marking lesson as completed, lessonId:",
-      lessonId,
-      "score:",
-      score
-    );
-
     const endpoint = API_ROUTES.completeLessonProgress(lessonId);
-    console.log("Using endpoint:", endpoint);
 
     // For completion, we don't need to send any data as the backend will calculate the score
     // But we can send the score if we have it
@@ -176,10 +150,6 @@ export const completeLessonProgress = async (
 
     // Make API request
     const response = await apiClient.put(endpoint, data);
-
-    console.log("API request completed");
-    console.log("Response status:", response.status);
-    console.log("Response data:", response.data);
 
     // Transform response for frontend
     const frontendData = {
@@ -190,8 +160,6 @@ export const completeLessonProgress = async (
         ? "IN_PROGRESS"
         : "NOT_STARTED",
     };
-
-    console.log("Transformed data for frontend:", frontendData);
 
     return frontendData;
   } catch (error: any) {
@@ -256,17 +224,10 @@ export const startLesson = async (
   lessonId: string
 ): Promise<LessonProgress> => {
   try {
-    console.log("Starting lesson, lessonId:", lessonId);
-
     const endpoint = API_ROUTES.startLessonProgress;
-    console.log("Using endpoint:", endpoint);
 
     // Make API request to start the lesson
     const response = await apiClient.post(endpoint, { lessonId });
-
-    console.log("API request completed");
-    console.log("Response status:", response.status);
-    console.log("Response data:", response.data);
 
     // Transform response for frontend
     const frontendData = {
@@ -277,8 +238,6 @@ export const startLesson = async (
         ? "IN_PROGRESS"
         : "NOT_STARTED",
     };
-
-    console.log("Transformed data for frontend:", frontendData);
 
     return frontendData;
   } catch (error: any) {
@@ -302,25 +261,16 @@ export const resetLessonProgress = async (
   lessonId: string
 ): Promise<LessonProgress> => {
   try {
-    console.log("Resetting lesson progress, lessonId:", lessonId);
-
     const endpoint = API_ROUTES.resetLessonProgress(lessonId);
-    console.log("Using endpoint:", endpoint);
 
     // Make API request to reset the lesson
     const response = await apiClient.post(endpoint);
-
-    console.log("API request completed");
-    console.log("Response status:", response.status);
-    console.log("Response data:", response.data);
 
     // Transform response for frontend
     const frontendData = {
       ...response.data,
       status: "NOT_STARTED",
     };
-
-    console.log("Transformed data for frontend:", frontendData);
 
     return frontendData;
   } catch (error: any) {
