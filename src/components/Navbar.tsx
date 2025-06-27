@@ -17,31 +17,33 @@ const Navigation = () => {
         >
           Home
         </Link>
-        <Link
-          to="/lessons"
-          className={`nav-link ${
-            location.pathname.startsWith("/lessons") ? "active" : ""
-          }`}
-        >
-          Lessons
-        </Link>
-        <Link
-          to="/dictionary"
-          className={`nav-link ${
-            location.pathname.startsWith("/dictionary") ? "active" : ""
-          }`}
-        >
-          Dictionary
-        </Link>
         {isAuthenticated && (
-          <Link
-            to="/profile"
-            className={`nav-link ${
-              location.pathname === "/profile" ? "active" : ""
-            }`}
-          >
-            Profile
-          </Link>
+          <>
+            <Link
+              to="/lessons"
+              className={`nav-link ${
+                location.pathname.startsWith("/lessons") ? "active" : ""
+              }`}
+            >
+              Lessons
+            </Link>
+            <Link
+              to="/dictionary"
+              className={`nav-link ${
+                location.pathname.startsWith("/dictionary") ? "active" : ""
+              }`}
+            >
+              Dictionary
+            </Link>
+            <Link
+              to="/profile"
+              className={`nav-link ${
+                location.pathname === "/profile" ? "active" : ""
+              }`}
+            >
+              Profile
+            </Link>
+          </>
         )}
         {!isAuthenticated && (
           <Link to="/login" className="button-secondary">
