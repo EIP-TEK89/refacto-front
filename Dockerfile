@@ -14,7 +14,7 @@ FROM nginx:stable-alpine
 
 # Copy the built app to nginx html directory
 # This project is configured to output to 'build' directory in vite.config.ts
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
