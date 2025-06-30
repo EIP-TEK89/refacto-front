@@ -36,16 +36,16 @@ const options = {
 
 function App() {
   return (
-    <BrowserRouter>
-      <PostHogProvider
-        apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
-        options={options}
-      >
+    <PostHogProvider
+      apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+      options={options}
+    >
+      <BrowserRouter>
         <AuthProvider>
           <AppLayout />
         </AuthProvider>
-      </PostHogProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </PostHogProvider>
   );
 }
 
