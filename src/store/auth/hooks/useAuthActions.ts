@@ -4,6 +4,7 @@ import {
   logoutService,
 } from "../services/authServices";
 import type { User } from "../types";
+import posthog from "posthog-js";
 
 // Custom hook for basic authentication operations
 export const useAuthActions = (
@@ -26,6 +27,14 @@ export const useAuthActions = (
       localStorage.setItem("token", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
       localStorage.setItem("user", JSON.stringify(response.user));
+
+      // Identify user in PostHog
+      posthog.identify(response.user.id, {
+        email: response.user.email,
+        name: `${response.user.firstName} ${response.user.lastName}`.trim(),
+        username: response.user.username,
+        role: response.user.role,
+      });
 
       setAuthState({
         isAuthenticated: true,
@@ -66,6 +75,14 @@ export const useAuthActions = (
       localStorage.setItem("refreshToken", response.refreshToken);
       localStorage.setItem("user", JSON.stringify(response.user));
 
+      // Identify user in PostHog
+      posthog.identify(response.user.id, {
+        email: response.user.email,
+        name: `${response.user.firstName} ${response.user.lastName}`.trim(),
+        username: response.user.username,
+        role: response.user.role,
+      });
+
       setAuthState({
         isAuthenticated: true,
         isLoading: false,
@@ -89,6 +106,9 @@ export const useAuthActions = (
 
   // Logout function
   const logout = () => {
+    // Reset user identity in PostHog
+    posthog.reset();
+
     // Reset auth state first for immediate UI feedback
     setAuthState({
       isAuthenticated: false,
