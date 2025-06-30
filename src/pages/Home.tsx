@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuthState } from "../store/auth/hooks";
 import { useTranslation } from "react-i18next";
+import HomeLanguageDropdown from "../components/HomeLanguageDropdown";
 
 const Home = () => {
   const { isAuthenticated } = useAuthState();
@@ -8,6 +9,9 @@ const Home = () => {
 
   return (
     <div className="container-card">
+      <div className="home-language-container">
+        <HomeLanguageDropdown />
+      </div>
       <h1 className="text-2xl font-bold mb-4 text-[var(--color-blue)]">
         {t("home.title")}
       </h1>

@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { useTranslation } from "react-i18next";
-// import LanguageSwitcher from "./LanguageSwitcher";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navigation = () => {
   const location = useLocation();
@@ -53,7 +53,7 @@ const Navigation = () => {
             {t("nav.login")}
           </Link>
         )}
-        {/* <LanguageSwitcher /> */}
+        <LanguageSwitcher />
       </nav>
     </header>
   );

@@ -91,6 +91,26 @@ Le composant s'adaptera automatiquement à la largeur de son conteneur. Dans la 
 - Styles adaptés au thème de l'application
 - Entièrement accessible
 
+### Variantes du sélecteur de langue
+
+Plusieurs variantes de sélecteurs de langue sont disponibles dans l'application :
+
+1. **LanguageSwitcher** : Composant simple avec des boutons (actuellement désactivé dans la barre de navigation)
+
+   - Utilisation : `<LanguageSwitcher />`
+   - Emplacement : peut être utilisé dans la barre de navigation ou d'autres zones compactes
+
+2. **LanguageDropdown** : Dropdown simple pour les paramètres
+
+   - Utilisation : `<LanguageDropdown />`
+   - Emplacement : utilisé dans la page de profil sous l'onglet paramètres
+
+3. **HomeLanguageDropdown** : Dropdown amélioré avec drapeaux pour la page d'accueil
+   - Utilisation : `<HomeLanguageDropdown />`
+   - Emplacement : positionné en haut à droite de la page d'accueil
+
+Chaque variante est adaptée à un contexte d'utilisation spécifique et offre différentes caractéristiques visuelles.
+
 ## Ajouter une nouvelle langue
 
 Pour ajouter une nouvelle langue :
