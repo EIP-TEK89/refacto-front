@@ -18,6 +18,20 @@ const options = {
       console.info("PostHog tracking enabled in production");
     }
   },
+  // Handle network errors and ad blockers
+  capture_pageview: true,
+  bootstrap: {
+    distinctID: "anonymous", // Default ID before identification
+  },
+  // Handle errors when sending data to PostHog
+  on_error: (error: { statusCode?: number; message?: string }) => {
+    if (error.statusCode === 0) {
+      // This is likely an ad blocker
+      console.warn("PostHog tracking might be blocked by an ad blocker");
+    } else {
+      console.error("PostHog error:", error);
+    }
+  },
 };
 
 function App() {
