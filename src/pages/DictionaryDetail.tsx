@@ -3,12 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import { useSignCache } from "../features/lessons/hooks/useSignCache";
 import { isValidImageUrl, getFallbackImageUrl } from "../utils/imageUtils";
 import type { Sign } from "../types/lesson";
+import { useTranslation } from "react-i18next";
 
 const DictionaryDetail: React.FC = () => {
   const { signId } = useParams<{ signId: string }>();
   const { getSignById, isLoading, getRandomSigns, allSigns } = useSignCache();
   const [sign, setSign] = useState<Sign | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   // Load the sign only when signId or getSignById changes
   useEffect(() => {
@@ -74,7 +76,7 @@ const DictionaryDetail: React.FC = () => {
             to="/dictionary"
             className="text-[var(--color-blue)] mt-2 inline-block"
           >
-            Back to Dictionary
+            {t("dictionary.backToList")}
           </Link>
         </div>
       </div>
@@ -91,7 +93,7 @@ const DictionaryDetail: React.FC = () => {
         to="/dictionary"
         className="text-[var(--color-blue)] font-medium mb-4 inline-block hover:underline"
       >
-        ← Back to Dictionary
+        ← {t("dictionary.backToList")}
       </Link>
 
       <div className="bg-white p-6 rounded-xl shadow-md">
@@ -119,7 +121,7 @@ const DictionaryDetail: React.FC = () => {
             {sign.definition && (
               <div className="mb-4">
                 <h2 className="text-xl font-semibold mb-2 text-[#384e5a]">
-                  Definition
+                  {t("dictionary.definition")}
                 </h2>
                 <p className="text-gray-700">{sign.definition}</p>
               </div>
@@ -127,7 +129,7 @@ const DictionaryDetail: React.FC = () => {
 
             <div className="mb-4">
               <h2 className="text-xl font-semibold mb-2 text-[#384e5a]">
-                Information
+                {t("dictionary.information")}
               </h2>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <p className="text-sm text-gray-700">
@@ -145,7 +147,9 @@ const DictionaryDetail: React.FC = () => {
 
       {relatedSigns.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Similar Signs</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            {t("dictionary.relatedSigns")}
+          </h2>
           <div className="w-full mx-auto" style={{ maxWidth: "1200px" }}>
             <div className="flex flex-wrap justify-center gap-6">
               {relatedSigns.map((relatedSign) => (

@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../../../components/ui";
+import { useTranslation } from "react-i18next";
 
 interface LessonCompletedProps {
   lessonTitle: string | undefined;
@@ -17,6 +18,7 @@ const LessonCompleted: React.FC<LessonCompletedProps> = ({
   onBackToLessons,
 }) => {
   const percentageScore = Math.round((score / totalExercises) * 100);
+  const { t } = useTranslation();
 
   return (
     <div className="container mx-auto p-4 max-w-3xl">
@@ -39,29 +41,34 @@ const LessonCompleted: React.FC<LessonCompletedProps> = ({
         </div>
 
         <h1 className="text-3xl font-bold mb-4 text-[var(--color-blue)]">
-          Lesson Completed!
+          {t("lessons.completed.title")}
         </h1>
 
         <p className="text-lg mb-6 text-[#384e5a]">
-          Congratulations! You've completed the lesson "{lessonTitle}".
+          {t("lessons.completed.congratulations", { lessonTitle })}
         </p>
 
         <div className="bg-gray-100 rounded-lg p-4 mb-8">
-          <h3 className="text-xl font-bold mb-2 text-[#384e5a]">Your Score</h3>
+          <h3 className="text-xl font-bold mb-2 text-[#384e5a]">
+            {t("lessons.completed.yourScore")}
+          </h3>
           <div className="text-4xl font-bold text-[var(--color-blue)]">
             {percentageScore}%
           </div>
           <p className="text-sm text-gray-600 mt-2">
-            {score} correct out of {totalExercises} exercises
+            {t("lessons.completed.scoreDetails", {
+              score,
+              total: totalExercises,
+            })}
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button onClick={onBackToLessons} variant="secondary">
-            Back to Lessons
+            {t("lessons.detail.back")}
           </Button>
 
-          <Button onClick={onRetry}>Retry Lesson</Button>
+          <Button onClick={onRetry}>{t("lessons.completed.retry")}</Button>
         </div>
       </div>
     </div>

@@ -71,11 +71,49 @@ export default {
   "lessons.next": "Next",
   "lessons.previous": "Previous",
   "lessons.difficulty": "Difficulty",
+  "lessons.journey.title": "Your Sign Language Journey",
+  "lessons.refreshProgress": "Refresh Progress",
+  "lessons.refreshing": "Refreshing...",
+  "lessons.error": "Failed to load lessons. Please try again later.",
+  "lessons.tryAgain": "Try Again",
+  "lessons.unlock": "Complete previous lessons to unlock",
+  "lessons.unlockCount": "Complete {count} more beginner lessons to unlock",
+  "lessons.detail.overview": "Lesson Overview",
+  "lessons.detail.content": "Lesson Content",
+  "lessons.detail.exercises": "Exercises",
+  "lessons.detail.back": "Back to Lessons",
+  "lessons.difficulty.beginner": "Beginner Level",
+  "lessons.difficulty.intermediate": "Intermediate Level",
+  "lessons.difficulty.advanced": "Advanced Level",
 
   // Dictionary
-  "dictionary.search": "Search",
-  "dictionary.noResults": "No results found",
-  "dictionary.recentSearches": "Recent Searches",
+  "dictionary.title": "Sign Dictionary",
+  "dictionary.signsLoaded": "{count} signs loaded in cache",
+  "dictionary.noSigns": "No signs currently cached",
+  "dictionary.reloadSigns": "Reload all signs",
+  "dictionary.searchPlaceholder": "Search for a sign...",
+  "dictionary.loading": "Loading...",
+  "dictionary.noResults": "No results found for your search.",
+  "dictionary.tryAnother": "Try a different search term or browse by letter.",
+  "dictionary.details": "View Details",
+  "dictionary.backToList": "Back to Dictionary",
+  "dictionary.viewInDictionary": "View in Dictionary",
+  "dictionary.relatedSigns": "Related Signs",
+  "dictionary.selectLetterOrSearch":
+    "Select a letter above or search for a sign to begin",
+  "dictionary.definition": "Definition",
+  "dictionary.information": "Information",
+
+  // Lesson Detail
+  "lessons.detail.noExercises": "No exercises found for this lesson.",
+  "lessons.detail.exerciseCount": "Exercise {{current}} of {{total}}",
+  "lessons.completed.title": "Lesson Completed!",
+  "lessons.completed.congratulations":
+    'Congratulations! You\'ve completed the lesson "{{lessonTitle}}".',
+  "lessons.completed.yourScore": "Your Score",
+  "lessons.completed.scoreDetails":
+    "{{score}} correct out of {{total}} exercises",
+  "lessons.completed.retry": "Retry Lesson",
 
   // Exercises
   "exercise.instructions": "Instructions",

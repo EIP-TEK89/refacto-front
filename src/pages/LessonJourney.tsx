@@ -9,6 +9,7 @@ import {
 } from "../components/lessons-difficulty";
 import type { LessonWithProgress } from "../components/lessons/LessonCard";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const LessonJourney = () => {
   const { isAuthenticated } = useAuthState();
@@ -17,6 +18,7 @@ const LessonJourney = () => {
   const [error, setError] = useState<string | null>(null);
   const [lastRefresh, setLastRefresh] = useState(Date.now());
   const location = useLocation();
+  const { t } = useTranslation();
 
   // Refresh lessons when location changes (user comes back from a lesson)
   useEffect(() => {
@@ -105,7 +107,9 @@ const LessonJourney = () => {
     return (
       <div className="text-center p-8">
         <h2 className="text-xl text-red-500 mb-4">{error}</h2>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+        <Button onClick={() => window.location.reload()}>
+          {t("lessons.tryAgain")}
+        </Button>
       </div>
     );
   }
@@ -114,14 +118,16 @@ const LessonJourney = () => {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-[var(--color-blue)]">
-          Your Sign Language Journey
+          {t("lessons.journey.title")}
         </h1>
         <Button
           onClick={handleRefresh}
           className="flex items-center gap-2"
           disabled={loading}
         >
-          <span>{loading ? "Refreshing..." : "Refresh Progress"}</span>
+          <span>
+            {loading ? t("lessons.refreshing") : t("lessons.refreshProgress")}
+          </span>
           {loading && (
             <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
           )}

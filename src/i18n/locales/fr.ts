@@ -71,11 +71,51 @@ export default {
   "lessons.next": "Suivant",
   "lessons.previous": "Précédent",
   "lessons.difficulty": "Difficulté",
+  "lessons.journey.title": "Votre parcours en langue des signes",
+  "lessons.refreshProgress": "Actualiser la progression",
+  "lessons.refreshing": "Actualisation...",
+  "lessons.error":
+    "Échec du chargement des leçons. Veuillez réessayer plus tard.",
+  "lessons.tryAgain": "Réessayer",
+  "lessons.unlock": "Complétez les leçons précédentes pour débloquer",
+  "lessons.unlockCount":
+    "Complétez {count} leçons débutantes de plus pour débloquer",
+  "lessons.detail.overview": "Aperçu de la leçon",
+  "lessons.detail.content": "Contenu de la leçon",
+  "lessons.detail.exercises": "Exercices",
+  "lessons.detail.back": "Retour aux leçons",
+  "lessons.difficulty.beginner": "Niveau débutant",
+  "lessons.difficulty.intermediate": "Niveau intermédiaire",
+  "lessons.difficulty.advanced": "Niveau avancé",
+
+  // Lesson Detail
+  "lessons.detail.noExercises": "Aucun exercice trouvé pour cette leçon.",
+  "lessons.detail.exerciseCount": "Exercice {{current}} sur {{total}}",
+  "lessons.completed.title": "Leçon terminée !",
+  "lessons.completed.congratulations":
+    'Félicitations ! Vous avez terminé la leçon "{{lessonTitle}}".',
+  "lessons.completed.yourScore": "Votre score",
+  "lessons.completed.scoreDetails": "{{score}} correct sur {{total}} exercices",
+  "lessons.completed.retry": "Réessayer la leçon",
 
   // Dictionary
-  "dictionary.search": "Rechercher",
-  "dictionary.noResults": "Aucun résultat trouvé",
-  "dictionary.recentSearches": "Recherches récentes",
+  "dictionary.title": "Dictionnaire de Signes",
+  "dictionary.signsLoaded": "{count} signes chargés en cache",
+  "dictionary.noSigns": "Aucun signe actuellement en cache",
+  "dictionary.reloadSigns": "Recharger tous les signes",
+  "dictionary.searchPlaceholder": "Rechercher un signe...",
+  "dictionary.loading": "Chargement...",
+  "dictionary.noResults": "Aucun résultat trouvé pour votre recherche.",
+  "dictionary.tryAnother":
+    "Essayez un terme différent ou parcourez par lettre.",
+  "dictionary.details": "Voir les détails",
+  "dictionary.backToList": "Retour au dictionnaire",
+  "dictionary.viewInDictionary": "Voir dans le dictionnaire",
+  "dictionary.relatedSigns": "Signes connexes",
+  "dictionary.selectLetterOrSearch":
+    "Sélectionnez une lettre ou recherchez un signe pour commencer",
+  "dictionary.definition": "Définition",
+  "dictionary.information": "Information",
 
   // Exercises
   "exercise.instructions": "Instructions",
