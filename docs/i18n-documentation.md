@@ -19,6 +19,7 @@ src/
       fr.ts                 # Traductions en français
   components/
     LanguageSwitcher.tsx    # Composant pour changer de langue
+    LanguageDropdown.tsx    # Composant dropdown pour changer de langue
 ```
 
 ## Comment utiliser l'internationalisation
@@ -58,6 +59,37 @@ const MyComponent = () => {
   );
 };
 ```
+
+## Sélecteur de langue dropdown
+
+Un sélecteur de langue en dropdown a été implémenté spécifiquement pour la page Profile. Ce dropdown est une alternative plus esthétique au sélecteur de langue basique présent dans la barre de navigation.
+
+### Comment utiliser le dropdown
+
+Le composant `LanguageDropdown` peut être utilisé ainsi :
+
+```tsx
+import LanguageDropdown from "./components/LanguageDropdown";
+
+const MyComponent = () => {
+  return (
+    <div className="w-1/2">
+      <LanguageDropdown />
+    </div>
+  );
+};
+```
+
+Le composant s'adaptera automatiquement à la largeur de son conteneur. Dans la page Profil, il est utilisé dans l'onglet "Settings".
+
+### Caractéristiques du dropdown
+
+- Affiche la langue actuellement sélectionnée
+- Menu déroulant avec la liste des langues disponibles
+- Indique visuellement la langue actuellement active
+- Se ferme automatiquement quand on clique à l'extérieur
+- Styles adaptés au thème de l'application
+- Entièrement accessible
 
 ## Ajouter une nouvelle langue
 

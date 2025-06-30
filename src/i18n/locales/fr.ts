@@ -77,4 +77,7 @@ export default {
   "common.delete": "Supprimer",
   "common.confirm": "Confirmer",
   "common.back": "Retour",
+  "common.language": "Langue",
+  "common.settings": "Paramètres",
+  "common.profile": "Profil",
 };

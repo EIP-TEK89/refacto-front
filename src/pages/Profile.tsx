@@ -4,12 +4,15 @@ import { useRequireAuth } from "../hooks/useRequireAuth";
 import { useState } from "react";
 import PasswordChangeModal from "../components/PasswordChangeModal";
 import LessonProgressDashboard from "../components/lessons/LessonProgressDashboard";
+import LanguageDropdown from "../components/LanguageDropdown";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("stats");
+  const { t } = useTranslation();
 
   // Use the hook to protect this page
   useRequireAuth("/login");
@@ -22,7 +25,7 @@ const Profile = () => {
   return (
     <div className="container-card">
       <h1 className="text-2xl font-bold mb-4 text-[var(--color-blue)]">
-        Your Profile
+        {t("profile.title")}
       </h1>
 
       <div className="flex flex-col md:flex-row gap-8">
@@ -46,7 +49,7 @@ const Profile = () => {
                 onClick={handleLogout}
                 className="button-primary w-full bg-[var(--color-red)] hover:bg-[var(--color-red-shadow)]"
               >
-                Log Out
+                {t("nav.logout")}
               </button>
             </div>
           </div>
@@ -71,7 +74,7 @@ const Profile = () => {
                   : "text-gray-500"
               }`}
             >
-              Learning Stats
+              {t("lessons.progress")}
             </button>
             <button
               onClick={() => setActiveTab("lessons")}
@@ -81,7 +84,7 @@ const Profile = () => {
                   : "text-gray-500"
               }`}
             >
-              Lesson Progress
+              {t("lessons.completed")}
             </button>
             <button
               onClick={() => setActiveTab("settings")}
@@ -91,7 +94,7 @@ const Profile = () => {
                   : "text-gray-500"
               }`}
             >
-              Settings
+              {t("common.settings")}
             </button>
           </div>
 
@@ -146,12 +149,12 @@ const Profile = () => {
                 </div>
 
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
-                  <span>Password</span>
+                  <span>{t("auth.password")}</span>
                   <button
                     onClick={() => setIsPasswordModalOpen(true)}
                     className="text-[var(--color-text-blue)] hover:text-[var(--color-text)]"
                   >
-                    Change
+                    {t("profile.changePassword")}
                   </button>
                 </div>
 
@@ -164,7 +167,9 @@ const Profile = () => {
 
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
                   <span>Language</span>
-                  <span className="text-[var(--color-text-blue)]">English</span>
+                  <div className="w-1/2">
+                    <LanguageDropdown />
+                  </div>
                 </div>
 
                 <div className="flex justify-between items-center py-2">
