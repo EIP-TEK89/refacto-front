@@ -12,6 +12,20 @@ export default {
   "home.title": "Welcome to TrioSigno",
   "home.subtitle": "Learn sign language with interactive lessons",
   "home.cta": "Start Learning",
+  "home.features.pace.title": "Learn at Your Own Pace",
+  "home.features.pace.description":
+    "Our bite-sized lessons make it easy to practice every day.",
+  "home.features.progress.title": "Track Your Progress",
+  "home.features.progress.description":
+    "See your improvement over time with detailed statistics.",
+  "home.features.community.title": "Join the Community",
+  "home.features.community.description":
+    "Connect with millions of learners from around the world.",
+  "home.getStarted": "Get Started Today",
+  "home.continue.title": "Continue Your Learning Journey",
+  "home.continue.description":
+    "Pick up where you left off or start a new lesson",
+  "home.viewLessons": "View All Lessons",
 
   // Login & Signup
   "auth.email": "Email",
@@ -26,6 +40,8 @@ export default {
   "auth.emailRequired": "Email is required",
   "auth.passwordRequired": "Password is required",
   "auth.passwordMismatch": "Passwords do not match",
+  "auth.signingIn": "Signing in...",
+  "auth.connecting": "Connecting...",
 
   // Profile
   "profile.title": "Your Profile",
@@ -34,6 +50,15 @@ export default {
   "profile.oldPassword": "Old Password",
   "profile.newPassword": "New Password",
   "profile.confirmNewPassword": "Confirm New Password",
+  "profile.editProfile": "Edit Profile",
+  "profile.continueLearning": "Continue Learning",
+  "profile.accountSettings": "Account Settings",
+  "profile.email": "Email",
+  "profile.notifications": "Notifications",
+  "profile.manage": "Manage",
+  "profile.language": "Language",
+  "profile.deleteAccount": "Delete Account",
+  "profile.delete": "Delete",
 
   // Lessons
   "lessons.beginner": "Beginner",
@@ -77,4 +102,9 @@ export default {
   "common.delete": "Delete",
   "common.confirm": "Confirm",
   "common.back": "Back",
+  "common.language": "Language",
+  "common.settings": "Settings",
+  "common.profile": "Profile",
+  "common.or": "OR",
+  "common.userName": "User Name",
 };

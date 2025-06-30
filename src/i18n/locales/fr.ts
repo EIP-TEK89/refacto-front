@@ -12,6 +12,20 @@ export default {
   "home.title": "Bienvenue sur TrioSigno",
   "home.subtitle": "Apprenez la langue des signes avec des leçons interactives",
   "home.cta": "Commencer à apprendre",
+  "home.features.pace.title": "Apprenez à votre rythme",
+  "home.features.pace.description":
+    "Nos leçons courtes facilitent la pratique quotidienne.",
+  "home.features.progress.title": "Suivez vos progrès",
+  "home.features.progress.description":
+    "Observez votre amélioration au fil du temps avec des statistiques détaillées.",
+  "home.features.community.title": "Rejoignez la communauté",
+  "home.features.community.description":
+    "Connectez-vous avec des millions d'apprenants du monde entier.",
+  "home.getStarted": "Commencez dès aujourd'hui",
+  "home.continue.title": "Poursuivez votre apprentissage",
+  "home.continue.description":
+    "Reprenez où vous vous êtes arrêté ou commencez une nouvelle leçon",
+  "home.viewLessons": "Voir toutes les leçons",
 
   // Login & Signup
   "auth.email": "Email",
@@ -26,6 +40,8 @@ export default {
   "auth.emailRequired": "L'email est requis",
   "auth.passwordRequired": "Le mot de passe est requis",
   "auth.passwordMismatch": "Les mots de passe ne correspondent pas",
+  "auth.signingIn": "Connexion en cours...",
+  "auth.connecting": "Connexion en cours...",
 
   // Profile
   "profile.title": "Votre Profil",
@@ -34,6 +50,15 @@ export default {
   "profile.oldPassword": "Ancien mot de passe",
   "profile.newPassword": "Nouveau mot de passe",
   "profile.confirmNewPassword": "Confirmer le nouveau mot de passe",
+  "profile.editProfile": "Modifier le profil",
+  "profile.continueLearning": "Continuer l'apprentissage",
+  "profile.accountSettings": "Paramètres du compte",
+  "profile.email": "Email",
+  "profile.notifications": "Notifications",
+  "profile.manage": "Gérer",
+  "profile.language": "Langue",
+  "profile.deleteAccount": "Supprimer le compte",
+  "profile.delete": "Supprimer",
 
   // Lessons
   "lessons.beginner": "Débutant",
@@ -80,4 +105,6 @@ export default {
   "common.language": "Langue",
   "common.settings": "Paramètres",
   "common.profile": "Profil",
+  "common.or": "OU",
+  "common.userName": "Nom d'utilisateur",
 };

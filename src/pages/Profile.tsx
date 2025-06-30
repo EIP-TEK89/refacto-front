@@ -35,7 +35,7 @@ const Profile = () => {
               👤
             </div>
             <h2 className="text-xl font-bold mb-2">
-              {user?.username || "User Name"}
+              {user?.username || t("common.userName")}
             </h2>
             <p className="text-[var(--color-text-blue)]">
               {user?.firstName} {user?.lastName}
@@ -43,7 +43,7 @@ const Profile = () => {
 
             <div className="mt-6">
               <button className="button-secondary w-full mb-2">
-                Edit Profile
+                {t("profile.editProfile")}
               </button>
               <button
                 onClick={handleLogout}
@@ -57,7 +57,7 @@ const Profile = () => {
           <div className="bg-[var(--color-background-main)] p-6 rounded-2xl border border-[var(--color-border)] mt-6">
             <div className="flex justify-center">
               <Link to="/lessons" className="button-primary w-full">
-                Continue Learning
+                {t("profile.continueLearning")}
               </Link>
             </div>
           </div>
@@ -138,11 +138,13 @@ const Profile = () => {
           {/* Settings Tab */}
           {activeTab === "settings" && (
             <div className="bg-[var(--color-background-main)] p-6 rounded-2xl border border-[var(--color-border)]">
-              <h3 className="text-lg font-bold mb-4">Account Settings</h3>
+              <h3 className="text-lg font-bold mb-4">
+                {t("profile.accountSettings")}
+              </h3>
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
-                  <span>Email</span>
+                  <span>{t("profile.email")}</span>
                   <span className="text-[var(--color-text-blue)]">
                     {user?.email || "user@example.com"}
                   </span>
@@ -159,23 +161,23 @@ const Profile = () => {
                 </div>
 
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
-                  <span>Notifications</span>
+                  <span>{t("profile.notifications")}</span>
                   <button className="text-[var(--color-text-blue)] hover:text-[var(--color-text)]">
-                    Manage
+                    {t("profile.manage")}
                   </button>
                 </div>
 
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
-                  <span>Language</span>
+                  <span>{t("profile.language")}</span>
                   <div className="w-1/2">
                     <LanguageDropdown />
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center py-2">
-                  <span>Delete Account</span>
+                  <span>{t("profile.deleteAccount")}</span>
                   <button className="text-[var(--color-red)] hover:text-[var(--color-red-shadow)]">
-                    Delete
+                    {t("profile.delete")}
                   </button>
                 </div>
               </div>

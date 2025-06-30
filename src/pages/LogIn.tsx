@@ -53,7 +53,7 @@ const LogIn = () => {
 
       <div className="w-full max-w-[400px] p-6 flex flex-col space-y-6">
         <h1 className="text-[var(--color-text)] text-2xl font-bold text-center mb-8">
-          {t('auth.login')}
+          {t("auth.login")}
         </h1>
 
         {error && (
@@ -69,7 +69,7 @@ const LogIn = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={t('auth.email')}
+              placeholder={t("auth.email")}
               required
               className="w-full py-3 px-4 border border-[var(--color-border)] rounded-2xl bg-[rgb(25,39,45)] text-[var(--color-text)] text-base"
             />
@@ -82,7 +82,7 @@ const LogIn = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={t('auth.password')}
+                placeholder={t("auth.password")}
                 required
                 className="w-full py-3 px-4 border border-[var(--color-border)] rounded-2xl bg-[rgb(25,39,45)] text-[var(--color-text)] text-base"
               />
@@ -106,7 +106,7 @@ const LogIn = () => {
               type="button"
               className="absolute right-10 text-[var(--color-text-blue)] text-sm cursor-pointer px-2 py-1 rounded transition-all duration-200 flex items-center top-1/2 transform -translate-y-1/2 hover:text-[var(--color-text)]"
             >
-              {t('auth.forgotPassword')}
+              {t("auth.forgotPassword")}
             </button>
           </div>
 
@@ -117,14 +117,14 @@ const LogIn = () => {
             fullWidth
             size="lg"
           >
-            {isLoading ? "Signing in..." : t('auth.login')}
+            {isLoading ? t("auth.signingIn") : t("auth.login")}
           </PrimaryButton>
         </form>
 
         <div className="flex items-center text-center my-4">
           <div className="flex-1 border-b-2 border-[var(--color-border)]"></div>
           <span className="px-4 text-[var(--color-text-blue)] text-sm font-bold">
-            OR
+            {t("common.or")}
           </span>
           <div className="flex-1 border-b-2 border-[var(--color-border)]"></div>
         </div>
@@ -136,17 +136,19 @@ const LogIn = () => {
             isLoading={isLoading && false}
             fullWidth
           >
-            {isLoading ? "Connecting..." : t('auth.googleLogin')}
+            {isLoading ? t("auth.connecting") : t("auth.googleLogin")}
           </GoogleButton>
         </div>
 
         <div className="text-center text-[rgba(255,255,255,0.6)] text-sm mt-6">
-          {t('auth.noAccount')}
+          {t("auth.noAccount")}
         </div>
 
         <div className="flex justify-center mt-2 mb-4">
           <Link to="/signup">
-            <SecondaryButton className="w-[150px]">{t('auth.signup')}</SecondaryButton>
+            <SecondaryButton className="w-[150px]">
+              {t("auth.signup")}
+            </SecondaryButton>
           </Link>
         </div>
       </div>
