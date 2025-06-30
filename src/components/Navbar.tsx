@@ -1,9 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../store/auth";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navigation = () => {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <header className="app-header">
@@ -15,7 +18,7 @@ const Navigation = () => {
           to="/"
           className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
         >
-          Home
+          {t("nav.home")}
         </Link>
         {isAuthenticated && (
           <>
@@ -25,7 +28,7 @@ const Navigation = () => {
                 location.pathname.startsWith("/lessons") ? "active" : ""
               }`}
             >
-              Lessons
+              {t("nav.lessons")}
             </Link>
             <Link
               to="/dictionary"
@@ -33,7 +36,7 @@ const Navigation = () => {
                 location.pathname.startsWith("/dictionary") ? "active" : ""
               }`}
             >
-              Dictionary
+              {t("nav.dictionary")}
             </Link>
             <Link
               to="/profile"
@@ -41,15 +44,16 @@ const Navigation = () => {
                 location.pathname === "/profile" ? "active" : ""
               }`}
             >
-              Profile
+              {t("nav.profile")}
             </Link>
           </>
         )}
         {!isAuthenticated && (
           <Link to="/login" className="button-secondary">
-            Sign In
+            {t("nav.login")}
           </Link>
         )}
+        <LanguageSwitcher />
       </nav>
     </header>
   );

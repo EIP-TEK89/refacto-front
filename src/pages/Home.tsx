@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import { useAuthState } from "../store/auth/hooks";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const { isAuthenticated } = useAuthState();
+  const { t } = useTranslation();
 
   return (
     <div className="container-card">
       <h1 className="text-2xl font-bold mb-4 text-[var(--color-blue)]">
-        Welcome to TrioSigno
+        {t("home.title")}
       </h1>
-      <p className="mb-6">
-        Start learning sign language today with our interactive lessons!
-      </p>
+      <p className="mb-6">{t("home.subtitle")}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {/* Feature Cards */}
@@ -39,7 +39,7 @@ const Home = () => {
           to={isAuthenticated ? "/lessons" : "/signup"}
           className="button-primary inline-block px-8 py-3"
         >
-          {isAuthenticated ? "Start Learning" : "Sign Up & Learn"}
+          {isAuthenticated ? t("home.cta") : t("auth.signup")}
         </Link>
       </div>
 

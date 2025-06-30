@@ -1,7 +1,11 @@
+import { useTranslation } from "react-i18next";
+
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="app-footer">
-      <p>© {new Date().getFullYear()} TrioSigno App. All rights reserved.</p>
+      <p>{t("footer.copyright")}</p>
     </footer>
   );
 };

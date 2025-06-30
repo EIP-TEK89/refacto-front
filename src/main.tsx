@@ -7,6 +7,9 @@ import { AuthProvider } from "./store/auth";
 import { PostHogProvider } from "posthog-js/react";
 import posthog from "posthog-js";
 
+// Import i18n
+import "./i18n/i18n";
+
 const options = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
   loaded: (posthogInstance: typeof posthog) => {
