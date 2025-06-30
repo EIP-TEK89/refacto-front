@@ -4,12 +4,15 @@ import { useRequireAuth } from "../hooks/useRequireAuth";
 import { useState } from "react";
 import PasswordChangeModal from "../components/PasswordChangeModal";
 import LessonProgressDashboard from "../components/lessons/LessonProgressDashboard";
+import LanguageDropdown from "../components/LanguageDropdown";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("stats");
+  const { t } = useTranslation();
 
   // Use the hook to protect this page
   useRequireAuth("/login");
@@ -22,7 +25,7 @@ const Profile = () => {
   return (
     <div className="container-card">
       <h1 className="text-2xl font-bold mb-4 text-[var(--color-blue)]">
-        Your Profile
+        {t("profile.title")}
       </h1>
 
       <div className="flex flex-col md:flex-row gap-8">
@@ -32,7 +35,7 @@ const Profile = () => {
               👤
             </div>
             <h2 className="text-xl font-bold mb-2">
-              {user?.username || "User Name"}
+              {user?.username || t("common.userName")}
             </h2>
             <p className="text-[var(--color-text-blue)]">
               {user?.firstName} {user?.lastName}
@@ -40,13 +43,13 @@ const Profile = () => {
 
             <div className="mt-6">
               <button className="button-secondary w-full mb-2">
-                Edit Profile
+                {t("profile.editProfile")}
               </button>
               <button
                 onClick={handleLogout}
                 className="button-primary w-full bg-[var(--color-red)] hover:bg-[var(--color-red-shadow)]"
               >
-                Log Out
+                {t("nav.logout")}
               </button>
             </div>
           </div>
@@ -54,7 +57,7 @@ const Profile = () => {
           <div className="bg-[var(--color-background-main)] p-6 rounded-2xl border border-[var(--color-border)] mt-6">
             <div className="flex justify-center">
               <Link to="/lessons" className="button-primary w-full">
-                Continue Learning
+                {t("profile.continueLearning")}
               </Link>
             </div>
           </div>
@@ -71,7 +74,7 @@ const Profile = () => {
                   : "text-gray-500"
               }`}
             >
-              Learning Stats
+              {t("lessons.progress")}
             </button>
             <button
               onClick={() => setActiveTab("lessons")}
@@ -81,7 +84,7 @@ const Profile = () => {
                   : "text-gray-500"
               }`}
             >
-              Lesson Progress
+              {t("lessons.completed")}
             </button>
             <button
               onClick={() => setActiveTab("settings")}
@@ -91,7 +94,7 @@ const Profile = () => {
                   : "text-gray-500"
               }`}
             >
-              Settings
+              {t("common.settings")}
             </button>
           </div>
 
@@ -135,42 +138,46 @@ const Profile = () => {
           {/* Settings Tab */}
           {activeTab === "settings" && (
             <div className="bg-[var(--color-background-main)] p-6 rounded-2xl border border-[var(--color-border)]">
-              <h3 className="text-lg font-bold mb-4">Account Settings</h3>
+              <h3 className="text-lg font-bold mb-4">
+                {t("profile.accountSettings")}
+              </h3>
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
-                  <span>Email</span>
+                  <span>{t("profile.email")}</span>
                   <span className="text-[var(--color-text-blue)]">
                     {user?.email || "user@example.com"}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
-                  <span>Password</span>
+                  <span>{t("auth.password")}</span>
                   <button
                     onClick={() => setIsPasswordModalOpen(true)}
                     className="text-[var(--color-text-blue)] hover:text-[var(--color-text)]"
                   >
-                    Change
+                    {t("profile.changePassword")}
                   </button>
                 </div>
 
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
-                  <span>Notifications</span>
+                  <span>{t("profile.notifications")}</span>
                   <button className="text-[var(--color-text-blue)] hover:text-[var(--color-text)]">
-                    Manage
+                    {t("profile.manage")}
                   </button>
                 </div>
 
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
-                  <span>Language</span>
-                  <span className="text-[var(--color-text-blue)]">English</span>
+                  <span>{t("profile.language")}</span>
+                  <div className="w-1/2">
+                    <LanguageDropdown />
+                  </div>
                 </div>
 
                 <div className="flex justify-between items-center py-2">
-                  <span>Delete Account</span>
+                  <span>{t("profile.deleteAccount")}</span>
                   <button className="text-[var(--color-red)] hover:text-[var(--color-red-shadow)]">
-                    Delete
+                    {t("profile.delete")}
                   </button>
                 </div>
               </div>

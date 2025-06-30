@@ -4,10 +4,12 @@ import { Button } from "../../components/ui";
 import { ROUTES } from "../../constants/routes";
 import { useLessonDetail } from "./hooks";
 import { LessonHeader, ExerciseContent, LessonCompleted } from "./components";
+import { useTranslation } from "react-i18next";
 
 const LessonDetail: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const {
     lesson,
@@ -46,7 +48,9 @@ const LessonDetail: React.FC = () => {
     return (
       <div className="text-center p-8">
         <h2 className="text-xl text-red-500 mb-4">{error}</h2>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+        <Button onClick={() => window.location.reload()}>
+          {t("lessons.tryAgain")}
+        </Button>
       </div>
     );
   }
@@ -66,8 +70,8 @@ const LessonDetail: React.FC = () => {
   if (!currentExercise) {
     return (
       <div className="text-center p-8">
-        <h2 className="text-xl mb-4">No exercises found for this lesson.</h2>
-        <Button onClick={handleExitLesson}>Back to Lessons</Button>
+        <h2 className="text-xl mb-4">{t("lessons.detail.noExercises")}</h2>
+        <Button onClick={handleExitLesson}>{t("lessons.detail.back")}</Button>
       </div>
     );
   }

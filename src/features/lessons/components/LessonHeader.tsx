@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface LessonHeaderProps {
   title: string | undefined;
@@ -13,15 +14,22 @@ const LessonHeader: React.FC<LessonHeaderProps> = ({
   currentExerciseIndex,
   totalExercises,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="mb-6">
       <h1 className="text-2xl font-bold mb-2 text-[var(--color-blue)]">
         {title}
       </h1>
       <div className="flex justify-between items-center">
-        <span className="text-sm text-gray-600">Level: {level}</span>
+        <span className="text-sm text-gray-600">
+          {t("lessons.difficulty")}: {t(`lessons.${level?.toLowerCase()}`)}
+        </span>
         <div className="text-sm text-[var(--color-blue)]">
-          Exercise {currentExerciseIndex + 1} of {totalExercises}
+          {t("lessons.detail.exerciseCount", {
+            current: currentExerciseIndex + 1,
+            total: totalExercises,
+          })}
         </div>
       </div>
 
