@@ -79,7 +79,7 @@ export default {
   "lessons.tryAgain": "Réessayer",
   "lessons.unlock": "Complétez les leçons précédentes pour débloquer",
   "lessons.unlockCount":
-    "Complétez {count} leçons débutantes de plus pour débloquer",
+    "Complétez {{count}} leçons débutantes de plus pour débloquer",
   "lessons.detail.overview": "Aperçu de la leçon",
   "lessons.detail.content": "Contenu de la leçon",
   "lessons.detail.exercises": "Exercices",
@@ -100,7 +100,7 @@ export default {
 
   // Dictionary
   "dictionary.title": "Dictionnaire de Signes",
-  "dictionary.signsLoaded": "{count} signes chargés en cache",
+  "dictionary.signsLoaded": "{{count}} signes chargés en cache",
   "dictionary.noSigns": "Aucun signe actuellement en cache",
   "dictionary.reloadSigns": "Recharger tous les signes",
   "dictionary.searchPlaceholder": "Rechercher un signe...",

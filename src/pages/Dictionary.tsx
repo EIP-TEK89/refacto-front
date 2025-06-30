@@ -11,19 +11,28 @@ const Dictionary: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation();
 
+  // Log when dictionary component mounts
   useEffect(() => {
-    console.log("Dictionary mounted or updated!");
-  });
+    console.log("Dictionary mounted");
+  }, []);
 
   // All alphabet letters
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   // Refresh the cache on mount only
   useEffect(() => {
-    if (allSigns.length === 0 && !isLoading) {
-      refreshCache();
-    }
+    // We just call refreshCache once, at component mount
+    refreshCache();
+    // We intentionally omit refreshCache from dependencies to avoid infinite loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Simpler logging when signs are loaded
+  useEffect(() => {
+    if (allSigns.length > 0) {
+      console.log(`Dictionary has ${allSigns.length} signs loaded`);
+    }
+  }, [allSigns.length]);
 
   // Dynamically filter signs based on search query
   const filteredSigns = searchQuery
@@ -66,7 +75,7 @@ const Dictionary: React.FC = () => {
               : t("dictionary.noSigns")}
           </p>
           <button
-            onClick={refreshCache}
+            onClick={() => refreshCache()}
             disabled={isLoading}
             className="px-4 py-2 bg-[var(--color-blue)] text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition-colors"
           >
@@ -177,11 +186,13 @@ const SignCard: React.FC<{ sign: Sign }> = ({ sign }) => {
             {sign.definition}
           </p>
         )}
-        <div className="mt-3 text-center">
-          <span className="text-sm text-[var(--color-blue)] font-medium inline-block hover:underline">
-            {t("dictionary.details")} →
-          </span>
-        </div>
+        <Link to={`/dictionary/${sign.id}`}>
+          <div className="mt-3 text-center">
+            <span className="text-sm text-[var(--color-blue)] font-medium inline-block hover:underline">
+              {t("dictionary.details")} →
+            </span>
+          </div>
+        </Link>
       </div>
     </div>
   );
