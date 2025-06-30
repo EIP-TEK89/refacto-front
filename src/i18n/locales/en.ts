@@ -77,7 +77,7 @@ export default {
   "lessons.error": "Failed to load lessons. Please try again later.",
   "lessons.tryAgain": "Try Again",
   "lessons.unlock": "Complete previous lessons to unlock",
-  "lessons.unlockCount": "Complete {count} more beginner lessons to unlock",
+  "lessons.unlockCount": "Complete {{count}} more beginner lessons to unlock",
   "lessons.detail.overview": "Lesson Overview",
   "lessons.detail.content": "Lesson Content",
   "lessons.detail.exercises": "Exercises",
@@ -88,7 +88,7 @@ export default {
 
   // Dictionary
   "dictionary.title": "Sign Dictionary",
-  "dictionary.signsLoaded": "{count} signs loaded in cache",
+  "dictionary.signsLoaded": "{{count}} signs loaded in cache",
   "dictionary.noSigns": "No signs currently cached",
   "dictionary.reloadSigns": "Reload all signs",
   "dictionary.searchPlaceholder": "Search for a sign...",
