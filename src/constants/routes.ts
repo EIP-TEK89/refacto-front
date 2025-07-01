@@ -74,4 +74,7 @@ export const API_ROUTES = {
   getSignById: (id: string) => API_URL + `/signs/${id}`,
   getSignByWord: (word: string) => API_URL + `/signs/search/${word}`,
   searchSignByName: (name: string) => API_URL + `/signs/search/${name}`,
+
+  // Download model
+  downloadModel: (modelId: string) => API_URL + `/models/download/${modelId}`,
 };
