@@ -1,0 +1,459 @@
+.ai-page-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ai-page-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.ai-page-container h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  border-radius: 2px;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  background-color: rgba(249, 249, 249, 0.8);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.loading-container p {
+  font-size: 1.2rem;
+  color: #3498db;
+  display: flex;
+  align-items: center;
+}
+
+.loading-container p::before {
+  content: "⏳";
+  margin-right: 8px;
+  font-size: 1.5rem;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.error-message::before {
+  content: "⚠️";
+  margin-right: 8px;
+  font-size: 1.5rem;
+}
+
+.ai-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.camera-container {
+  position: relative;
+  width: 640px;
+  height: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  transform: perspective(1000px) rotateX(0deg);
+}
+
+.camera-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2ecc71, #3498db);
+  z-index: 10;
+  animation: gradientMove 3s linear infinite;
+  background-size: 200% 100%;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.camera-container:hover {
+  transform: perspective(1000px) rotateX(2deg);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.video-stream {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Rendre la vidéo invisible car nous dessinons sur le canvas */
+  opacity: 0;
+}
+
+.detection-canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.camera-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.camera-button.start {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.camera-button.stop {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.camera-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.camera-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button-icon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.detection-result {
+  width: 100%;
+  max-width: 640px;
+  text-align: center;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.detection-result h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+  display: inline-block;
+  padding: 0 1rem;
+}
+
+.detection-result h2::before,
+.detection-result h2::after {
+  content: "•";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #3498db;
+  font-size: 1.5rem;
+}
+
+.detection-result h2::before {
+  left: -10px;
+}
+
+.detection-result h2::after {
+  right: -10px;
+}
+
+.sign-box {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: signBoxPulse 2s infinite alternate, signBoxAppear 0.5s ease-out;
+}
+
+.sign-box.high-confidence {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+}
+
+.sign-box.medium-confidence {
+  background: linear-gradient(135deg, #f39c12, #f1c40f);
+  box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+}
+
+.sign-box.low-confidence {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+}
+
+.sign-box::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.1)
+  );
+  filter: blur(10px);
+  opacity: 0.7;
+  z-index: -1;
+  animation: glow 3s infinite alternate;
+}
+
+.sign-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.sign-box p {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.sign-box .sign-icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+  vertical-align: middle;
+  display: inline-block;
+  animation: scaleIcon 1.5s infinite alternate;
+}
+
+.confidence-meter {
+  position: relative;
+  height: 8px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.confidence-bar {
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  transition: width 0.3s ease-in-out;
+  animation: barPulse 2s infinite alternate;
+}
+
+.confidence-value {
+  position: absolute;
+  right: 0;
+  top: -20px;
+  font-size: 0.8rem;
+  font-weight: normal;
+  opacity: 0.9;
+}
+
+@keyframes scaleIcon {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes barPulse {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0.5;
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 0.8;
+    filter: blur(15px);
+  }
+}
+
+@keyframes signBoxAppear {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes signBoxPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  }
+  100% {
+    transform: scale(1.03);
+    box-shadow: 0 12px 28px rgba(52, 152, 219, 0.5);
+  }
+}
+
+.instructions {
+  background-color: rgba(240, 240, 240, 0.9);
+  border-radius: 12px;
+  padding: 1.8rem;
+  margin-top: 2.5rem;
+  width: 100%;
+  max-width: 640px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  color: #333333;
+  border-left: 5px solid #3498db;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.instructions:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.instructions::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(52, 152, 219, 0.05), transparent);
+  z-index: 0;
+}
+
+.instructions h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.instruction-icon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+.instructions p {
+  color: #333333;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  position: relative;
+  z-index: 1;
+  margin-left: 10px;
+  max-width: 95%;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .camera-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
+  }
+
+  .ai-page-container h1 {
+    font-size: 2rem;
+  }
+
+  .instructions,
+  .detection-result {
+    max-width: 100%;
+  }
+
+  .sign-box {
+    font-size: 2rem;
+    padding: 1.2rem 1.5rem;
+  }
+
+  .instructions h3 {
+    font-size: 1.2rem;
+  }
+
+  .instructions p {
+    font-size: 1rem;
+  }
+
+  .camera-button {
+    min-width: 150px;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .detection-result h2 {
+    font-size: 1.2rem;
+  }
+}

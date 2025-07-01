@@ -3,6 +3,7 @@ export default {
   "nav.home": "Accueil",
   "nav.lessons": "Leçons",
   "nav.dictionary": "Dictionnaire",
+  "nav.ai": "IA",
   "nav.profile": "Profil",
   "nav.login": "Connexion",
   "nav.signup": "Inscription",
@@ -147,4 +148,18 @@ export default {
   "common.profile": "Profil",
   "common.or": "OU",
   "common.userName": "Nom d'utilisateur",
+
+  // AI Page
+  "ai.title": "Reconnaissance de signes IA",
+  "ai.loading": "Chargement du modèle IA...",
+  "ai.errorInitializing": "Erreur lors de l'initialisation du modèle",
+  "ai.cameraAccessError": "Impossible d'accéder à la caméra",
+  "ai.startCamera": "Démarrer la caméra",
+  "ai.stopCamera": "Arrêter la caméra",
+  "ai.detectedSign": "Signe détecté",
+  "ai.instructions": "Instructions",
+  "ai.instructionsText":
+    "Placez votre main devant la caméra pour commencer la reconnaissance des signes. Assurez-vous d'être dans un environnement bien éclairé pour de meilleurs résultats.",
+  "ai.confidenceLevel": "Niveau de confiance",
+  "ai.noSignDetected": "Aucun signe détecté",
 };

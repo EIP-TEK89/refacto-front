@@ -3,6 +3,7 @@ export default {
   "nav.home": "Home",
   "nav.lessons": "Lessons",
   "nav.dictionary": "Dictionary",
+  "nav.ai": "AI",
   "nav.profile": "Profile",
   "nav.login": "Log In",
   "nav.signup": "Sign Up",
@@ -145,4 +146,18 @@ export default {
   "common.profile": "Profile",
   "common.or": "OR",
   "common.userName": "User Name",
+
+  // AI Page
+  "ai.title": "AI Sign Recognition",
+  "ai.loading": "Loading AI model...",
+  "ai.errorInitializing": "Error initializing the model",
+  "ai.cameraAccessError": "Unable to access camera",
+  "ai.startCamera": "Start Camera",
+  "ai.stopCamera": "Stop Camera",
+  "ai.detectedSign": "Detected Sign",
+  "ai.instructions": "Instructions",
+  "ai.instructionsText":
+    "Position your hand in front of the camera to begin sign recognition. Make sure you are in a well-lit environment for best results.",
+  "ai.confidenceLevel": "Confidence Level",
+  "ai.noSignDetected": "No sign detected",
 };
