@@ -26,44 +26,44 @@ const VideoCaptureUploader = ({
   const [cameraActive, setCameraActive] = useState(false);
   const [text, setText] = useState<string>("");
 
-  // Effet pour vérifier si la réponse correspond au signe détecté
+  // Effect to check if the detected sign matches the expected response
   useEffect(() => {
     if (response === outputSign && outputSign && !hasMatched) {
       goodAnswer();
       setHasMatched(true);
 
-      // Réinitialiser hasMatched après un court délai pour permettre de nouvelles correspondances
+      // Reset hasMatched after a short delay to allow new matches
       setTimeout(() => {
         setHasMatched(false);
       }, 2000);
     }
   }, [outputSign, response, goodAnswer, hasMatched]);
 
-  // Initialisation du video fetcher, du canvas et du sign recognizer
+  // Initialization of video fetcher, canvas, and sign recognizer
   useEffect(() => {
     setIsLoading(true);
     let animationFrameId: number;
 
-    // Obtenez l'élément canvas
+    // Get the canvas element
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Configurez les dimensions du canvas
+    // Set canvas dimensions
     canvas.width = 640;
     canvas.height = 480;
 
-    // Obtenez le contexte de dessin
+    // Get drawing context
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Créez les instances nécessaires
+    // Create necessary instances
     const videoFetcher = new VideoFetcher();
 
-    // Utilisez une URL directe au modèle pour éviter les problèmes de chemin
+    // Use a direct model URL to avoid path issues
     const modelUrl = `${API_URL}/files/models/alphabet`;
     console.log("Model URL:", modelUrl);
 
-    // Démarrez la caméra d'abord
+    // Start the camera first
     videoFetcher
       .startCamera()
       .then(async (success) => {
@@ -76,20 +76,20 @@ const VideoCaptureUploader = ({
         }
 
         try {
-          // Suivons l'approche Svelte avec OnnxRunnerWeb et MediapipeRunnerWeb
+          // Following the Svelte approach with OnnxRunnerWeb and MediapipeRunnerWeb
           console.log("Creating runners...");
 
-          // Initialisation de OnnxRunnerWeb avec l'URL du modèle directement
+          // Initialize OnnxRunnerWeb with the direct model URL
           const onnxRunner = new OnnxRunnerWeb(
             `${API_URL}/files/models/alphabet`
           );
 
-          // Initialisation de MediapipeRunnerWeb
+          // Initialize MediapipeRunnerWeb
           const mediapipeRunner = new MediapipeRunnerWeb();
 
           console.log("Initializing SignRecognizer...");
 
-          // Créez une instance du SignRecognizer avec les deux runners
+          // Create an instance of SignRecognizer with both runners
           const signRecognizer = new SignRecognizer<HTMLVideoElement>(
             onnxRunner as any,
             mediapipeRunner as any
@@ -98,24 +98,24 @@ const VideoCaptureUploader = ({
           console.log("SignRecognizer initialized successfully");
           setIsLoading(false);
 
-          // Fonction de dessin sur le canvas similaire à l'exemple Svelte
+          // Drawing function similar to the Svelte example
           function draw() {
             if (!canvas) return;
 
-            // Récupération de la frame vidéo
+            // Get the video frame
             const frame = videoFetcher.getFrame();
 
             if (frame && ctx) {
-              // Effacez le canvas et dessinez la nouvelle frame
+              // Clear the canvas and draw the new frame
               ctx.clearRect(0, 0, canvas.width, canvas.height);
               ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
 
               try {
-                // Prédiction du signe à partir de la frame
+                // Predict the sign from the frame
                 const result = signRecognizer.predict(frame);
                 console.log(result);
 
-                // Si des landmarks de main sont détectés, dessinez-les
+                // If hand landmarks are detected, draw them
                 if (result && result.landmarks) {
                   console.log(
                     "Sign Recognizer Result:",
@@ -125,7 +125,7 @@ const VideoCaptureUploader = ({
                   drawHandLandmarkerResult(ctx, result.landmarks);
                 }
 
-                // Mise à jour du signe détecté
+                // Update the detected sign
                 if (result && result.signLabel) {
                   setOutputSign(result.signLabel);
                   setText(`Output sign: ${result.signLabel}`);
@@ -140,11 +140,11 @@ const VideoCaptureUploader = ({
               }
             }
 
-            // Boucle d'animation
+            // Animation loop
             animationFrameId = requestAnimationFrame(draw);
           }
 
-          // Démarrer la boucle de dessin
+          // Start the drawing loop
           draw();
         } catch (error) {
           console.error("Failed to initialize SignRecognizer:", error);
@@ -157,7 +157,7 @@ const VideoCaptureUploader = ({
         setIsLoading(false);
       });
 
-    // Nettoyage lors du démontage du composant
+    // Cleanup when the component is unmounted
     return () => {
       videoFetcher.stopCamera();
       if (animationFrameId) {
