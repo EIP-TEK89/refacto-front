@@ -1,0 +1,85 @@
+.video-stream-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.canvas-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.video-canvas {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 2px solid #ccc;
+}
+
+.loading-overlay,
+.camera-error-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+}
+
+.loading-overlay {
+  background-color: #f3f4f6;
+}
+
+.loading-overlay p {
+  color: #4b5563;
+  text-align: center;
+  padding: 1rem;
+}
+
+.camera-error-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.camera-error-message {
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+.retry-button {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+  background-color: #2563eb;
+}
+
+.sign-output {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.text-info {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.hidden {
+  display: none;
+}
