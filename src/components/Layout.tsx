@@ -11,17 +11,27 @@ import LessonDetail from "../pages/LessonDetail";
 import Dictionary from "../pages/Dictionary";
 import DictionaryDetail from "../pages/DictionaryDetail";
 import AiRecognition from "../pages/AiRecognition";
+import AiMobileWebview from "../pages/AiMobileWebview";
 
 function AppLayout() {
   const location = useLocation();
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/signup";
+  const isMobileWebviewPage = location.pathname === "/ai-mobile-webview";
 
   if (isAuthPage) {
     return (
       <Routes>
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    );
+  }
+
+  if (isMobileWebviewPage) {
+    return (
+      <Routes>
+        <Route path="/ai-mobile-webview" element={<AiMobileWebview />} />
       </Routes>
     );
   }

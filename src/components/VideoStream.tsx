@@ -12,11 +12,13 @@ interface VideoCaptureUploaderProps {
   goodAnswer: () => void;
   badAnswer: () => void;
   response: string;
+  model?: string;
 }
 
 const VideoCaptureUploader = ({
   goodAnswer,
   response,
+  model = "alphabet",
 }: VideoCaptureUploaderProps) => {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -60,7 +62,7 @@ const VideoCaptureUploader = ({
     const videoFetcher = new VideoFetcher();
 
     // Use a direct model URL to avoid path issues
-    const modelUrl = `${API_URL}/files/models/alphabet`;
+    const modelUrl = `${API_URL}/files/models/${model}`;
     console.log("Model URL:", modelUrl);
 
     // Start the camera first
@@ -124,15 +126,15 @@ const VideoCaptureUploader = ({
               try {
                 // Predict the sign from the frame
                 const result = signRecognizer.predict(frame);
-                console.log(result);
+                // console.log(result);
 
                 // If hand landmarks are detected, draw them
                 if (result && result.landmarks) {
-                  console.log(
-                    "Sign Recognizer Result:",
-                    result,
-                    result.landmarks.l_hand_position
-                  );
+                  // console.log(
+                  //   "Sign Recognizer Result:",
+                  //   result,
+                  //   result.landmarks.l_hand_position
+                  // );
 
                   // Dessiner les landmarks avec l'inversion horizontale
                   ctx.save(); // Sauvegarder l'état actuel
