@@ -108,7 +108,18 @@ const VideoCaptureUploader = ({
             if (frame && ctx) {
               // Clear the canvas and draw the new frame
               ctx.clearRect(0, 0, canvas.width, canvas.height);
-              ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+
+              // Mirror the image horizontally (mirror effect)
+              ctx.save(); // Save the current context state
+              ctx.scale(-1, 1); // Flip the X axis
+              ctx.drawImage(
+                frame,
+                -canvas.width,
+                0,
+                canvas.width,
+                canvas.height
+              ); // The starting point is negative due to the flip
+              ctx.restore(); // Restore the context to its original state
 
               try {
                 // Predict the sign from the frame
@@ -122,7 +133,13 @@ const VideoCaptureUploader = ({
                     result,
                     result.landmarks.l_hand_position
                   );
+
+                  // Dessiner les landmarks avec l'inversion horizontale
+                  ctx.save(); // Sauvegarder l'état actuel
+                  ctx.scale(-1, 1); // Inverser l'axe X pour correspondre à l'image
+                  ctx.translate(-canvas.width, 0); // Ajuster la position
                   drawHandLandmarkerResult(ctx, result.landmarks);
+                  ctx.restore(); // Restaurer l'état d'origine
                 }
 
                 // Update the detected sign
