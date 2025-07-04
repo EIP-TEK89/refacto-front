@@ -12,6 +12,7 @@ const AiMobileWebview = () => {
 
   const sendValidation = () => {
     try {
+      // @ts-ignore
       window.ReactNativeWebView.postMessage('Pass!');
     } catch {
       console.error("Error sending message to React Native WebView");
