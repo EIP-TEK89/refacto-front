@@ -3,6 +3,7 @@ export default {
   "nav.home": "Home",
   "nav.lessons": "Lessons",
   "nav.dictionary": "Dictionary",
+  "nav.aiRecognition": "AI Recognition",
   "nav.profile": "Profile",
   "nav.login": "Log In",
   "nav.signup": "Sign Up",
@@ -145,4 +146,22 @@ export default {
   "common.profile": "Profile",
   "common.or": "OR",
   "common.userName": "User Name",
+
+  // AI Recognition Page
+  "ai.title": "AI Sign Recognition",
+  "ai.instructions.title": "Show the Sign",
+  "ai.instructions.description":
+    "Make the sign shown below in front of your camera. The AI will try to recognize it.",
+  "ai.currentTask": "Current task",
+  "ai.makeSign": "Make the sign for {{sign}}",
+  "ai.feedback.correct": "Correct! Great job!",
+  "ai.feedback.incorrect": "Not quite right. Try again!",
+  "ai.feedback.skipped": "Sign skipped. Let's try another one.",
+  "ai.stats.correct": "Correct Signs",
+  "ai.stats.attempts": "Total Attempts",
+  "ai.stats.accuracy": "Accuracy",
+  "ai.actions.skip": "Skip this sign",
+  "ai.camera.loading": "Loading camera...",
+  "ai.camera.unavailable": "Camera unavailable. Please check permissions.",
+  "ai.camera.retry": "Retry",
 };

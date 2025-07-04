@@ -38,6 +38,14 @@ const Navigation = () => {
               {t("nav.dictionary")}
             </Link>
             <Link
+              to="/ai-recognition"
+              className={`nav-link ${
+                location.pathname === "/ai-recognition" ? "active" : ""
+              }`}
+            >
+              {t("nav.aiRecognition")}
+            </Link>
+            <Link
               to="/profile"
               className={`nav-link ${
                 location.pathname === "/profile" ? "active" : ""

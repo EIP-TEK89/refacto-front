@@ -3,6 +3,7 @@ export default {
   "nav.home": "Accueil",
   "nav.lessons": "Leçons",
   "nav.dictionary": "Dictionnaire",
+  "nav.aiRecognition": "Reconnaissance IA",
   "nav.profile": "Profil",
   "nav.login": "Connexion",
   "nav.signup": "Inscription",
@@ -147,4 +148,23 @@ export default {
   "common.profile": "Profil",
   "common.or": "OU",
   "common.userName": "Nom d'utilisateur",
+
+  // AI Recognition Page
+  "ai.title": "Reconnaissance des Signes par IA",
+  "ai.instructions.title": "Montrez le Signe",
+  "ai.instructions.description":
+    "Faites le signe indiqué ci-dessous devant votre caméra. L'IA essaiera de le reconnaître.",
+  "ai.currentTask": "Tâche actuelle",
+  "ai.makeSign": "Faites le signe pour {{sign}}",
+  "ai.feedback.correct": "Correct ! Bien joué !",
+  "ai.feedback.incorrect": "Pas tout à fait correct. Essayez encore !",
+  "ai.feedback.skipped": "Signe ignoré. Essayons-en un autre.",
+  "ai.stats.correct": "Signes Corrects",
+  "ai.stats.attempts": "Tentatives Totales",
+  "ai.stats.accuracy": "Précision",
+  "ai.actions.skip": "Passer ce signe",
+  "ai.camera.loading": "Chargement de la caméra...",
+  "ai.camera.unavailable":
+    "Caméra non disponible. Veuillez vérifier les permissions.",
+  "ai.camera.retry": "Réessayer",
 };
