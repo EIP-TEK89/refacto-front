@@ -51,6 +51,7 @@ export default {
   "profile.oldPassword": "Old Password",
   "profile.newPassword": "New Password",
   "profile.confirmNewPassword": "Confirm New Password",
+  "profile.passwordChangedSuccess": "Password changed successfully!",
   "profile.editProfile": "Edit Profile",
   "profile.continueLearning": "Continue Learning",
   "profile.accountSettings": "Account Settings",
@@ -60,6 +61,9 @@ export default {
   "profile.language": "Language",
   "profile.deleteAccount": "Delete Account",
   "profile.delete": "Delete",
+  "profile.deleteAccountConfirmation": "Confirm Account Deletion",
+  "profile.deleteAccountWarning":
+    "This action cannot be undone. All your personal data and progress will be permanently deleted. Please enter your password to confirm.",
 
   // Lessons
   "lessons.beginner": "Beginner",
@@ -164,4 +168,18 @@ export default {
   "ai.camera.loading": "Loading camera...",
   "ai.camera.unavailable": "Camera unavailable. Please check permissions.",
   "ai.camera.retry": "Retry",
+
+  // Errors
+  "errors.passwordRequired": "Password is required",
+  "errors.genericError": "An error occurred. Please try again later.",
+  "errors.apiEndpointNotFound": "This feature is not available at the moment.",
+  "errors.wrongPassword": "Incorrect password.",
+  "errors.notAuthorized": "You are not authorized to perform this action.",
+  "errors.currentPasswordRequired": "Current password is required",
+  "errors.newPasswordRequired": "New password is required",
+  "errors.passwordsDoNotMatch": "Passwords do not match",
+  "errors.passwordTooShort": "Password must be at least 8 characters long",
+  "errors.samePassword": "New password must be different from the current one",
+  "errors.currentPasswordIncorrect": "Current password is incorrect",
+  "errors.userNotFound": "User account not found",
 };

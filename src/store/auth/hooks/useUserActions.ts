@@ -1,6 +1,8 @@
 import {
   getCurrentUserService,
   updateUserService,
+  deleteUserService,
+  changePasswordService,
 } from "../services/userServices";
 import type { User } from "../types";
 
@@ -81,8 +83,69 @@ export const useUserActions = (
     }
   };
 
+  // Delete user profile
+  const deleteUser = async (password?: string) => {
+    setAuthState({ ...initialState, isLoading: true, error: null });
+
+    try {
+      await deleteUserService(password);
+
+      // Clear user data from local storage and reset state
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+
+      setAuthState({
+        ...initialState,
+        isLoading: false,
+        user: null,
+        isAuthenticated: false,
+      });
+    } catch (error: any) {
+      setAuthState({
+        ...initialState,
+        isLoading: false,
+        error: error.message,
+      });
+
+      throw error;
+    }
+  };
+
+  // Change password
+  const changePassword = async (
+    currentPassword: string,
+    newPassword: string
+  ) => {
+    setAuthState({ ...initialState, isLoading: true, error: null });
+
+    try {
+      const response = await changePasswordService(
+        currentPassword,
+        newPassword
+      );
+
+      setAuthState({
+        ...initialState,
+        isLoading: false,
+      });
+
+      return response;
+    } catch (error: any) {
+      setAuthState({
+        ...initialState,
+        isLoading: false,
+        error: error.message,
+      });
+
+      throw error;
+    }
+  };
+
   return {
     getCurrentUser,
     updateUser,
+    deleteUser,
+    changePassword,
   };
 };

@@ -27,6 +27,11 @@ export interface AuthContextType extends AuthState {
     userId: string,
     userData: Partial<User> & { password?: string; newPassword?: string }
   ) => Promise<any>;
+  deleteUser: (password?: string) => Promise<any>;
+  changePassword: (
+    currentPassword: string,
+    newPassword: string
+  ) => Promise<any>;
 }
 
 // Create the auth context with default values
@@ -39,6 +44,8 @@ export const AuthContext = createContext<AuthContextType>({
   getCurrentUser: async () => null,
   clearError: () => {},
   updateUser: async () => {},
+  deleteUser: async () => {},
+  changePassword: async () => {},
 });
 
 // Custom hook to use the auth context

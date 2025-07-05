@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../store/auth";
+import { useTranslation } from "react-i18next";
 
 interface PasswordChangeModalProps {
   isOpen: boolean;
@@ -7,7 +8,8 @@ interface PasswordChangeModalProps {
 }
 
 const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
-  const { user, updateUser, error } = useAuth();
+  const { t } = useTranslation();
+  const { changePassword, error } = useAuth();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,54 +28,76 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
 
     // Basic validation
     if (!currentPassword || !newPassword || !confirmPassword) {
-      setLocalError("All fields are required");
+      setLocalError(
+        !currentPassword
+          ? t("errors.currentPasswordRequired")
+          : !newPassword
+          ? t("errors.newPasswordRequired")
+          : t("errors.passwordRequired")
+      );
       return;
     }
 
     // Password confirmation check
     if (newPassword !== confirmPassword) {
-      setLocalError("New passwords don't match");
+      setLocalError(t("errors.passwordsDoNotMatch"));
       return;
     }
 
     // Password strength validation
     if (newPassword.length < 8) {
-      setLocalError("New password must be at least 8 characters long");
+      setLocalError(t("errors.passwordTooShort"));
       return;
     }
 
     // Prevent setting the same password
     if (currentPassword === newPassword) {
-      setLocalError("New password must be different from the current one");
+      setLocalError(t("errors.samePassword"));
       return;
     }
 
     setIsLoading(true);
 
     try {
-      if (user) {
-        await updateUser(user.id, {
-          password: currentPassword,
-          newPassword: newPassword,
-        });
+      await changePassword(currentPassword, newPassword);
 
-        // Reset form fields
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
+      // Reset form fields
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
 
-        // Show success message
-        setSuccess(true);
+      // Show success message
+      setSuccess(true);
 
-        // Close modal after delay
-        setTimeout(() => {
-          onClose();
-          setSuccess(false);
-        }, 2000);
-      }
-    } catch (err) {
-      // Error is handled by auth context and displayed via the error prop
+      // Close modal after delay
+      setTimeout(() => {
+        onClose();
+        setSuccess(false);
+      }, 2000);
+    } catch (err: any) {
+      // Gérer les erreurs localement
       console.error("Failed to change password:", err);
+
+      // Définir un message d'erreur approprié basé sur l'erreur
+      if (
+        err.message.includes("Current password is incorrect") ||
+        err.message.includes("401") ||
+        err.message.includes("Unauthorized")
+      ) {
+        setLocalError(t("errors.currentPasswordIncorrect"));
+      } else if (
+        err.message.includes("403") ||
+        err.message.includes("not authorized")
+      ) {
+        setLocalError(t("errors.notAuthorized"));
+      } else if (
+        err.message.includes("404") ||
+        err.message.includes("not found")
+      ) {
+        setLocalError(t("errors.userNotFound"));
+      } else {
+        setLocalError(err.message || t("errors.genericError"));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -83,7 +107,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-[var(--color-background-main)] rounded-2xl p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Change Password</h2>
+          <h2 className="text-xl font-bold">{t("profile.changePassword")}</h2>
           <button onClick={onClose} className="text-xl" aria-label="Close">
             &times;
           </button>
@@ -91,7 +115,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
 
         {success ? (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            Password changed successfully!
+            {t("profile.passwordChangedSuccess")}
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
@@ -106,7 +130,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
                 htmlFor="current-password"
                 className="block mb-2 text-sm font-medium"
               >
-                Current Password
+                {t("profile.oldPassword")}
               </label>
               <div className="relative">
                 <input
@@ -143,7 +167,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
                 htmlFor="new-password"
                 className="block mb-2 text-sm font-medium"
               >
-                New Password
+                {t("profile.newPassword")}
               </label>
               <div className="relative">
                 <input
@@ -174,7 +198,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
                 </button>
               </div>
               <p className="mt-1 text-sm text-gray-500">
-                Must be at least 8 characters long.
+                {t("errors.passwordTooShort")}
               </p>
             </div>
 
@@ -183,7 +207,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
                 htmlFor="confirm-password"
                 className="block mb-2 text-sm font-medium"
               >
-                Confirm New Password
+                {t("profile.confirmNewPassword")}
               </label>
               <input
                 id="confirm-password"
@@ -201,14 +225,14 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
                 className="px-4 py-2 border border-[var(--color-border)] rounded-lg"
                 disabled={isLoading}
               >
-                Cancel
+                {t("common.cancel")}
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-[var(--color-blue)] text-white rounded-lg hover:bg-[var(--color-blue-shadow)]"
                 disabled={isLoading}
               >
-                {isLoading ? "Changing..." : "Change Password"}
+                {isLoading ? t("common.loading") : t("profile.changePassword")}
               </button>
             </div>
           </form>

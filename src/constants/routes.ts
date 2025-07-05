@@ -36,14 +36,19 @@ export const API_ROUTES = {
   refreshToken: API_URL + "/auth/refresh",
   currentUser: API_URL + "/auth/me",
 
+  // Profile endpoints
+  getProfile: API_URL + "/users/me",
+  deleteProfile: API_URL + "/users/me",
+  changePassword: API_URL + "/users/me/password",
+
   // User management
-  getAllUsers: API_URL + "/user",
-  getUserById: (id: string) => API_URL + `/user/${id}`,
-  getUserByEmail: (email: string) => API_URL + `/user/email/${email}`,
+  getAllUsers: API_URL + "/users",
+  getUserById: (id: string) => API_URL + `/users/${id}`,
+  getUserByEmail: (email: string) => API_URL + `/users/email/${email}`,
   getUserByUsername: (username: string) =>
     API_URL + `/user/username/${username}`,
-  updateUser: (id: string) => API_URL + `/user/${id}`,
-  deleteUser: (id: string) => API_URL + `/user/${id}`,
+  updateUser: (id: string) => API_URL + `/users/${id}`,
+  deleteUser: (id: string) => API_URL + `/users/${id}`,
 
   // OAuth routes
   googleAuth: API_URL + "/auth/google",

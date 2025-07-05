@@ -51,6 +51,7 @@ export default {
   "profile.oldPassword": "Ancien mot de passe",
   "profile.newPassword": "Nouveau mot de passe",
   "profile.confirmNewPassword": "Confirmer le nouveau mot de passe",
+  "profile.passwordChangedSuccess": "Mot de passe modifié avec succès !",
   "profile.editProfile": "Modifier le profil",
   "profile.continueLearning": "Continuer l'apprentissage",
   "profile.accountSettings": "Paramètres du compte",
@@ -60,6 +61,9 @@ export default {
   "profile.language": "Langue",
   "profile.deleteAccount": "Supprimer le compte",
   "profile.delete": "Supprimer",
+  "profile.deleteAccountConfirmation": "Confirmer la suppression du compte",
+  "profile.deleteAccountWarning":
+    "Cette action est irréversible. Toutes vos données personnelles et votre progression seront définitivement supprimées. Veuillez entrer votre mot de passe pour confirmer.",
 
   // Lessons
   "lessons.beginner": "Débutant",
@@ -167,4 +171,22 @@ export default {
   "ai.camera.unavailable":
     "Caméra non disponible. Veuillez vérifier les permissions.",
   "ai.camera.retry": "Réessayer",
+
+  // Errors
+  "errors.passwordRequired": "Le mot de passe est requis",
+  "errors.genericError":
+    "Une erreur est survenue. Veuillez réessayer plus tard.",
+  "errors.apiEndpointNotFound":
+    "Cette fonctionnalité n'est pas disponible pour le moment.",
+  "errors.wrongPassword": "Mot de passe incorrect.",
+  "errors.notAuthorized": "Vous n'êtes pas autorisé à effectuer cette action.",
+  "errors.currentPasswordRequired": "Le mot de passe actuel est requis",
+  "errors.newPasswordRequired": "Le nouveau mot de passe est requis",
+  "errors.passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+  "errors.passwordTooShort":
+    "Le mot de passe doit contenir au moins 8 caractères",
+  "errors.samePassword":
+    "Le nouveau mot de passe doit être différent de l'ancien",
+  "errors.currentPasswordIncorrect": "Le mot de passe actuel est incorrect",
+  "errors.userNotFound": "Compte utilisateur introuvable",
 };
