@@ -60,6 +60,9 @@ export default {
   "profile.language": "Language",
   "profile.deleteAccount": "Delete Account",
   "profile.delete": "Delete",
+  "profile.deleteAccountConfirmation": "Confirm Account Deletion",
+  "profile.deleteAccountWarning":
+    "This action cannot be undone. All your personal data and progress will be permanently deleted. Please enter your password to confirm.",
 
   // Lessons
   "lessons.beginner": "Beginner",
@@ -164,4 +167,11 @@ export default {
   "ai.camera.loading": "Loading camera...",
   "ai.camera.unavailable": "Camera unavailable. Please check permissions.",
   "ai.camera.retry": "Retry",
+
+  // Errors
+  "errors.passwordRequired": "Password is required",
+  "errors.genericError": "An error occurred. Please try again later.",
+  "errors.apiEndpointNotFound": "This feature is not available at the moment.",
+  "errors.wrongPassword": "Incorrect password.",
+  "errors.notAuthorized": "You are not authorized to perform this action.",
 };

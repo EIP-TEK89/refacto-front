@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useRequireAuth } from "../hooks/useRequireAuth";
 import { useState } from "react";
 import PasswordChangeModal from "../components/PasswordChangeModal";
+import DeleteAccountModal from "../components/DeleteAccountModal";
 import LessonProgressDashboard from "../components/lessons/LessonProgressDashboard";
 import LanguageDropdown from "../components/LanguageDropdown";
 import { useTranslation } from "react-i18next";
@@ -11,6 +12,7 @@ const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("stats");
   const { t } = useTranslation();
 
@@ -176,7 +178,10 @@ const Profile = () => {
 
                 <div className="flex justify-between items-center py-2">
                   <span>{t("profile.deleteAccount")}</span>
-                  <button className="text-[var(--color-red)] hover:text-[var(--color-red-shadow)]">
+                  <button
+                    onClick={() => setIsDeleteModalOpen(true)}
+                    className="text-[var(--color-red)] hover:text-[var(--color-red-shadow)]"
+                  >
                     {t("profile.delete")}
                   </button>
                 </div>
@@ -190,6 +195,13 @@ const Profile = () => {
         <PasswordChangeModal
           isOpen={isPasswordModalOpen}
           onClose={() => setIsPasswordModalOpen(false)}
+        />
+      )}
+
+      {isDeleteModalOpen && (
+        <DeleteAccountModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
         />
       )}
     </div>

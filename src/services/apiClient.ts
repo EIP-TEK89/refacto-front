@@ -160,11 +160,40 @@ apiClient.interceptors.response.use(
 // Error handling
 const handleError = (error: any) => {
   if (axios.isAxiosError(error)) {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    const responseData = error.response?.data;
+    const url = error.config?.url;
+    const method = error.config?.method?.toUpperCase();
+
+    console.group(`API Error: ${method} ${url}`);
+    console.error(`Status: ${status}`);
+
+    if (responseData) {
+      console.error("Response data:", responseData);
+    }
+
+    if (error.response?.headers) {
+      console.error("Response headers:", error.response.headers);
+    }
+
+    if (error.config?.data) {
+      try {
+        const requestData = JSON.parse(error.config.data);
+        console.error("Request data:", requestData);
+      } catch (e) {
+        console.error("Request data:", error.config.data);
+      }
+    }
+
+    // On évite d'utiliser error.cause qui n'est disponible qu'à partir d'ES2022
+    console.error("Error details:", error);
+    console.groupEnd();
+
+    if (status === 401) {
       // Handle 401 for specific API calls if needed
       console.error(
         "Authentication error:",
-        error.response?.data?.message || "Authentication failed"
+        responseData?.message || "Authentication failed"
       );
 
       // Check if we're not already on the login page to avoid redirect loops
@@ -180,22 +209,26 @@ const handleError = (error: any) => {
         // Redirect to login with an expired parameter
         window.location.href = "/signin?expired=true";
       }
-    } else if (error.response?.status === 403) {
+    } else if (status === 403) {
       console.error(
         "Authorization error:",
-        error.response?.data?.message || "Not authorized"
-      );
-    } else {
-      console.error(
-        "API error:",
-        error.response?.data?.message || error.message
+        responseData?.message || "Not authorized"
       );
     }
 
-    throw new Error(error.response?.data?.message || "An error occurred");
+    throw new Error(responseData?.message || "An error occurred");
   } else {
-    console.error("Unknown error:", error);
-    throw new Error("Unknown error");
+    console.group("Non-Axios Error");
+    console.error("Unknown error details:", error);
+
+    if (error instanceof Error) {
+      console.error("Error name:", error.name);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+
+    console.groupEnd();
+    throw new Error(error?.message || "Unknown error");
   }
 };
 
