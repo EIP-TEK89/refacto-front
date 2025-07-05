@@ -39,6 +39,7 @@ export const API_ROUTES = {
   // Profile endpoints
   getProfile: API_URL + "/users/me",
   deleteProfile: API_URL + "/users/me",
+  changePassword: API_URL + "/users/me/password",
 
   // User management
   getAllUsers: API_URL + "/users",

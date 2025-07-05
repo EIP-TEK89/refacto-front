@@ -51,6 +51,7 @@ export default {
   "profile.oldPassword": "Ancien mot de passe",
   "profile.newPassword": "Nouveau mot de passe",
   "profile.confirmNewPassword": "Confirmer le nouveau mot de passe",
+  "profile.passwordChangedSuccess": "Mot de passe modifié avec succès !",
   "profile.editProfile": "Modifier le profil",
   "profile.continueLearning": "Continuer l'apprentissage",
   "profile.accountSettings": "Paramètres du compte",
@@ -179,4 +180,13 @@ export default {
     "Cette fonctionnalité n'est pas disponible pour le moment.",
   "errors.wrongPassword": "Mot de passe incorrect.",
   "errors.notAuthorized": "Vous n'êtes pas autorisé à effectuer cette action.",
+  "errors.currentPasswordRequired": "Le mot de passe actuel est requis",
+  "errors.newPasswordRequired": "Le nouveau mot de passe est requis",
+  "errors.passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+  "errors.passwordTooShort":
+    "Le mot de passe doit contenir au moins 8 caractères",
+  "errors.samePassword":
+    "Le nouveau mot de passe doit être différent de l'ancien",
+  "errors.currentPasswordIncorrect": "Le mot de passe actuel est incorrect",
+  "errors.userNotFound": "Compte utilisateur introuvable",
 };

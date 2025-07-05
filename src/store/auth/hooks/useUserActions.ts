@@ -2,6 +2,7 @@ import {
   getCurrentUserService,
   updateUserService,
   deleteUserService,
+  changePasswordService,
 } from "../services/userServices";
 import type { User } from "../types";
 
@@ -111,9 +112,40 @@ export const useUserActions = (
     }
   };
 
+  // Change password
+  const changePassword = async (
+    currentPassword: string,
+    newPassword: string
+  ) => {
+    setAuthState({ ...initialState, isLoading: true, error: null });
+
+    try {
+      const response = await changePasswordService(
+        currentPassword,
+        newPassword
+      );
+
+      setAuthState({
+        ...initialState,
+        isLoading: false,
+      });
+
+      return response;
+    } catch (error: any) {
+      setAuthState({
+        ...initialState,
+        isLoading: false,
+        error: error.message,
+      });
+
+      throw error;
+    }
+  };
+
   return {
     getCurrentUser,
     updateUser,
     deleteUser,
+    changePassword,
   };
 };
