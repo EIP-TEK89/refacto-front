@@ -35,13 +35,54 @@ const VideoCaptureUploader = ({
 
   // Function to adjust canvas dimensions based on container size
   const adjustCanvasDimensions = () => {
-    if (containerRef.current) {
-      // On utilise des dimensions fixes qui correspondent au format standard de la caméra
-      // Le reste sera géré par object-fit: contain
-      setCanvasDimensions({
-        width: 640, // Dimensions standard
-        height: 480, // Ratio 4:3
-      });
+    if (containerRef.current && canvasRef.current) {
+      const containerWidth = containerRef.current.clientWidth;
+      const windowHeight = window.innerHeight;
+
+      // Get device type and orientation
+      const isMobile = window.innerWidth < 768;
+      const isPortrait = window.innerHeight > window.innerWidth;
+
+      // Calculate optimal dimensions based on device and orientation
+      if (isMobile) {
+        if (isPortrait) {
+          // Mobile portrait: prioritize fitting in the screen height
+          // Use a reduced height to leave room for UI elements
+          const maxHeight = windowHeight * 0.4; // 40% of screen height
+          const aspectRatio = 4 / 3;
+
+          const height = maxHeight;
+          const width = height * aspectRatio;
+
+          setCanvasDimensions({
+            width: Math.floor(width),
+            height: Math.floor(height),
+          });
+        } else {
+          // Mobile landscape: prioritize width but ensure it fits
+          const aspectRatio = 4 / 3;
+          const width = Math.min(
+            containerWidth,
+            windowHeight * aspectRatio * 0.7
+          );
+          const height = width / aspectRatio;
+
+          setCanvasDimensions({
+            width: Math.floor(width),
+            height: Math.floor(height),
+          });
+        }
+      } else {
+        // Desktop: use container width with standard aspect ratio
+        const aspectRatio = 4 / 3;
+        const width = containerWidth;
+        const height = width / aspectRatio;
+
+        setCanvasDimensions({
+          width: Math.floor(width),
+          height: Math.floor(height),
+        });
+      }
     }
   };
 
@@ -232,28 +273,27 @@ const VideoCaptureUploader = ({
               !cameraActive || isLoading ? "hidden" : ""
             }`}
           ></canvas>
-
-          {/* Placer les overlays à l'intérieur du conteneur d'aspect-ratio */}
-          {isLoading && (
-            <div className="loading-overlay">
-              <p>{t("ai.camera.loading")}</p>
-            </div>
-          )}
-
-          {!cameraActive && !isLoading && (
-            <div className="camera-error-overlay">
-              <div className="camera-error-message">
-                <p className="mb-2">{t("ai.camera.unavailable")}</p>
-                <button
-                  onClick={() => window.location.reload()}
-                  className="retry-button"
-                >
-                  {t("ai.camera.retry")}
-                </button>
-              </div>
-            </div>
-          )}
         </div>
+
+        {isLoading && (
+          <div className="loading-overlay">
+            <p>{t("ai.camera.loading")}</p>
+          </div>
+        )}
+
+        {!cameraActive && !isLoading && (
+          <div className="camera-error-overlay">
+            <div className="camera-error-message">
+              <p className="mb-2">{t("ai.camera.unavailable")}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="retry-button"
+              >
+                {t("ai.camera.retry")}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {outputSign && (
