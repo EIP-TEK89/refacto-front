@@ -253,9 +253,24 @@ const VideoCaptureUploader = ({
 
     // Cleanup when the component is unmounted
     return () => {
+      console.log("VideoStream component unmounted - stopping camera");
       videoFetcher.stopCamera();
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
+      }
+
+      // Assurer que les flux de média sont arrêtés
+      if (navigator.mediaDevices) {
+        document.querySelectorAll("video").forEach((video) => {
+          if (video.srcObject) {
+            const mediaStream = video.srcObject as MediaStream;
+            const tracks = mediaStream.getTracks();
+            tracks.forEach((track) => {
+              track.stop();
+            });
+            video.srcObject = null;
+          }
+        });
       }
     };
   }, [canvasDimensions]);

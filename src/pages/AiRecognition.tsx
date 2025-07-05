@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import VideoCaptureUploader from "../components/VideoStream";
 
@@ -24,6 +24,33 @@ const AiRecognitionPage = () => {
   const [feedbackType, setFeedbackType] = useState<"success" | "error">(
     "success"
   );
+  const [cameraActive, setCameraActive] = useState(true);
+
+  // Désactiver la caméra lorsqu'on quitte la page
+  useEffect(() => {
+    // Activer la caméra lorsque le composant est monté
+    setCameraActive(true);
+
+    // Fonction de nettoyage qui sera appelée lors du démontage du composant
+    return () => {
+      console.log("AiRecognition page unmounting - disabling camera");
+      setCameraActive(false);
+    };
+  }, []);
+
+  // Si l'URL change, désactiver la caméra
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      setCameraActive(false);
+    };
+
+    // Ajouter un gestionnaire pour les événements de déchargement de page
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   // Fonction appelée lorsque le signe reconnu est correct
   const handleCorrectAnswer = () => {
@@ -101,11 +128,13 @@ const AiRecognitionPage = () => {
 
       {/* Video capture component */}
       <div className="mb-8 bg-white p-4 rounded-lg shadow-md mx-auto">
-        <VideoCaptureUploader
-          goodAnswer={handleCorrectAnswer}
-          badAnswer={() => {}}
-          response={currentSign.id}
-        />
+        {cameraActive && (
+          <VideoCaptureUploader
+            goodAnswer={handleCorrectAnswer}
+            badAnswer={() => {}}
+            response={currentSign.id}
+          />
+        )}
       </div>
 
       {/* Stats */}
