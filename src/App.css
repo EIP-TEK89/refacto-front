@@ -50,7 +50,7 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  z-index: 20;
+  z-index: 110;
 }
 
 .burger-menu span {
@@ -84,7 +84,7 @@
     background-color: var(--color-background-secondary);
     padding: 20px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    z-index: 100;
     transition: transform 0.3s ease-in-out;
   }
 
@@ -173,7 +173,7 @@
   border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
-  z-index: 10;
+  z-index: 60;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -204,12 +204,43 @@
   top: 20px;
   right: 20px;
   width: 160px;
-  z-index: 10;
+  z-index: 50;
+}
+
+/* Responsive styles for Home page */
+@media (max-width: 767px) {
+  .home-language-container {
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+/* Home Content Container */
+.home-content {
+  width: 100%;
+  position: relative;
+  z-index: 40;
 }
 
 /* Modification for Home page */
 .container-card {
   position: relative;
+}
+
+@media (max-width: 767px) {
+  .container-card {
+    padding: 16px;
+  }
+
+  .feature-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
 }
 
 /* Main content */
@@ -290,7 +321,7 @@
   border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow: hidden;
-  z-index: 20;
+  z-index: 60;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 

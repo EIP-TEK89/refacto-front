@@ -22,11 +22,68 @@ const VideoCaptureUploader = ({
 }: VideoCaptureUploaderProps) => {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [outputSign, setOutputSign] = useState<string>("");
   const [hasMatched, setHasMatched] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
   const [cameraActive, setCameraActive] = useState(false);
   const [text, setText] = useState<string>("");
+  const [canvasDimensions, setCanvasDimensions] = useState({
+    width: 640,
+    height: 480,
+  });
+
+  // Function to adjust canvas dimensions based on container size
+  const adjustCanvasDimensions = () => {
+    if (containerRef.current && canvasRef.current) {
+      const containerWidth = containerRef.current.clientWidth;
+      const containerHeight =
+        containerRef.current.clientHeight || window.innerHeight * 0.5;
+
+      // Check if we're on a mobile device in portrait mode
+      const isMobilePortrait =
+        window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+
+      if (isMobilePortrait) {
+        // On mobile in portrait, maintain aspect ratio but prioritize width
+        const aspectRatio = 4 / 3; // Standard camera aspect ratio
+        const height = Math.min(containerHeight, containerWidth / aspectRatio);
+        const width = height * aspectRatio;
+
+        setCanvasDimensions({
+          width: Math.floor(width),
+          height: Math.floor(height),
+        });
+      } else {
+        // On desktop or landscape, use full container width
+        const aspectRatio = 4 / 3;
+        const width = containerWidth;
+        const height = width / aspectRatio;
+
+        setCanvasDimensions({
+          width: Math.floor(width),
+          height: Math.floor(height),
+        });
+      }
+    }
+  };
+
+  // Listen for window resize and orientation change
+  useEffect(() => {
+    adjustCanvasDimensions();
+
+    const handleResize = () => {
+      adjustCanvasDimensions();
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, []);
 
   // Effect to check if the detected sign matches the expected response
   useEffect(() => {
@@ -51,8 +108,8 @@ const VideoCaptureUploader = ({
     if (!canvas) return;
 
     // Set canvas dimensions
-    canvas.width = 640;
-    canvas.height = 480;
+    canvas.width = canvasDimensions.width;
+    canvas.height = canvasDimensions.height;
 
     // Get drawing context
     const ctx = canvas.getContext("2d");
@@ -183,15 +240,15 @@ const VideoCaptureUploader = ({
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, []);
+  }, [canvasDimensions]);
 
   return (
     <div className="video-stream-container">
-      <div className="canvas-container">
+      <div ref={containerRef} className="canvas-container">
         <canvas
           ref={canvasRef}
-          width={640}
-          height={480}
+          width={canvasDimensions.width}
+          height={canvasDimensions.height}
           className={`video-canvas ${
             !cameraActive || isLoading ? "hidden" : ""
           }`}
