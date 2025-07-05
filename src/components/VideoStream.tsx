@@ -222,7 +222,7 @@ const VideoCaptureUploader = ({
                 // Update the detected sign
                 if (result && result.signLabel) {
                   setOutputSign(result.signLabel);
-                  setText(`Output sign: ${result.signLabel}`);
+                  setText(`${t("ai.camera.outputSign")}: ${result.signLabel}`);
                 }
               } catch (error) {
                 console.error("Error during sign prediction:", error);
@@ -298,7 +298,9 @@ const VideoCaptureUploader = ({
 
       {outputSign && (
         <div className="sign-output text-[#3c3c40]">
-          <h1>{outputSign}</h1>
+          <h1>
+            {outputSign === "_null" ? t("ai.camera.notfound") : outputSign}
+          </h1>
         </div>
       )}
 

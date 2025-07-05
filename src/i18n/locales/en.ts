@@ -168,6 +168,8 @@ export default {
   "ai.camera.loading": "Loading camera...",
   "ai.camera.unavailable": "Camera unavailable. Please check permissions.",
   "ai.camera.retry": "Retry",
+  "ai.camera.notfound": "No sign recognized at the moment.",
+  "ai.camera.outputSign": "Recognized Sign: ",
 
   // Errors
   "errors.passwordRequired": "Password is required",

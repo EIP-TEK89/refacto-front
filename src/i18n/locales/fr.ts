@@ -171,6 +171,8 @@ export default {
   "ai.camera.unavailable":
     "Caméra non disponible. Veuillez vérifier les permissions.",
   "ai.camera.retry": "Réessayer",
+  "ai.camera.notfound": "Aucun signe reconnu pour le moment.",
+  "ai.camera.outputSign": "Signe reconnu ",
 
   // Errors
   "errors.passwordRequired": "Le mot de passe est requis",
