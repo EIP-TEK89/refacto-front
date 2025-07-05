@@ -1,7 +1,6 @@
-declare module "triosigno-lib" {
-  export * from "../../triosignolib/core/src";
-}
-
-declare module "triosigno-web" {
-  export * from "../../triosignolib/web/src";
+// Extend the Window interface to include React Native WebView
+interface Window {
+  ReactNativeWebView?: {
+    postMessage(message: string): void;
+  };
 }

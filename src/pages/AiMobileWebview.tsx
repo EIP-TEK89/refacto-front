@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import VideoCaptureUploader from "../components/VideoStream";
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 
 const AiMobileWebview = () => {
   const [searchParams] = useSearchParams();
@@ -12,12 +12,17 @@ const AiMobileWebview = () => {
 
   const sendValidation = () => {
     try {
-      // @ts-ignore
-      window.ReactNativeWebView.postMessage('Pass!');
-    } catch {
-      console.error("Error sending message to React Native WebView");
+      if (window.ReactNativeWebView) {
+        window.ReactNativeWebView.postMessage("Pass!");
+      } else {
+        console.log(
+          "ReactNativeWebView not available - running in browser mode"
+        );
+      }
+    } catch (error) {
+      console.error("Error sending message to React Native WebView:", error);
     }
-  }
+  };
 
   // console.log(model, typeof model);
   // console.log(label, typeof label);
@@ -43,11 +48,8 @@ const AiMobileWebview = () => {
     );
   }
 
-
-
   return (
     <div className="container mx-auto px-4 py-8">
-
       {/* Video capture component */}
       <div className="mb-8 bg-white p-4 rounded-lg shadow-md mx-auto">
         <VideoCaptureUploader
@@ -58,13 +60,7 @@ const AiMobileWebview = () => {
         />
       </div>
 
-
-      {debug &&
-        <button
-          onClick={sendValidation}
-        > Pass </button>
-      }
-
+      {debug && <button onClick={sendValidation}> Pass </button>}
     </div>
   );
 };
