@@ -37,25 +37,43 @@ const VideoCaptureUploader = ({
   const adjustCanvasDimensions = () => {
     if (containerRef.current && canvasRef.current) {
       const containerWidth = containerRef.current.clientWidth;
-      const containerHeight =
-        containerRef.current.clientHeight || window.innerHeight * 0.5;
+      const windowHeight = window.innerHeight;
 
-      // Check if we're on a mobile device in portrait mode
-      const isMobilePortrait =
-        window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+      // Get device type and orientation
+      const isMobile = window.innerWidth < 768;
+      const isPortrait = window.innerHeight > window.innerWidth;
 
-      if (isMobilePortrait) {
-        // On mobile in portrait, maintain aspect ratio but prioritize width
-        const aspectRatio = 4 / 3; // Standard camera aspect ratio
-        const height = Math.min(containerHeight, containerWidth / aspectRatio);
-        const width = height * aspectRatio;
+      // Calculate optimal dimensions based on device and orientation
+      if (isMobile) {
+        if (isPortrait) {
+          // Mobile portrait: prioritize fitting in the screen height
+          // Use a reduced height to leave room for UI elements
+          const maxHeight = windowHeight * 0.4; // 40% of screen height
+          const aspectRatio = 4 / 3;
 
-        setCanvasDimensions({
-          width: Math.floor(width),
-          height: Math.floor(height),
-        });
+          const height = maxHeight;
+          const width = height * aspectRatio;
+
+          setCanvasDimensions({
+            width: Math.floor(width),
+            height: Math.floor(height),
+          });
+        } else {
+          // Mobile landscape: prioritize width but ensure it fits
+          const aspectRatio = 4 / 3;
+          const width = Math.min(
+            containerWidth,
+            windowHeight * aspectRatio * 0.7
+          );
+          const height = width / aspectRatio;
+
+          setCanvasDimensions({
+            width: Math.floor(width),
+            height: Math.floor(height),
+          });
+        }
       } else {
-        // On desktop or landscape, use full container width
+        // Desktop: use container width with standard aspect ratio
         const aspectRatio = 4 / 3;
         const width = containerWidth;
         const height = width / aspectRatio;
@@ -245,14 +263,17 @@ const VideoCaptureUploader = ({
   return (
     <div className="video-stream-container">
       <div ref={containerRef} className="canvas-container">
-        <canvas
-          ref={canvasRef}
-          width={canvasDimensions.width}
-          height={canvasDimensions.height}
-          className={`video-canvas ${
-            !cameraActive || isLoading ? "hidden" : ""
-          }`}
-        ></canvas>
+        {/* Canvas pour la vidéo avec contraintes d'aspect-ratio strictes */}
+        <div className="canvas-aspect-ratio-container">
+          <canvas
+            ref={canvasRef}
+            width={canvasDimensions.width}
+            height={canvasDimensions.height}
+            className={`video-canvas ${
+              !cameraActive || isLoading ? "hidden" : ""
+            }`}
+          ></canvas>
+        </div>
 
         {isLoading && (
           <div className="loading-overlay">
