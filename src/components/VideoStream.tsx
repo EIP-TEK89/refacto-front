@@ -200,7 +200,8 @@ const VideoCaptureUploader = ({
 
               try {
                 // Predict the sign from the frame
-                const result = signRecognizer.predict(frame);
+                // Type assertion needed because SignRecognizer only accepts HTMLVideoElement
+                const result = signRecognizer.predict(frame as HTMLVideoElement);
                 // console.log(result);
 
                 // If hand landmarks are detected, draw them
