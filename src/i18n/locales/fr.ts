@@ -173,6 +173,8 @@ export default {
   "ai.camera.retry": "Réessayer",
   "ai.camera.notfound": "Aucun signe reconnu pour le moment.",
   "ai.camera.outputSign": "Signe reconnu ",
+  "ai.mode.full": "Alphabet complet",
+  "ai.mode.basic": "Mode simplifié (A-H)",
 
   // Errors
   "errors.passwordRequired": "Le mot de passe est requis",

@@ -1,22 +1,17 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import VideoCaptureUploader from "../components/VideoStream";
-
-// Liste des signes à reconnaître
-const AVAILABLE_SIGNS = [
-  { id: "a", label: "A" },
-  { id: "b", label: "B" },
-  { id: "c", label: "C" },
-  { id: "d", label: "D" },
-  { id: "e", label: "E" },
-  { id: "f", label: "F" },
-  { id: "g", label: "G" },
-  { id: "h", label: "H" },
-];
+import { ALPHABET_SIGNS, BASIC_SIGNS } from "../constants/signs";
 
 const AiRecognitionPage = () => {
   const { t } = useTranslation();
-  const [currentSign, setCurrentSign] = useState(AVAILABLE_SIGNS[0]);
+  const [useFullAlphabet, setUseFullAlphabet] = useState(true); // Modifié à true par défaut
+  const signsToUse = useFullAlphabet ? ALPHABET_SIGNS : BASIC_SIGNS;
+  const [currentSign, setCurrentSign] = useState(() => {
+    // Choisir un signe aléatoire dès le départ
+    const randomIndex = Math.floor(Math.random() * signsToUse.length);
+    return signsToUse[randomIndex];
+  });
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [totalAttempts, setTotalAttempts] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -25,6 +20,12 @@ const AiRecognitionPage = () => {
     "success"
   );
   const [cameraActive, setCameraActive] = useState(true);
+
+  // Si le mode (alphabet complet/simplifié) change, mettre à jour le signe actuel
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * signsToUse.length);
+    setCurrentSign(signsToUse[randomIndex]);
+  }, [useFullAlphabet, signsToUse]);
 
   // Désactiver la caméra lorsqu'on quitte la page
   useEffect(() => {
@@ -63,8 +64,8 @@ const AiRecognitionPage = () => {
     // Choisir aléatoirement un nouveau signe après 2 secondes
     setTimeout(() => {
       setShowFeedback(false);
-      const nextSignIndex = Math.floor(Math.random() * AVAILABLE_SIGNS.length);
-      setCurrentSign(AVAILABLE_SIGNS[nextSignIndex]);
+      const nextSignIndex = Math.floor(Math.random() * signsToUse.length);
+      setCurrentSign(signsToUse[nextSignIndex]);
     }, 2000);
   };
 
@@ -78,8 +79,8 @@ const AiRecognitionPage = () => {
     // Choisir aléatoirement un nouveau signe après 1 seconde
     setTimeout(() => {
       setShowFeedback(false);
-      const nextSignIndex = Math.floor(Math.random() * AVAILABLE_SIGNS.length);
-      setCurrentSign(AVAILABLE_SIGNS[nextSignIndex]);
+      const nextSignIndex = Math.floor(Math.random() * signsToUse.length);
+      setCurrentSign(signsToUse[nextSignIndex]);
     }, 1000);
   };
 
@@ -100,6 +101,25 @@ const AiRecognitionPage = () => {
         <p className="mb-4 text-[#3c3c40]">
           {t("ai.instructions.description")}
         </p>
+
+        {/* Mode selector */}
+        <div className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm mb-4">
+          <span className="text-sm font-medium text-[#3c3c40]">
+            {useFullAlphabet
+              ? t("ai.mode.full") || "Alphabet complet"
+              : t("ai.mode.basic") || "Mode simplifié (A-H)"}
+          </span>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={useFullAlphabet}
+              onChange={() => setUseFullAlphabet((prev) => !prev)}
+              className="sr-only peer"
+            />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--color-blue)]"></div>
+          </label>
+        </div>
+
         <div className="flex items-center justify-center bg-white p-4 rounded-lg shadow-md mb-4">
           <span className="text-4xl font-bold text-[var(--color-blue)]">
             {currentSign.label}
