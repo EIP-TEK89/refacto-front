@@ -32,74 +32,95 @@ const VideoCaptureUploader = ({
     width: 640,
     height: 480,
   });
+  const resizeTimeoutRef = useRef<number | null>(null);
 
   // Function to adjust canvas dimensions based on container size
   const adjustCanvasDimensions = () => {
     if (containerRef.current && canvasRef.current) {
       const containerWidth = containerRef.current.clientWidth;
+      const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
 
       // Get device type and orientation
-      const isMobile = window.innerWidth < 768;
-      const isPortrait = window.innerHeight > window.innerWidth;
+      const isMobile = windowWidth < 768;
+      const isPortrait = windowHeight > windowWidth;
+      const aspectRatio = 4 / 3; // Standard video aspect ratio
 
-      // Calculate optimal dimensions based on device and orientation
+      let width, height;
+
       if (isMobile) {
         if (isPortrait) {
-          // Mobile portrait: prioritize fitting in the screen height
-          // Use a reduced height to leave room for UI elements
-          const maxHeight = windowHeight * 0.4; // 40% of screen height
-          const aspectRatio = 4 / 3;
+          // Mobile portrait: use most of the screen width with padding
+          const maxWidth = Math.min(windowWidth * 0.9, 320); // Max 320px or 90% of screen width
+          width = Math.min(containerWidth, maxWidth);
+          height = width / aspectRatio;
 
-          const height = maxHeight;
-          const width = height * aspectRatio;
-
-          setCanvasDimensions({
-            width: Math.floor(width),
-            height: Math.floor(height),
-          });
+          // Ensure height doesn't exceed 40% of screen height
+          const maxHeight = windowHeight * 0.4;
+          if (height > maxHeight) {
+            height = maxHeight;
+            width = height * aspectRatio;
+          }
         } else {
-          // Mobile landscape: prioritize width but ensure it fits
-          const aspectRatio = 4 / 3;
-          const width = Math.min(
-            containerWidth,
-            windowHeight * aspectRatio * 0.7
-          );
-          const height = width / aspectRatio;
+          // Mobile landscape: prioritize height fitting
+          const maxHeight = windowHeight * 0.6; // 60% of screen height
+          height = maxHeight;
+          width = height * aspectRatio;
 
-          setCanvasDimensions({
-            width: Math.floor(width),
-            height: Math.floor(height),
-          });
+          // Ensure width doesn't exceed 70% of screen width
+          const maxWidth = windowWidth * 0.7;
+          if (width > maxWidth) {
+            width = maxWidth;
+            height = width / aspectRatio;
+          }
         }
       } else {
         // Desktop: use container width with standard aspect ratio
-        const aspectRatio = 4 / 3;
-        const width = containerWidth;
-        const height = width / aspectRatio;
-
-        setCanvasDimensions({
-          width: Math.floor(width),
-          height: Math.floor(height),
-        });
+        width = Math.min(containerWidth, 640); // Max 640px for desktop
+        height = width / aspectRatio;
       }
+
+      setCanvasDimensions({
+        width: Math.floor(width),
+        height: Math.floor(height),
+      });
     }
   };
 
   // Listen for window resize and orientation change
   useEffect(() => {
-    adjustCanvasDimensions();
+    // Initial dimension calculation with a small delay to ensure DOM is ready
+    const initialTimeout = setTimeout(() => {
+      adjustCanvasDimensions();
+    }, 100);
 
     const handleResize = () => {
-      adjustCanvasDimensions();
+      // Debounce resize events
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+      resizeTimeoutRef.current = window.setTimeout(() => {
+        adjustCanvasDimensions();
+      }, 150);
+    };
+
+    const handleOrientationChange = () => {
+      // Delay orientation change handling to ensure viewport has updated
+      setTimeout(() => {
+        adjustCanvasDimensions();
+      }, 300);
     };
 
     window.addEventListener("resize", handleResize);
-    window.addEventListener("orientationchange", handleResize);
+    window.addEventListener("orientationchange", handleOrientationChange);
 
     return () => {
+      clearTimeout(initialTimeout);
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("orientationchange", handleResize);
+      window.removeEventListener("orientationchange", handleOrientationChange);
     };
   }, []);
 
@@ -201,7 +222,9 @@ const VideoCaptureUploader = ({
               try {
                 // Predict the sign from the frame
                 // Type assertion needed because SignRecognizer only accepts HTMLVideoElement
-                const result = signRecognizer.predict(frame as HTMLVideoElement);
+                const result = signRecognizer.predict(
+                  frame as HTMLVideoElement
+                );
                 // console.log(result);
 
                 // If hand landmarks are detected, draw them

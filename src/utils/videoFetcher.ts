@@ -12,12 +12,12 @@ export default class VideoFetcher {
    * Null when the camera is inactive
    */
   private stream: MediaStream | null = null;
-  
+
   /**
    * Indicates whether the camera is currently active and streaming
    */
   private isStreaming: boolean = false;
-  
+
   /**
    * The video element used to receive and process the camera stream
    * This element is created but not displayed in the DOM
@@ -48,7 +48,13 @@ export default class VideoFetcher {
       return true;
     }
     try {
-      this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          width: { ideal: 640, max: 1280 },
+          height: { ideal: 480, max: 720 },
+          facingMode: "user" // front camera for most devices
+        }
+      });
       this.video.srcObject = this.stream;
       this.isStreaming = true;
       await this.video.play(); // Start playing the video stream
@@ -102,20 +108,20 @@ export default class VideoFetcher {
     if (!this.isStreaming || !this.stream) {
       return null;
     }
-    
+
     if (asCanvas) {
       const canvas = document.createElement('canvas');
       canvas.width = this.video.videoWidth;
       canvas.height = this.video.videoHeight;
       const ctx = canvas.getContext('2d');
-      
+
       if (ctx) {
         ctx.drawImage(this.video, 0, 0, canvas.width, canvas.height);
         return canvas;
       }
       return null;
     }
-    
+
     return this.video;
   }
 }
