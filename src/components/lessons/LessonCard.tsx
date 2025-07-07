@@ -3,6 +3,7 @@ import { Button } from "../ui";
 import type { Lesson } from "../../types/lesson";
 import { resetLessonProgress } from "../../services/lessonService";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface LessonWithProgress extends Lesson {
   status: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
@@ -22,6 +23,7 @@ const LessonCard = ({
   onStatusChange,
 }: LessonCardProps) => {
   const [isResetting, setIsResetting] = useState(false);
+  const { t } = useTranslation();
 
   const getStatusColor = () => {
     switch (lesson.status) {
@@ -67,7 +69,7 @@ const LessonCard = ({
     >
       {/* Level indicator */}
       <div className="absolute top-3 right-3 text-xs py-1 px-2 rounded-full bg-[var(--color-blue)] text-white">
-        {lesson.level.toLowerCase()}
+        {t(`lessons.${lesson.level.toLowerCase()}`)}
       </div>
 
       {/* Lesson number */}
@@ -86,10 +88,10 @@ const LessonCard = ({
           <div className={`w-3 h-3 rounded-full ${getStatusColor()}`}></div>
           <span className="text-xs">
             {lesson.status === "COMPLETED"
-              ? "Completed"
+              ? t("lessons.completed")
               : lesson.status === "IN_PROGRESS"
-              ? "In Progress"
-              : "Not Started"}
+              ? t("lessons.inProgress")
+              : t("lessons.toDo")}
           </span>
         </div>
 
@@ -109,7 +111,7 @@ const LessonCard = ({
                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
               />
             </svg>
-            <span className="text-sm text-gray-500">Locked</span>
+            <span className="text-sm text-gray-500">{t("lessons.locked")}</span>
           </div>
         ) : (
           <div className="flex gap-2">
@@ -121,7 +123,7 @@ const LessonCard = ({
                 onClick={handleReset}
                 disabled={isResetting}
               >
-                {isResetting ? "..." : "Reset"}
+                {isResetting ? "..." : t("lessons.reset")}
               </Button>
             )}
             <Link to={`/lessons/${lesson.id}`}>
@@ -131,10 +133,10 @@ const LessonCard = ({
                 className={lesson.status === "COMPLETED" ? "bg-green-500" : ""}
               >
                 {lesson.status === "COMPLETED"
-                  ? "Review"
+                  ? t("lessons.reDo")
                   : lesson.status === "IN_PROGRESS"
-                  ? "Continue"
-                  : "Start"}
+                  ? t("lessons.continue")
+                  : t("lessons._start")}
               </Button>
             </Link>
           </div>

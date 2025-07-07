@@ -18,7 +18,7 @@ interface VideoCaptureUploaderProps {
 const VideoCaptureUploader = ({
   goodAnswer,
   response,
-  model = "alphabet",
+  model = "alphabet"
 }: VideoCaptureUploaderProps) => {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -133,7 +133,7 @@ const VideoCaptureUploader = ({
       // Reset hasMatched after a short delay to allow new matches
       setTimeout(() => {
         setHasMatched(false);
-      }, 2000);
+      }, 0);
     }
   }, [outputSign, response, goodAnswer, hasMatched]);
 
@@ -178,9 +178,7 @@ const VideoCaptureUploader = ({
           console.log("Creating runners...");
 
           // Initialize OnnxRunnerWeb with the direct model URL
-          const onnxRunner = new OnnxRunnerWeb(
-            `${API_URL}/files/models/alphabet`
-          );
+          const onnxRunner = new OnnxRunnerWeb(modelUrl);
 
           // Initialize MediapipeRunnerWeb
           const mediapipeRunner = new MediapipeRunnerWeb();

@@ -16,7 +16,7 @@ const BeginnerLessons: React.FC<BeginnerLessonsProps> = ({
   return (
     <div className="mb-12">
       <h2 className="text-xl font-bold mb-4 border-b border-[var(--color-border)] pb-2">
-        Beginner Path
+        Parcours Débutant
       </h2>
       <div className="flex flex-wrap gap-4 justify-center">
         {lessons.map((lesson, index) => {
