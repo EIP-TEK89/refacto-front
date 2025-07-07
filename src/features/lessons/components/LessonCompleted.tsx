@@ -17,7 +17,8 @@ const LessonCompleted: React.FC<LessonCompletedProps> = ({
   onRetry,
   onBackToLessons,
 }) => {
-  const percentageScore = Math.round((score / totalExercises) * 100);
+  // totalExercises =
+  const percentageScore = Math.min((score / totalExercises) * 100, 100);
   const { t } = useTranslation();
 
   return (

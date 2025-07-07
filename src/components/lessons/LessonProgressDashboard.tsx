@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getLessonProgress, getAllLessons } from "../../services/lessonService";
 import type { Lesson, LessonProgress } from "../../types/lesson";
+import { useTranslation } from "react-i18next";
 
 const LessonProgressDashboard = () => {
   const [lessonProgress, setLessonProgress] = useState<LessonProgress[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,25 +69,25 @@ const LessonProgressDashboard = () => {
     <div className="lesson-progress-dashboard">
       {/* Overall progress */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Your Learning Progress</h3>
+        <h3 className="text-lg font-semibold mb-2">{t("profile.tabs.complete.yourLearingProgress")}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
             <div className="text-3xl font-bold text-[var(--color-blue)]">
               {completedLessons}
             </div>
-            <div className="text-gray-600">Lessons Completed</div>
+            <div className="text-gray-600">{t("profile.tabs.complete.completedLessons")}</div>
           </div>
           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
             <div className="text-3xl font-bold text-yellow-500">
               {inProgressLessons}
             </div>
-            <div className="text-gray-600">Lessons In Progress</div>
+            <div className="text-gray-600">{t("profile.tabs.complete.lessonsInProgress")}</div>
           </div>
           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
             <div className="text-3xl font-bold text-green-500">
               {completionPercentage}%
             </div>
-            <div className="text-gray-600">Overall Completion</div>
+            <div className="text-gray-600">{t("profile.tabs.complete.overallCompletion")}</div>
           </div>
         </div>
       </div>
@@ -93,7 +95,7 @@ const LessonProgressDashboard = () => {
       {/* Progress bar */}
       <div className="mb-6">
         <div className="flex justify-between mb-1">
-          <span className="text-sm text-gray-600">Overall Progress</span>
+          <span className="text-sm text-gray-600">{t("profile.tabs.complete.overallProgress")}</span>
           <span className="text-sm font-semibold">
             {completedLessons} / {totalLessons}
           </span>
@@ -109,7 +111,7 @@ const LessonProgressDashboard = () => {
       {/* Recent activity */}
       {recentProgress.length > 0 ? (
         <div>
-          <h3 className="text-lg font-semibold mb-2">Recent Activity</h3>
+          <h3 className="text-lg font-semibold mb-2">{t("profile.tabs.complete.recentActivity")}</h3>
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             {recentProgress.map((progress) => {
               const lesson = lessons.find((l) => l.id === progress.lessonId);
@@ -122,10 +124,10 @@ const LessonProgressDashboard = () => {
                       </h4>
                       <p className="text-sm text-gray-600">
                         {progress.status === "COMPLETED"
-                          ? `Completed on ${new Date(
+                          ? `${t("profile.tabs.complete.completedOn")} ${new Date(
                               progress.updatedAt
                             ).toLocaleDateString()}`
-                          : `Last updated on ${new Date(
+                          : `${t("profile.tabs.complete.lastUpdated")} ${new Date(
                               progress.updatedAt
                             ).toLocaleDateString()}`}
                       </p>
@@ -141,8 +143,8 @@ const LessonProgressDashboard = () => {
                       `}
                       >
                         {progress.status === "COMPLETED"
-                          ? "Completed"
-                          : "In Progress"}
+                          ? t("lessons.completed")
+                          : t("lessons.inProgress")}
                       </span>
                     </div>
                   </div>
@@ -162,19 +164,19 @@ const LessonProgressDashboard = () => {
               to="/lessons"
               className="text-[var(--color-blue)] hover:underline"
             >
-              View All Lessons
+              {t("profile.tabs.complete.viewAllLessons")}
             </Link>
           </div>
         </div>
       ) : (
         <div className="bg-blue-50 p-4 rounded-lg mb-6">
           <p className="text-center">
-            You haven't started any lessons yet.
+            {t("profile.tabs.complete.noLessonStarted")}
             <Link
               to="/lessons"
               className="text-[var(--color-blue)] font-medium ml-1 hover:underline"
             >
-              Begin your learning journey!
+              {t("profile.tabs.complete.beginLearningJourney")}
             </Link>
           </p>
         </div>

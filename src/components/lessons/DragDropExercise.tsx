@@ -206,7 +206,7 @@ const DragDropExercise = ({
           onClick={resetExercise}
           className="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50"
         >
-          Reset
+          Réinitialiser
         </button>
 
         <button

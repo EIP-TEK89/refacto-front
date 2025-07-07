@@ -1,12 +1,14 @@
 import { useAuth } from "../store/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { useRequireAuth } from "../hooks/useRequireAuth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PasswordChangeModal from "../components/PasswordChangeModal";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 import LessonProgressDashboard from "../components/lessons/LessonProgressDashboard";
 import LanguageDropdown from "../components/LanguageDropdown";
 import { useTranslation } from "react-i18next";
+import { getLessonProgress, getAllLessons } from "../services/lessonService";
+import type { Lesson, LessonProgress } from "../types/lesson";
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -15,6 +17,9 @@ const Profile = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("stats");
   const { t } = useTranslation();
+  const [lessonProgress, setLessonProgress] = useState<LessonProgress[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Use the hook to protect this page
   useRequireAuth("/login");
@@ -23,6 +28,28 @@ const Profile = () => {
     logout();
     navigate("/");
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [progressData, lessonsData] = await Promise.all([
+          getLessonProgress(),
+          getAllLessons(),
+        ]);
+        setLessonProgress(progressData);
+      } catch (err) {
+        console.error("Failed to fetch lesson progress:", err);
+        setError("Failed to load your lesson progress");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const completedLessons = lessonProgress.filter(
+    (p) => p.status === "COMPLETED"
+  ).length;
 
   return (
     <div className="container-card">
@@ -103,27 +130,27 @@ const Profile = () => {
           {/* Stats Tab */}
           {activeTab === "stats" && (
             <div className="bg-[var(--color-background-main)] p-6 rounded-2xl border border-[var(--color-border)] mb-6">
-              <h3 className="text-lg font-bold mb-4">Learning Statistics</h3>
+              <h3 className="text-lg font-bold mb-4">{t("profile.tabs.progression.learningStatictics")}</h3>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div className="p-4 bg-[var(--color-background-secondary)] rounded-xl">
-                  <p className="text-sm opacity-70">Current Streak</p>
+                  <p className="text-sm opacity-70">{t("profile.tabs.progression.currentStreak")}</p>
                   <p className="text-2xl font-bold text-[var(--color-blue)]">
-                    0 days
+                    0 {t("profile.tabs.progression.days")}
                   </p>
                 </div>
 
                 <div className="p-4 bg-[var(--color-background-secondary)] rounded-xl">
-                  <p className="text-sm opacity-70">Total XP</p>
+                  <p className="text-sm opacity-70">{t("profile.tabs.progression.totalXP")}</p>
                   <p className="text-2xl font-bold text-[var(--color-blue)]">
                     0
                   </p>
                 </div>
 
                 <div className="p-4 bg-[var(--color-background-secondary)] rounded-xl">
-                  <p className="text-sm opacity-70">Lessons Completed</p>
+                    <p className="text-sm opacity-70">{t("profile.tabs.progression.completedLessons")}</p>
                   <p className="text-2xl font-bold text-[var(--color-blue)]">
-                    0
+                    {completedLessons}
                   </p>
                 </div>
               </div>

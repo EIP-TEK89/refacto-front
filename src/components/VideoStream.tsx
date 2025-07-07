@@ -133,7 +133,7 @@ const VideoCaptureUploader = ({
       // Reset hasMatched after a short delay to allow new matches
       setTimeout(() => {
         setHasMatched(false);
-      }, 2000);
+      }, 0);
     }
   }, [outputSign, response, goodAnswer, hasMatched]);
 
