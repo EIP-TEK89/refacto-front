@@ -121,7 +121,7 @@ const LogIn = () => {
           </PrimaryButton>
         </form>
 
-        <div className="flex items-center text-center my-4">
+        {/* <div className="flex items-center text-center my-4">
           <div className="flex-1 border-b-2 border-[var(--color-border)]"></div>
           <span className="px-4 text-[var(--color-text-blue)] text-sm font-bold">
             {t("common.or")}
@@ -138,7 +138,7 @@ const LogIn = () => {
           >
             {isLoading ? t("auth.connecting") : t("auth.googleLogin")}
           </GoogleButton>
-        </div>
+        </div> */}
 
         <div className="text-center text-[rgba(255,255,255,0.6)] text-sm mt-6">
           {t("auth.noAccount")}
