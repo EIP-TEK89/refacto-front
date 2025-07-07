@@ -18,7 +18,7 @@ interface VideoCaptureUploaderProps {
 const VideoCaptureUploader = ({
   goodAnswer,
   response,
-  model = "alphabet",
+  model = "alphabet2.0",
 }: VideoCaptureUploaderProps) => {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
