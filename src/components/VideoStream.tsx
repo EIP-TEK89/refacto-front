@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { drawHandLandmarkerResult, SignRecognizer } from "triosigno-lib-core";
+import { drawGestures, SignRecognizer, DataGestures } from "triosigno-lib-core";
 import VideoFetcher from "../utils/videoFetcher";
-import { OnnxRunnerWeb, MediapipeRunnerWeb } from "triosigno-lib-web";
+import { OnnxRunnerWeb, MediapipeRunnerWeb, CanvasDrawer } from "triosigno-lib-web";
 import { useTranslation } from "react-i18next";
 import "../styles/VideoStream.css";
 
@@ -159,6 +159,7 @@ const VideoCaptureUploader = ({
 
     // Use a direct model URL to avoid path issues
     const modelUrl = `${API_URL}/files/models/${model}`;
+    // const modelUrl = `http://localhost:5000/get-sign-recognizer-model/alphabet`;
     console.log("Model URL:", modelUrl);
 
     // Start the camera first
@@ -178,9 +179,7 @@ const VideoCaptureUploader = ({
           console.log("Creating runners...");
 
           // Initialize OnnxRunnerWeb with the direct model URL
-          const onnxRunner = new OnnxRunnerWeb(
-            `${API_URL}/files/models/alphabet`
-          );
+          const onnxRunner = new OnnxRunnerWeb(modelUrl);
 
           // Initialize MediapipeRunnerWeb
           const mediapipeRunner = new MediapipeRunnerWeb();
@@ -237,9 +236,10 @@ const VideoCaptureUploader = ({
 
                   // Dessiner les landmarks avec l'inversion horizontale
                   ctx.save(); // Sauvegarder l'état actuel
+                  ctx.translate(canvas.width, 0); // Déplacer l'origine vers la droite
                   ctx.scale(-1, 1); // Inverser l'axe X pour correspondre à l'image
-                  ctx.translate(-canvas.width, 0); // Ajuster la position
-                  drawHandLandmarkerResult(ctx, result.landmarks);
+                  const drawer = new CanvasDrawer(ctx);
+                  drawGestures(result.landmarks, drawer.drawLine.bind(drawer), drawer.drawPoint.bind(drawer));
                   ctx.restore(); // Restaurer l'état d'origine
                 }
 
