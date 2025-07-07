@@ -55,6 +55,7 @@ const AiRecognitionPage = () => {
 
   // Fonction appelée lorsque le signe reconnu est correct
   const handleCorrectAnswer = () => {
+    if (showFeedback) return;
     setCorrectAnswers((prev) => prev + 1);
     setTotalAttempts((prev) => prev + 1);
     setFeedbackMessage(t("ai.feedback.correct"));
@@ -71,6 +72,7 @@ const AiRecognitionPage = () => {
 
   // Fonction appelée lorsque l'utilisateur abandonne ou souhaite passer au signe suivant
   const handleSkip = () => {
+    if (showFeedback) return;
     setTotalAttempts((prev) => prev + 1);
     setFeedbackMessage(t("ai.feedback.skipped"));
     setFeedbackType("error");

@@ -159,7 +159,7 @@ const VideoCaptureUploader = ({
 
     // Use a direct model URL to avoid path issues
     const modelUrl = `${API_URL}/files/models/${model}`;
-    // const modelUrl = `http://localhost:5000/get-sign-recognizer-model/alphabet`;
+    // const modelUrl = `http://localhost:5000/get-sign-recognizer-model/se_presenter`;
     console.log("Model URL:", modelUrl);
 
     // Start the camera first
