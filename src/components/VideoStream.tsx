@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { drawGestures, SignRecognizer, DataGestures } from "triosigno-lib-core";
+import { drawGestures, SignRecognizer } from "triosigno-lib-core";
 import VideoFetcher from "../utils/videoFetcher";
 import { OnnxRunnerWeb, MediapipeRunnerWeb, CanvasDrawer } from "triosigno-lib-web";
 import { useTranslation } from "react-i18next";

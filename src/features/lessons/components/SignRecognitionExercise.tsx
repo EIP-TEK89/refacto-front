@@ -14,7 +14,6 @@ interface SignRecognitionExerciseProps {
 const SignRecognitionExercise: React.FC<SignRecognitionExerciseProps> = ({
   prompt,
   sign,
-  loadingSign,
   selectedAnswer,
   onAnswerSubmit,
   onAnswerSelection,

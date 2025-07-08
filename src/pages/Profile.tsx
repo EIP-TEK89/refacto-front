@@ -7,8 +7,8 @@ import DeleteAccountModal from "../components/DeleteAccountModal";
 import LessonProgressDashboard from "../components/lessons/LessonProgressDashboard";
 import LanguageDropdown from "../components/LanguageDropdown";
 import { useTranslation } from "react-i18next";
-import { getLessonProgress, getAllLessons } from "../services/lessonService";
-import type { Lesson, LessonProgress } from "../types/lesson";
+import { getLessonProgress } from "../services/lessonService";
+import type { LessonProgress } from "../types/lesson";
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -18,8 +18,6 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState("stats");
   const { t } = useTranslation();
   const [lessonProgress, setLessonProgress] = useState<LessonProgress[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
 
   // Use the hook to protect this page
   useRequireAuth("/login");
@@ -32,16 +30,10 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [progressData, lessonsData] = await Promise.all([
-          getLessonProgress(),
-          getAllLessons(),
-        ]);
+        const progressData = await getLessonProgress();
         setLessonProgress(progressData);
       } catch (err) {
         console.error("Failed to fetch lesson progress:", err);
-        setError("Failed to load your lesson progress");
-      } finally {
-        setLoading(false);
       }
     };
     fetchData();
