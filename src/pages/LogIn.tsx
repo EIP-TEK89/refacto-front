@@ -4,7 +4,7 @@ import { useAuth } from "../store/auth";
 import { Link } from "react-router-dom";
 import {
   CloseButton,
-  GoogleButton,
+  // GoogleButton,
   PrimaryButton,
   SecondaryButton,
 } from "../components/ui";
@@ -16,7 +16,7 @@ const LogIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const {
     login,
-    loginWithGoogle,
+    // loginWithGoogle,
     error,
     isLoading,
     isAuthenticated,
@@ -30,14 +30,14 @@ const LogIn = () => {
     await login(email, password);
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      clearError();
-      await loginWithGoogle();
-    } catch (error) {
-      console.error("Google login failed:", error);
-    }
-  };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     clearError();
+  //     await loginWithGoogle();
+  //   } catch (error) {
+  //     console.error("Google login failed:", error);
+  //   }
+  // };
 
   // If user is authenticated, redirect to home
   if (isAuthenticated) {

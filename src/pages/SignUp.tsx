@@ -5,7 +5,7 @@ import { useAuth } from "../store/auth";
 import {
   CloseButton,
   PrimaryButton,
-  GoogleButton,
+  // GoogleButton,
   SecondaryButton,
 } from "../components/ui";
 
@@ -17,7 +17,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { signup, loginWithGoogle, error, isLoading, clearError } = useAuth();
+  // const { signup, loginWithGoogle, error, isLoading, clearError } = useAuth();
+  const { signup, error, isLoading, clearError } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -57,14 +58,14 @@ const SignUp = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      clearError();
-      await loginWithGoogle();
-    } catch (error) {
-      console.error("Google login failed:", error);
-    }
-  };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     clearError();
+  //     await loginWithGoogle();
+  //   } catch (error) {
+  //     console.error("Google login failed:", error);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center bg-[var(--color-background-main)] min-h-screen py-8">
