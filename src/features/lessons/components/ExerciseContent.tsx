@@ -5,6 +5,7 @@ import WordToImageExercise from "./WordToImageExercise";
 import ImageToWordExercise from "./ImageToWordExercise";
 import SignRecognitionExercise from "./SignRecognitionExercise";
 import FeedbackSection from "./FeedbackSection";
+import { useTranslation } from "react-i18next";
 
 interface ExerciseContentProps {
   exercise: Exercise;
@@ -38,6 +39,8 @@ const ExerciseContent: React.FC<ExerciseContentProps> = ({
   isLastExercise,
   signCache,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       {/* Exercise content based on type */}
@@ -72,18 +75,18 @@ const ExerciseContent: React.FC<ExerciseContentProps> = ({
           sign={sign}
           loadingSign={loadingSign}
           selectedAnswer={selectedAnswer}
-          isAnswerCorrect={isAnswerCorrect}
+          onAnswerSubmit={onAnswerSubmit}
           onAnswerSelection={onAnswerSelection}
         />
       )}
 
       {/* Feedback area */}
-      <FeedbackSection feedback={feedback} isAnswerCorrect={isAnswerCorrect} />
+      <FeedbackSection feedback={feedback === "Try again!" ? "Incorrect!" : feedback} isAnswerCorrect={isAnswerCorrect} />
 
       {/* Action buttons */}
       <div className="flex justify-between mt-6">
         <Button variant="secondary" onClick={onExitLesson}>
-          Exit Lesson
+          {t("lessons.exitLesson")}
         </Button>
 
         {isAnswerCorrect === null ? (
@@ -91,11 +94,11 @@ const ExerciseContent: React.FC<ExerciseContentProps> = ({
             onClick={onAnswerSubmit}
             disabled={exercise.type !== "SIGN_RECOGNITION" && !selectedAnswer}
           >
-            Check Answer
+            {t("lessons.checkAnswer")}
           </Button>
         ) : (
           <Button onClick={onNextExercise}>
-            {isLastExercise ? "Complete Lesson" : "Next Exercise"}
+            {isLastExercise ? t("lessons.completeLesson") : t("lessons.nextExercice")}
           </Button>
         )}
       </div>

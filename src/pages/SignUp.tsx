@@ -170,7 +170,7 @@ const SignUp = () => {
           </PrimaryButton>
         </form>
 
-        <div className="flex items-center text-center my-4">
+        {/* <div className="flex items-center text-center my-4">
           <div className="flex-1 border-b-2 border-[var(--color-border)]"></div>
           <span className="px-4 text-[var(--color-text-blue)] text-sm font-bold">
             OR
@@ -187,7 +187,7 @@ const SignUp = () => {
           >
             {isLoading ? "Connecting..." : "Google"}
           </GoogleButton>
-        </div>
+        </div> */}
 
         <div className="text-center text-[rgba(255,255,255,0.6)] text-sm mt-4">
           Already have an account?

@@ -153,6 +153,7 @@ const AiRecognitionPage = () => {
             goodAnswer={handleCorrectAnswer}
             badAnswer={() => {}}
             response={currentSign.id}
+            model="alphabet2.0"
           />
         )}
       </div>

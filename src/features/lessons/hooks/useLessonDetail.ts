@@ -62,6 +62,9 @@ export const useLessonDetail = (lessonId: string | undefined) => {
           if (lessonProgress.status === "COMPLETED") {
             setLessonCompleted(true);
           }
+
+          // console.log(lessonProgress.score, exercisesData.length, Math.round((lessonProgress.score / 100) * exercisesData.length))
+          setScore(Math.round((lessonProgress.score / 100) * exercisesData.length));
         }
 
         // Make sure sign cache is initialized
@@ -187,6 +190,7 @@ export const useLessonDetail = (lessonId: string | undefined) => {
       // For other exercises, we submit the selected answer
       let answer = selectedAnswer || "";
 
+      // console.log("answer:", selectedAnswer, answer);
       const result = await submitExerciseAnswer(
         exerciseId,
         answer,

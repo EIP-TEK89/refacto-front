@@ -23,7 +23,16 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["triosigno-lib", "triosigno-web"],
+    // include: ["triosigno-lib", "triosigno-web"],
     exclude: ["onnxruntime-web"], // Ensures proper handling of WASM
   },
+  // server: {
+  //   fs: {
+  //     // Ajoute ici les dossiers autorisés en plus du root
+  //     allow: [
+  //       '..',
+  //       'F:/global_folders/documents/_code/epitech/eip/triosignolib',
+  //     ],
+  //   },
+  // },
 });
