@@ -190,7 +190,7 @@ export const useLessonDetail = (lessonId: string | undefined) => {
       // For other exercises, we submit the selected answer
       let answer = selectedAnswer || "";
 
-      console.log("answer:", selectedAnswer, answer);
+      // console.log("answer:", selectedAnswer, answer);
       const result = await submitExerciseAnswer(
         exerciseId,
         answer,
